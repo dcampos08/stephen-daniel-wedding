@@ -458,6 +458,7 @@
   (function () {
     const hero = document.getElementById('welcome');
     function enter() {
+      document.body.classList.add('entered');
       const main = document.getElementById('main');
       if (main) main.scrollIntoView({ behavior: 'smooth' });
     }
