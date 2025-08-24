@@ -224,14 +224,21 @@
         width: 100%;
         height: auto;
         border-radius: var(--radius-sm);
-    }
+      }
 
-    /* Crop overly tall images to a tidy rectangle */
+      #welcome-photo {
+      height: 350px;       /* adjust until it looks right */
+      overflow: hidden;    /* hides the extra bottom part */
+      border-radius: var(--radius-sm);
+      }
+
       #welcome-photo img {
-      aspect-ratio: 4 / 3;     /* try 3/4 or 16/9 if you prefer */
-      object-fit: cover;
-}
-
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;   /* keeps it nicely cropped */
+        object-position: top center; /* crop from the bottom only */
+      }
 
   </style>
 </head>
