@@ -141,6 +141,17 @@
     }
     .carousel-dots .dot.is-active { background: var(--color-accent); border-color: var(--color-accent); }
 
+    /* Fullscreen hero video */
+    .hero { position: relative; height: 100vh; border-bottom: 1px solid var(--color-border); }
+    .hero-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;  /* fills without squishing */
+    }
+    .hero .overlay { position: absolute; inset: 0; display: grid; place-items: center;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
+    }
+
     /* Body & UI (nav, buttons, inputs) */
     body, .nav a, .btn, input, select, textarea {
     font-family: var(--font-body);
@@ -191,19 +202,25 @@
     </div>
   </header>
 
-  <section class="hero" aria-label="Hero">
-    <img src="assets/img/hero.jpg" alt="Watercolor view of Lanikūhonua" width="2000" height="1200" />
+    <section class="hero" aria-label="Hero video welcome" id="welcome">
+    <video class="hero-video" autoplay muted playsinline loop
+            poster="assets/img/hero-poster.jpg">
+        <source src="assets/video/oahu.mp4" type="video/mp4" />
+        <!-- <source src="assets/video/oahu.webm" type="video/webm" /> -->
+        Your browser does not support the video tag.
+    </video>
+
     <div class="overlay">
-      <div class="title-card">
-        <h1>Daniel & Stephen</h1>
-        <p>Honolulu, Hawaiʻi — July 10, 2026</p>
+        <div class="title-card" role="button" tabindex="0" aria-label="Enter site">
+        <h1>Stephen &amp; Daniel</h1>
+        <p>Honolulu, HI — July 10, 2026</p>
         <div style="margin-top: var(--space-4)">
-          <a href="#rsvp" class="btn primary">RSVP</a>
-          <a href="#travel" class="btn ghost" style="margin-left: 8px;">Travel Info</a>
+            <a href="#main" class="btn primary">Enter site</a>
         </div>
-      </div>
+        </div>
     </div>
-  </section>
+    </section>
+
 
   <main id="main">
     <!-- Our Story -->
@@ -422,5 +439,24 @@
     })();
 </script>
 
+<script>
+  (function () {
+    const hero = document.getElementById('welcome');
+    function enter() {
+      const main = document.getElementById('main');
+      if (main) main.scrollIntoView({ behavior: 'smooth' });
+    }
+    // click anywhere on hero background
+    hero.addEventListener('click', (e) => {
+      // ignore clicks on links (e.g., the button)
+      if (!(e.target.closest('a'))) enter();
+    });
+    // keyboard accessibility on the title card
+    const card = hero.querySelector('.title-card');
+    card && card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
+    });
+  })();
+</script>
 </body>
 </html>
