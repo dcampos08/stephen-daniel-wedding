@@ -187,12 +187,14 @@
     letter-spacing: 0.2px;
     }
 
-    .hero .subtitle {
+
+    .hero-subline {
       font-family: var(--font-script-1);
       color: var(--color-accent);
-      font-weight: 700;   /* even bolder */
-      font-size: 1.5em;
-      letter-spacing: 0.2px;
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 40px); /* ~twice as large as before */
+      letter-spacing: 0.3px;
+      margin: 0;
     }
 
     /* Small uppercase meta (times/locations) to echo the card */
@@ -201,15 +203,6 @@
     letter-spacing: 1.2px;
     text-transform: uppercase;
     font-size: 0.85rem;
-    }
-
-    .hero-date {
-      font-family: var(--font-script-1);
-      color: var(--color-accent);
-      font-weight: 1000;
-      font-size: 6em;
-      letter-spacing: 0.5px;
-      margin: 0.2em 0 0.4em 0;
     }
   </style>
 </head>
@@ -240,7 +233,7 @@
     <div class="overlay">
         <div class="title-card">
           <h1>Stephen &amp; Daniel</h1>
-          <p class="hero-date">Honolulu, HI — July 10, 2026</p>
+          <p class="hero-subline">Honolulu, HI — July 10, 2026</p>
           <div style="margin-top: var(--space-4)">
             <a href="#main" class="btn primary" id="enterSiteBtn" role="button" tabindex="0" aria-label="Enter site">Enter Site</a>
           </div>
