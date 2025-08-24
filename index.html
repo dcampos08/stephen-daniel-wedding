@@ -17,21 +17,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    /*
-      ███ THEME TOKENS (edit these first) ███
-      Your partner can change fonts/colors here and the whole site updates.
-    */
     :root {
-      --font-display: 'Cormorant Garamond', serif;   /* swap to your own @font-face when ready */
+      --font-display: 'Cormorant Garamond', serif;
       --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
 
-      --color-bg: #fffdf8;        /* page background */
-      --color-surface: #ffffff;   /* card/section background */
-      --color-text: #1f1f1f;      /* main text */
-      --color-muted: #6a6a6a;     /* secondary text */
-      --color-primary: #7a6a56;   /* headings, accents */
-      --color-accent: #b98f6e;    /* buttons, links, highlights */
-      --color-border: #e8e1d8;    /* subtle dividers */
+      --color-bg: #fffdf8;
+      --color-surface: #ffffff;
+      --color-text: #1f1f1f;
+      --color-muted: #6a6a6a;
+      --color-primary: #7a6a56;
+      --color-accent: #b98f6e;
+      --color-border: #e8e1d8;
 
       --radius-lg: 20px;
       --radius-sm: 10px;
@@ -48,7 +44,6 @@
       --space-10: 64px;
     }
 
-    /* Base */
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
@@ -63,13 +58,11 @@
     a:hover { text-decoration: underline; }
     .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
 
-    /* Skip link for accessibility */
     .skip-link {
       position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
     }
     .skip-link:focus { left: 16px; top: 16px; width: auto; height: auto; background: #fff; padding: 8px 12px; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
 
-    /* Header & Nav */
     header.site-header { position: sticky; top: 0; z-index: 8; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border); }
     .nav { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) 0; }
     .brand { font-family: var(--font-display); font-weight: 600; font-size: 24px; color: var(--color-primary); letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 10px; }
@@ -77,7 +70,6 @@
     .nav ul { display: flex; gap: var(--space-5); list-style: none; margin: 0; padding: 0; }
     .nav a { font-weight: 600; }
 
-    /* Mobile nav */
     .menu-toggle { display: none; background: transparent; border: 0; font-size: 28px; }
     @media (max-width: 820px) {
       .nav ul { display: none; position: absolute; right: var(--space-5); top: 64px; flex-direction: column; background: var(--color-surface); padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
@@ -85,7 +77,6 @@
       .menu-toggle { display: inline-block; }
     }
 
-    /* Hero */
     .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--color-border); }
     .hero picture, .hero img { width: 100%; height: clamp(50vh, 65vh, 720px); object-fit: cover; }
     .hero .overlay {
@@ -100,41 +91,25 @@
     .hero h1 { font-family: var(--font-display); font-size: clamp(40px, 6vw, 64px); margin: 0 0 var(--space-3); letter-spacing: 0.5px; }
     .hero p { margin: 0; font-size: clamp(16px, 2.5vw, 20px); opacity: 0.95; }
 
-    /* Sections */
     section { padding: var(--space-10) 0; }
     .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); }
     .section-title { font-family: var(--font-display); font-size: clamp(28px, 4vw, 40px); color: var(--color-primary); margin: 0 0 var(--space-5); }
 
-    /* Grid helpers */
     .grid { display: grid; gap: var(--space-6); }
     @media (min-width: 820px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: repeat(3, 1fr); } }
 
-    /* Buttons */
     .btn { display: inline-block; padding: 12px 18px; font-weight: 700; border-radius: 999px; border: 2px solid var(--color-accent); }
     .btn.primary { background: var(--color-accent); color: white; }
     .btn.ghost { background: transparent; color: var(--color-accent); }
 
-    /* List styles */
     .clean-list { list-style: none; padding: 0; margin: 0; }
     .clean-list li { padding: 8px 0; border-bottom: 1px dashed var(--color-border); }
 
-    /* Footer */
     footer { border-top: 1px solid var(--color-border); background: #fff; padding: var(--space-8) 0; color: var(--color-muted); }
 
-    /* Utility */
     .center { text-align: center; }
     .muted { color: var(--color-muted); }
     .chip { display: inline-block; background: #f5efe7; border: 1px solid var(--color-border); border-radius: 999px; padding: 4px 10px; font-size: 12px; }
-
-    /* Example of custom font-face (uncomment & swap URLs when you self-host) */
-    /*
-    @font-face {
-      font-family: 'YourDisplayVar';
-      src: url('/assets/fonts/YourDisplayVar.woff2') format('woff2');
-      font-weight: 100 700; font-style: normal; font-display: swap;
-    }
-    :root { --font-display: 'YourDisplayVar', serif; }
-    */
   </style>
 </head>
 <body id="top">
@@ -156,7 +131,6 @@
   </header>
 
   <section class="hero" aria-label="Hero">
-    <!-- Swap these sources with your partner's banner exports. Keep focal point centered. -->
     <picture>
       <source srcset="assets/img/hero@2x.webp 2x, assets/img/hero.webp 1x" type="image/webp" />
       <img src="assets/img/hero.jpg" alt="A scenic view of the wedding venue" width="2000" height="1200" />
@@ -174,3 +148,19 @@
   </section>
 
   <main id="main">
+    <section id="venue">
+      <div class="container grid grid-2">
+        <div class="card">
+          <h2 class="section-title">Venue & Map</h2>
+          <p>Lanikūhonua Cultural Institute<br> Ko Olina, Oʻahu, HI</p>
+          <p><a href="https://goo.gl/maps/H3b49Eq1kLoQnSFL8" target="_blank" rel="noopener">Open in Google Maps</a></p>
+          <p class="muted">Parking available on-site. Ceremony will be outdoors—please plan footwear accordingly.</p>
+        </div>
+        <div class="card">
+          <img src="assets/img/venue-map.jpg" alt="Map to Lanikūhonua Cultural Institute" />
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
