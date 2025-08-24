@@ -14,11 +14,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
+
 
   <style>
+      /* Local font: Safira March */
+      @font-face {
+        font-family: "Safira March";
+        src: url("assets/fonts/SafiraMarch.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
     :root {
-      --font-display: 'Cormorant Garamond', serif;
-      --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      /* Font tokens */
+      --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;   /* clean, legible */
+      --font-serif-alt: "Cormorant Garamond", serif;                                                           /* fallback serif if needed */
+      --font-script-1: "beloved-script", cursive;                                                              /* flowing script (gold accents) */
+      --font-script-2: "Safira March", cursive;                                                                /* elegant script (names) */
 
       --color-bg: #fffdf8;
       --color-surface: #ffffff;
@@ -125,6 +138,39 @@
     background: #fff; text-indent: -9999px; overflow: hidden; cursor: pointer;
     }
     .carousel-dots .dot.is-active { background: var(--color-accent); border-color: var(--color-accent); }
+
+    /* Body & UI (nav, buttons, inputs) */
+    body, .nav a, .btn, input, select, textarea {
+    font-family: var(--font-body);
+    }
+
+    /* Section titles: keep clean like the stationery’s supporting text */
+    .section-title {
+    font-family: var(--font-body);
+    letter-spacing: 0.2px;
+    }
+
+    /* HERO names — use Safira March (big, elegant) */
+    .hero h1 {
+    font-family: "Safira March", cursive;
+    font-weight: 400;
+    }
+
+    /* HERO subline — flowing script + your gold accent */
+    .hero p {
+    font-family: var(--font-script-1);
+    color: var(--color-accent);   /* already defined in your tokens */
+    letter-spacing: 0.2px;
+    }
+
+    /* Small uppercase meta (times/locations) to echo the card */
+    small, .muted, .chip, #schedule .muted {
+    font-family: var(--font-body);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    }
+
   </style>
 </head>
 <body id="top">
