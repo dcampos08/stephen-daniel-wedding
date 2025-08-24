@@ -208,6 +208,16 @@
     .muted { color: var(--color-muted); }
     .chip { display: inline-block; background: #f5efe7; border: 1px solid var(--color-border); border-radius: 999px; padding: 4px 10px; font-size: 12px; }
 
+    .signature {
+      font-family: var(--font-script-1); /* same cursive as the subline */
+      color: var(--color-accent);
+      font-weight: 700;
+      font-size: clamp(18px, 2.2vw, 24px);
+      letter-spacing: 0.3px;
+      margin-top: var(--space-4);
+      line-height: 1.2;
+    }
+
     /* --- Carousel --- */
     .carousel { position: relative; overflow: hidden; border-radius: var(--radius-lg); }
     .carousel-track { display: flex; transition: transform 350ms ease; }
@@ -276,14 +286,17 @@
       <div class="container grid grid-2">
         <div class="card" id="welcome-card">
           <h2 class="section-title" id="welcome-title">Welcome</h2>
-          <p>We met in New York, bonded over key lime pie, and now we’re celebrating with you in Honolulu. We’re so excited to share this day with our favorite people.</p>
-          <ul class="clean-list" style="margin-top: var(--space-5);">
-            <li><span class="chip">First Date</span> Red Hook Lobster Pound</li>
-            <li><span class="chip">Engaged</span> Central Park — Bow Bridge</li>
-            <li><span class="chip">Now</span> Cat parents & city wanderers</li>
-          </ul>
+
+          <p>Aloha and welcome! We're thrilled that you'll be joining us to celebrate our special day in a place that holds such deep meaning for both of us.</p>
+
+          <p>While we're still adding the finishing touches to our website, we've included essential information about lodging &amp; travel and expected events for the week to help you start planning your trip to Oahu! We'll be updating the site regularly with additional details about our celebration week, so please check back soon!</p>
+
+          <p>We can't wait to share this incredible adventure with our favorite people.</p>
+
+          <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
         </div>
-        <div class="card">
+      </div>
+      <div class="card">
           <!-- Carousel (2 photos demo) -->
           <div class="carousel" aria-roledescription="carousel">
             <div class="carousel-track" aria-live="polite">
