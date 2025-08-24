@@ -1,3 +1,19 @@
+    /* Hide header and main site until entered */
+    .site-header, #main {
+      display: none;
+    }
+
+    /* Show them once we add a .entered class to body */
+    body.entered .site-header,
+    body.entered #main {
+      display: block;
+    }
+
+    /* Prevent scrolling until entered */
+    body:not(.entered) {
+      overflow: hidden;
+      height: 100vh;
+    }
 <!DOCTYPE html>
 <html lang="en">
 <head>
