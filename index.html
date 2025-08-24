@@ -229,9 +229,12 @@
     </video>
 
     <div class="overlay">
-        <div class="title-card" role="button" tabindex="0" aria-label="Enter site">
-        <h1>Stephen &amp; Daniel</h1>
-        <p>Honolulu, HI — July 10, 2026</p>
+        <div class="title-card">
+          <h1>Stephen &amp; Daniel</h1>
+          <p>Honolulu, HI — July 10, 2026</p>
+          <div style="margin-top: var(--space-4)">
+            <a href="#main" class="btn primary" id="enterSiteBtn" role="button" tabindex="0" aria-label="Enter site">Enter Site</a>
+          </div>
         </div>
     </div>
     </section>
@@ -456,22 +459,24 @@
 
 <script>
   (function () {
-    const hero = document.getElementById('welcome');
+    const btn = document.getElementById('enterSiteBtn');
     function enter() {
       document.body.classList.add('entered');
       const main = document.getElementById('main');
       if (main) main.scrollIntoView({ behavior: 'smooth' });
     }
-    // click anywhere on hero background
-    hero.addEventListener('click', (e) => {
-      // ignore clicks on links (e.g., the button)
-      if (!(e.target.closest('a'))) enter();
-    });
-    // keyboard accessibility on the title card
-    const card = hero.querySelector('.title-card');
-    card && card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
-    });
+    if (btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        enter();
+      });
+      btn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          enter();
+        }
+      });
+    }
   })();
 </script>
 </body>
