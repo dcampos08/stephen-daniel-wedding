@@ -82,8 +82,8 @@
     font-family: var(--font-script-2); /* Safira March */
     font-weight: 400;
     color: var(--color-primary);
-    font-size: clamp(28px, 4vw, 44px);
-    line-height: 1.1;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.05;
   }
   .site-header .mast .dateplace {
     font-family: var(--font-script-1); /* beloved-script */
@@ -122,6 +122,9 @@
     .site-header, #main { display: none; }
     body.entered .site-header,
     body.entered #main { display: block; }
+
+    /* After entering the site, remove the video so it can't show behind header */
+    body.entered .hero { display: none; }
 
     /* Optional: lock scrolling on the welcome screen only */
     body:not(.entered) { overflow: hidden; height: 100vh; }
@@ -496,26 +499,37 @@
   </script>
 
   <script>
-    (function () {
-      const btn = document.getElementById('enterSiteBtn');
-      function enter() {
-        document.body.classList.add('entered');
-        const main = document.getElementById('main');
-        if (main) main.scrollIntoView({ behavior: 'smooth' });
+  (function () {
+    const btn = document.getElementById('enterSiteBtn');
+    function enter() {
+      document.body.classList.add('entered');
+
+      const target = document.getElementById('welcome');   // scroll to the Welcome section
+      const header = document.querySelector('.site-header');
+      const offset = header ? header.offsetHeight : 0;
+
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.pageYOffset - offset - 16; // -16px comfy gap
+        window.scrollTo({ top, behavior: 'smooth' });
       }
-      if (btn) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          enter();
-        });
-        btn.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            enter();
-          }
-        });
-      }
-    })();
+    }
+    if (btn) {
+      btn.addEventListener('click', function(e) { e.preventDefault(); enter(); });
+      btn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
+      });
+    }
+
+    // Also allow clicking anywhere on the overlay/title to enter
+    const hero = document.getElementById('banner') || document.getElementById('welcome') || document.querySelector('.hero');
+    const card = hero ? hero.querySelector('.title-card') : null;
+    if (hero) hero.addEventListener('click', (e) => {
+      if (!e.target.closest('a')) enter();
+    });
+    if (card) card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
+    });
+  })();
   </script>
 </body>
 </html>
