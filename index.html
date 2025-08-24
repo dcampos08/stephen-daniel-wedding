@@ -1,3 +1,7 @@
+    body:not(.entered) {
+      overflow: hidden;
+      height: 100vh;
+    }
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,6 +145,17 @@
     }
     .carousel-dots .dot.is-active { background: var(--color-accent); border-color: var(--color-accent); }
 
+    /* Hide header and main site until entered */
+    .site-header, #main {
+      display: none;
+    }
+
+    /* Show them once we add a .entered class to body */
+    body.entered .site-header,
+    body.entered #main {
+      display: block;
+    }
+
     /* Fullscreen hero video */
     .hero { position: relative; height: 100vh; border-bottom: 1px solid var(--color-border); }
     .hero-video {
@@ -174,6 +189,13 @@
     font-family: var(--font-script-1);
     color: var(--color-accent);   /* already defined in your tokens */
     letter-spacing: 0.2px;
+    }
+
+    .hero .subtitle {
+      font-family: var(--font-script-1);
+      color: var(--color-accent);
+      font-weight: 600;   /* bolder */
+      letter-spacing: 0.2px;
     }
 
     /* Small uppercase meta (times/locations) to echo the card */
