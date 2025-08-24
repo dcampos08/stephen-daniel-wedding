@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Wedding — July 10, 2026</title>
+  <meta name="description" content="You're invited to celebrate with us. Find the schedule, venue details, travel tips, registry, and RSVP here." />
+  <meta property="og:title" content="Our Wedding — July 10, 2026" />
+  <meta property="og:description" content="You're invited to celebrate with us in Honolulu. All the details and RSVP inside." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/img/og-cover.jpg" />
+  <meta name="theme-color" content="#7a6a56">
+
+  <!-- Default web fonts for quick start. Swap these for self-hosted fonts when ready. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /*
+      ███ THEME TOKENS (edit these first) ███
+      Your partner can change fonts/colors here and the whole site updates.
+    */
+    :root {
+      --font-display: 'Cormorant Garamond', serif;   /* swap to your own @font-face when ready */
+      --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+
+      --color-bg: #fffdf8;        /* page background */
+      --color-surface: #ffffff;   /* card/section background */
+      --color-text: #1f1f1f;      /* main text */
+      --color-muted: #6a6a6a;     /* secondary text */
+      --color-primary: #7a6a56;   /* headings, accents */
+      --color-accent: #b98f6e;    /* buttons, links, highlights */
+      --color-border: #e8e1d8;    /* subtle dividers */
+
+      --radius-lg: 20px;
+      --radius-sm: 10px;
+      --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
+      --max-w: 1100px;
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-8: 48px;
+      --space-10: 64px;
+    }
+
+    /* Base */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: var(--color-accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
+
+    /* Skip link for accessibility */
+    .skip-link {
+      position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+    }
+    .skip-link:focus { left: 16px; top: 16px; width: auto; height: auto; background: #fff; padding: 8px 12px; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
+
+    /* Header & Nav */
+    header.site-header { position: sticky; top: 0; z-index: 8; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border); }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) 0; }
+    .brand { font-family: var(--font-display); font-weight: 600; font-size: 24px; color: var(--color-primary); letter-spacing: 0.5px; }
+    .nav ul { display: flex; gap: var(--space-5); list-style: none; margin: 0; padding: 0; }
+    .nav a { font-weight: 600; }
+
+    /* Mobile nav */
+    .menu-toggle { display: none; background: transparent; border: 0; font-size: 28px; }
+    @media (max-width: 820px) {
+      .nav ul { display: none; position: absolute; right: var(--space-5); top: 64px; flex-direction: column; background: var(--color-surface); padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
+      .nav.open ul { display: flex; }
+      .menu-toggle { display: inline-block; }
+    }
+
+    /* Hero */
+    .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--color-border); }
+    .hero picture, .hero img { width: 100%; height: clamp(50vh, 65vh, 720px); object-fit: cover; }
+    .hero .overlay {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
+    }
+    .hero .title-card {
+      text-align: center; color: white; padding: var(--space-6);
+      backdrop-filter: blur(6px); background: rgba(0,0,0,0.2);
+      border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.35);
+    }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(40px, 6vw, 64px); margin: 0 0 var(--space-3); letter-spacing: 0.5px; }
+    .hero p { margin: 0; font-size: clamp(16px, 2.5vw, 20px); opacity: 0.95; }
+
+    /* Sections */
+    section { padding: var(--space-10) 0; }
+    .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); }
+    .section-title { font-family: var(--font-display); font-size: clamp(28px, 4vw, 40px); color: var(--color-primary); margin: 0 0 var(--space-5); }
+
+    /* Grid helpers */
+    .grid { display: grid; gap: var(--space-6); }
+    @media (min-width: 820px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+    /* Buttons */
+    .btn { display: inline-block; padding: 12px 18px; font-weight: 700; border-radius: 999px; border: 2px solid var(--color-accent); }
+    .btn.primary { background: var(--color-accent); color: white; }
+    .btn.ghost { background: transparent; color: var(--color-accent); }
+
+    /* List styles */
+    .clean-list { list-style: none; padding: 0; margin: 0; }
+    .clean-list li { padding: 8px 0; border-bottom: 1px dashed var(--color-border); }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--color-border); background: #fff; padding: var(--space-8) 0; color: var(--color-muted); }
+
+    /* Utility */
+    .center { text-align: center; }
+    .muted { color: var(--color-muted); }
+    .chip { display: inline-block; background: #f5efe7; border: 1px solid var(--color-border); border-radius: 999px; padding: 4px 10px; font-size: 12px; }
+
+    /* Example of custom font-face (uncomment & swap URLs when you self-host) */
+    /*
+    @font-face {
+      font-family: 'YourDisplayVar';
+      src: url('/assets/fonts/YourDisplayVar.woff2') format('woff2');
+      font-weight: 100 700; font-style: normal; font-display: swap;
+    }
+    :root { --font-display: 'YourDisplayVar', serif; }
+    */
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav" id="siteNav">
+      <div class="brand">D & S</div>
+      <button class="menu-toggle" aria-label="Toggle menu" onclick="document.getElementById('siteNav').classList.toggle('open')">☰</button>
+      <ul>
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#venue">Venue</a></li>
+        <li><a href="#travel">Travel</a></li>
+        <li><a href="#registry">Registry</a></li>
+        <li><a href="#rsvp" class="btn primary" style="padding:8px 14px;">RSVP</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="Hero">
+    <!-- Swap these sources with your partner's banner exports. Keep focal point centered. -->
+    <picture>
+      <source srcset="assets/img/hero@2x.webp 2x, assets/img/hero.webp 1x" type="image/webp" />
+      <img src="assets/img/hero.jpg" alt="A scenic view of the wedding venue" width="2000" height="1200" />
+    </picture>
+    <div class="overlay">
+      <div class="title-card">
+        <h1>Daniel & Stephen</h1>
+        <p>Honolulu, Hawaiʻi — July 10, 2026</p>
+        <div style="margin-top: var(--space-4)">
+          <a href="#rsvp" class="btn primary">RSVP</a>
+          <a href="#travel" class="btn ghost" style="margin-left: 8px;">Travel Info</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+    <section id="story">
+      <div class="container grid grid-2">
+        <div class="card">
+          <h2 class="section-title">Our Story</h2>
+          <p>We met in New York, bonded over key lime pie, and now we’re celebrating with you in Honolulu. We’re so excited to share this day with our favorite people.</p>
+          <ul class="clean-list" style="margin-top: var(--space-5);">
+            <li><span class="chip">First Date</span> Red Hook Lobster Pound</li>
+            <li><span class="chip">Engaged</span> Central Park — Bow Bridge</li>
+            <li><span class="chip">Now</span> Cat parents & city wanderers</li>
+          </ul>
+        </div>
+        <div class="card">
+          <img src="assets/img/story-collage.jpg" alt="Collage of the couple" />
+        </div>
+      </div>
+    </section>
+
+    <section id="schedule">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title">Schedule</h2>
+          <div class="grid grid-3">
+            <div>
+              <h3>Ceremony</h3>
+              <p class="muted">3:00 PM — The Lawn</p>
+              <p>Join us for an outdoor ceremony overlooking the ocean.</p>
+            </div>
+            <div>
+              <h3>Cocktail Hour</h3>
+              <p class="muted">4:00 PM — Garden Terrace</p>
+              <p>Drinks, bites, and live music while we take photos.</p>
+            </div>
+            <div>
+              <h3>Reception</h3>
+              <p class="muted">5:30 PM — Ballroom</p>
+              <p>Dinner, speeches, and dancing. Festive attire encouraged.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="venue">
+      <div class="container grid grid-2">
+        <div class="card">
+          <h2 class="section-title">Venue & Map</h2>
+          <p>Hotel Venue Name<br> 123 Ocean Dr, Honolulu, HI</p>
+          <p><a href="https://maps.google.com" target="_blank" rel="noopener">Open in Google Maps</a></p>
+          <p class="muted">Parking available on-site. Ceremony will be outdoors—please plan footwear accordingly.
+          </p>
+        </div>
+        <div class="card">
+          <img src="assets/img/map-static.jpg" alt="Map showing the venue location" />
+        </div>
+      </div>
+    </section>
+
+    <section id="travel">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title">Travel & Stay</h2>
+          <div class="grid grid-2">
+            <div>
+              <h3>Flights</h3>
+              <p>Fly into HNL. The venue is ~25 minutes by car depending on traffic.</p>
+              <h3>Hotel Block</h3>
+              <p>We’ve reserved rooms at the <strong>Venue Hotel</strong>. Use code <code>WED2026</code> for a discounted rate.</p>
+            </div>
+            <div>
+              <h3>Things to Do</h3>
+              <ul>
+                <li>Beach day at Waikīkī</li>
+                <li>Hike Diamond Head</li>
+                <li>Shave ice at Matsumoto</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="registry">
+      <div class="container">
+        <div class="card center">
+          <h2 class="section-title">Registry</h2>
+          <p>We’re grateful for your love and support. If you’d like, here are a few places we’re registered.</p>
+          <p style="margin-top: var(--space-4)">
+            <a class="btn ghost" href="#">Zola</a>
+            <a class="btn ghost" href="#" style="margin-left: 8px;">Crate & Barrel</a>
+            <a class="btn ghost" href="#" style="margin-left: 8px;">Honeyfund</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title">FAQ</h2>
+          <details>
+            <summary>What’s the dress code?</summary>
+            <p>Festive cocktail. Light fabrics recommended for warm weather.</p>
+          </details>
+          <details>
+            <summary>Are kids welcome?</summary>
+            <p>We love your little ones, but the event is adults-only.</p>
+          </details>
+          <details>
+            <summary>Will the ceremony be outdoors?</summary>
+            <p>Yes—please plan accordingly. We’ll have shade and refreshments.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+    <section id="rsvp">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title center">RSVP</h2>
+          <p class="center">RSVP by May 15, 2026. If you have dietary restrictions, include them in the notes.</p>
+
+          <!-- Netlify Forms version (native submissions, no backend needed) -->
