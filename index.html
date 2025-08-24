@@ -27,6 +27,7 @@
     }
 
     :root {
+  --header-height: 96px;           /* adjust if your header is taller/shorter */
       /* Font tokens */
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       --font-serif-alt: "Cormorant Garamond", serif;
@@ -79,11 +80,12 @@
     text-align: center;
   }
   .site-header .mast .names {
-    font-family: var(--font-script-2); /* Safira March */
-    font-weight: 400;
-    color: var(--color-primary);
-    font-size: clamp(32px, 5vw, 56px);
-    line-height: 1.05;
+  font-family: var(--font-script-2); /* Safira March */
+  font-weight: 400;
+  color: var(--color-primary);
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: 1;
+  letter-spacing: 0.08em;
   }
   .site-header .mast .dateplace {
     font-family: var(--font-script-1); /* beloved-script */
@@ -173,6 +175,9 @@
     }
 
     section { padding: var(--space-10) 0; }
+  section { scroll-margin-top: calc(var(--header-height) + 16px); }
+  /* Give Welcome a little extra top padding so the header never crowds it */
+  #welcome { padding-top: 16px; }
     .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); }
     .section-title { font-family: var(--font-body); font-size: clamp(28px, 4vw, 40px); color: var(--color-primary); margin: 0 0 var(--space-5); letter-spacing: 0.2px; }
 
@@ -221,13 +226,13 @@
 
       <nav class="topnav" aria-label="Primary">
         <ul>
-          <li><a href="#welcome">Welcome</a></li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#location">Location</a></li>
-          <li><a href="#lodging">Lodging &amp; Travel</a></li>
-          <li><a href="#rsvp">RSVP</a></li>
-          <li><a href="#honeymoon">Honeymoon Fund</a></li>
-          <li><a href="#guestbook">Guestbook</a></li>
+          <li><a href="#welcome-title">Welcome</a></li>
+          <li><a href="#events-title">Events</a></li>
+          <li><a href="#location-title">Location</a></li>
+          <li><a href="#lodging-title">Lodging &amp; Travel</a></li>
+          <li><a href="#rsvp-title">RSVP</a></li>
+          <li><a href="#honeymoon-title">Honeymoon Fund</a></li>
+          <li><a href="#guestbook-title">Guestbook</a></li>
         </ul>
       </nav>
     </div>
@@ -257,7 +262,7 @@
     <section id="welcome">
       <div class="container grid grid-2">
         <div class="card">
-          <h2 class="section-title">Welcome</h2>
+          <h2 class="section-title" id="welcome-title">Welcome</h2>
           <p>We met in New York, bonded over key lime pie, and now we’re celebrating with you in Honolulu. We’re so excited to share this day with our favorite people.</p>
           <ul class="clean-list" style="margin-top: var(--space-5);">
             <li><span class="chip">First Date</span> Red Hook Lobster Pound</li>
@@ -293,7 +298,7 @@
     <section id="events">
       <div class="container">
         <div class="card">
-          <h2 class="section-title">Events</h2>
+          <h2 class="section-title" id="events-title">Events</h2>
           <div class="grid grid-3">
             <div>
               <h3>Ceremony</h3>
@@ -319,7 +324,7 @@
     <section id="location">
       <div class="container grid grid-2">
         <div class="card">
-          <h2 class="section-title">Location</h2>
+          <h2 class="section-title" id="location-title">Location</h2>
           <p>Lanikūhonua Cultural Institute<br> Ko Olina, Oʻahu, HI</p>
           <p><a href="https://goo.gl/maps/H3b49Eq1kLoQnSFL8" target="_blank" rel="noopener">Open in Google Maps</a></p>
           <p class="muted">Parking available on-site. Ceremony will be outdoors—please plan footwear accordingly.</p>
@@ -334,7 +339,7 @@
     <section id="lodging">
       <div class="container">
         <div class="card">
-          <h2 class="section-title">Lodging & Travel</h2>
+          <h2 class="section-title" id="lodging-title">Lodging & Travel</h2>
           <div class="grid grid-2">
             <div>
               <h3>Flights</h3>
@@ -395,7 +400,7 @@
     <section id="rsvp">
       <div class="container">
         <div class="card">
-          <h2 class="section-title center">RSVP</h2>
+          <h2 class="section-title center" id="rsvp-title">RSVP</h2>
           <p class="center">RSVP by May 15, 2026. If you have dietary restrictions, include them in the notes.</p>
 
           <!-- Netlify Forms version (native submissions, no backend needed) -->
@@ -433,7 +438,7 @@
     <section id="honeymoon">
       <div class="container">
         <div class="card center">
-          <h2 class="section-title">Honeymoon Fund</h2>
+          <h2 class="section-title" id="honeymoon-title">Honeymoon Fund</h2>
           <p>We can’t wait to celebrate with you! If you’d like to contribute to our honeymoon, thank you so much.</p>
           <!-- Replace with your real link(s) later -->
           <p style="margin-top: var(--space-4)">
@@ -447,7 +452,7 @@
     <section id="guestbook">
       <div class="container">
         <div class="card">
-          <h2 class="section-title">Guestbook</h2>
+          <h2 class="section-title" id="guestbook-title">Guestbook</h2>
           <p class="muted">Leave a note for Stephen &amp; Daniel:</p>
           <!-- Placeholder form: wire to Netlify Forms later if you want -->
           <form name="guestbook" method="POST" data-netlify="true">
