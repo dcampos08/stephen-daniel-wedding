@@ -11,7 +11,6 @@
   <meta property="og:image" content="assets/img/og-cover.jpg" />
   <meta name="theme-color" content="#7a6a56">
 
-  <!-- Default web fonts for quick start. Swap these for self-hosted fonts when ready. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -58,14 +57,9 @@
     a:hover { text-decoration: underline; }
     .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
 
-    .skip-link {
-      position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
-    }
-    .skip-link:focus { left: 16px; top: 16px; width: auto; height: auto; background: #fff; padding: 8px 12px; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
-
     header.site-header { position: sticky; top: 0; z-index: 8; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border); }
     .nav { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) 0; }
-    .brand { font-family: var(--font-display); font-weight: 600; font-size: 24px; color: var(--color-primary); letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 10px; }
+    .brand { font-family: var(--font-display); font-weight: 600; font-size: 24px; color: var(--color-primary); display: inline-flex; align-items: center; gap: 10px; }
     .brand img { height: 60px; width: auto; display: block; }
     .nav ul { display: flex; gap: var(--space-5); list-style: none; margin: 0; padding: 0; }
     .nav a { font-weight: 600; }
@@ -88,7 +82,7 @@
       backdrop-filter: blur(6px); background: rgba(0,0,0,0.2);
       border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.35);
     }
-    .hero h1 { font-family: var(--font-display); font-size: clamp(40px, 6vw, 64px); margin: 0 0 var(--space-3); letter-spacing: 0.5px; }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(40px, 6vw, 64px); margin: 0 0 var(--space-3); }
     .hero p { margin: 0; font-size: clamp(16px, 2.5vw, 20px); opacity: 0.95; }
 
     section { padding: var(--space-10) 0; }
@@ -106,15 +100,12 @@
     .clean-list li { padding: 8px 0; border-bottom: 1px dashed var(--color-border); }
 
     footer { border-top: 1px solid var(--color-border); background: #fff; padding: var(--space-8) 0; color: var(--color-muted); }
-
     .center { text-align: center; }
     .muted { color: var(--color-muted); }
     .chip { display: inline-block; background: #f5efe7; border: 1px solid var(--color-border); border-radius: 999px; padding: 4px 10px; font-size: 12px; }
   </style>
 </head>
 <body id="top">
-  <a class="skip-link" href="#main">Skip to content</a>
-
   <header class="site-header">
     <div class="container nav" id="siteNav">
       <a class="brand" href="#top" aria-label="Home — Stephen & Daniel"><img src="assets/img/logo.png" alt="Stephen & Daniel logo"></a>
@@ -148,6 +139,51 @@
   </section>
 
   <main id="main">
+    <!-- Our Story -->
+    <section id="story">
+      <div class="container grid grid-2">
+        <div class="card">
+          <h2 class="section-title">Our Story</h2>
+          <p>We met in New York, bonded over key lime pie, and now we’re celebrating with you in Honolulu. We’re so excited to share this day with our favorite people.</p>
+          <ul class="clean-list" style="margin-top: var(--space-5);">
+            <li><span class="chip">First Date</span> Red Hook Lobster Pound</li>
+            <li><span class="chip">Engaged</span> Central Park — Bow Bridge</li>
+            <li><span class="chip">Now</span> Cat parents & city wanderers</li>
+          </ul>
+        </div>
+        <div class="card">
+          <img src="assets/img/couple.jpg" alt="Stephen and Daniel — photo" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Schedule -->
+    <section id="schedule">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title">Schedule</h2>
+          <div class="grid grid-3">
+            <div>
+              <h3>Ceremony</h3>
+              <p class="muted">3:00 PM — The Lawn</p>
+              <p>Join us for an outdoor ceremony overlooking the ocean.</p>
+            </div>
+            <div>
+              <h3>Cocktail Hour</h3>
+              <p class="muted">4:00 PM — Garden Terrace</p>
+              <p>Drinks, bites, and live music while we take photos.</p>
+            </div>
+            <div>
+              <h3>Reception</h3>
+              <p class="muted">5:30 PM — Ballroom</p>
+              <p>Dinner, speeches, and dancing. Festive attire encouraged.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Venue -->
     <section id="venue">
       <div class="container grid grid-2">
         <div class="card">
