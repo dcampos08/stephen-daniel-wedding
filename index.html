@@ -72,7 +72,8 @@
     /* Header & Nav */
     header.site-header { position: sticky; top: 0; z-index: 8; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border); }
     .nav { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) 0; }
-    .brand { font-family: var(--font-display); font-weight: 600; font-size: 24px; color: var(--color-primary); letter-spacing: 0.5px; }
+    .brand { font-family: var(--font-display); font-weight: 600; font-size: 24px; color: var(--color-primary); letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 10px; }
+    .brand img { height: 28px; width: auto; display: block; }
     .nav ul { display: flex; gap: var(--space-5); list-style: none; margin: 0; padding: 0; }
     .nav a { font-weight: 600; }
 
@@ -136,12 +137,12 @@
     */
   </style>
 </head>
-<body>
+<body id="top">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
     <div class="container nav" id="siteNav">
-      <div class="brand">D & S</div>
+      <a class="brand" href="#top" aria-label="Home — Stephen & Daniel"><img src="assets/img/logo.svg" alt="Stephen & Daniel logo"></a>
       <button class="menu-toggle" aria-label="Toggle menu" onclick="document.getElementById('siteNav').classList.toggle('open')">☰</button>
       <ul>
         <li><a href="#story">Our Story</a></li>
@@ -185,7 +186,8 @@
           </ul>
         </div>
         <div class="card">
-          <img src="assets/img/story-collage.jpg" alt="Collage of the couple" />
+          <!-- Replace the image file at assets/img/couple.jpg with your own photo; keep the filename for easy swaps -->
+          <img src="assets/img/couple.jpg" alt="Stephen and Daniel — photo" />
         </div>
       </div>
     </section>
@@ -225,7 +227,8 @@
           </p>
         </div>
         <div class="card">
-          <img src="assets/img/map-static.jpg" alt="Map showing the venue location" />
+          <!-- Replace this file with your map export of Lanikuhonua; recommended 1600×1000px WebP/JPG -->
+          <img src="assets/img/venue-map.jpg" alt="Map to Lanikuhonua Cultural Institute" />
         </div>
       </div>
     </section>
