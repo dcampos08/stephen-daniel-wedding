@@ -522,23 +522,37 @@
       const target = document.getElementById('welcome-card');
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    if (btn) {
-      btn.addEventListener('click', function(e) { e.preventDefault(); enter(); });
-      btn.addEventListener('keydown', function(e) {
+    (function () {
+      const btn = document.getElementById('enterSiteBtn');
+
+      function enter() {
+        document.body.classList.add('entered');
+
+        const target = document.getElementById('welcome-card');
+        const header = document.querySelector('.site-header');
+
+        if (!target) return;
+
+        // exact top position minus sticky header height and a small gap
+        const headerH = header ? header.offsetHeight : 0;
+        const gap = 16; // comfy extra space
+        const targetTop = target.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
+
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      }
+
+      if (btn) {
+        btn.addEventListener('click', (e) => { e.preventDefault(); enter(); });
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
+        });
+      }
+
+      // Also allow clicking anywhere on the hero overlay/title to enter
+      const hero = document.getElementById('banner') || document.querySelector('.hero');
+      if (hero) hero.addEventListener('click', (e) => { if (!e.target.closest('a')) enter(); });
+      const card = hero ? hero.querySelector('.title-card') : null;
+      if (card) card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
       });
-    }
-
-    // Also allow clicking anywhere on the overlay/title to enter
-    const hero = document.getElementById('banner') || document.getElementById('welcome') || document.querySelector('.hero');
-    const card = hero ? hero.querySelector('.title-card') : null;
-    if (hero) hero.addEventListener('click', (e) => {
-      if (!e.target.closest('a')) enter();
-    });
-    if (card) card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
-    });
-  })();
-  </script>
-</body>
-</html>
+    })();
