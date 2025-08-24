@@ -16,32 +16,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
 
-
   <style>
-      /* Local font: Safira March */
-      @font-face {
-        font-family: "Safira March";
-        src: url("assets/fonts/SafiraMarch.ttf") format("truetype");
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
+    /* Local font: Safira March */
+    @font-face {
+      font-family: "Safira March";
+      src: url("assets/fonts/SafiraMarch.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       /* Font tokens */
-      --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;   /* clean, legible */
-      --font-serif-alt: "Cormorant Garamond", serif;                                                           /* fallback serif if needed */
-      --font-script-1: "beloved-script", cursive;                                                              /* flowing script (gold accents) */
-      --font-script-2: "Safira March", cursive;                                                                /* elegant script (names) */
+      --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      --font-serif-alt: "Cormorant Garamond", serif;
+      --font-script-1: "beloved-script", cursive;  /* flowing script (gold accents) */
+      --font-script-2: "Safira March", cursive;    /* elegant script (names) */
+      --font-display: "Safira March", cursive;     /* used by .brand etc. */
 
-      --color-bg: #FFFDF8;     /* cream background (like the card stock) */
-      --color-surface: #FFFFFF; /* white for cards/sections */
-      --color-text: #1F1F1F;   /* deep gray for body text */
-      --color-muted: #6A6A6A;  /* secondary text */
-
-      --color-primary: #1B6A63; /* teal — for headings, accents */
-      --color-accent:  #C9A64C; /* gold — for buttons, script lines, highlights */
-      --color-border: #E8E1D8;  /* subtle dividers */
-
+      /* Colors */
+      --color-bg: #FFFDF8;
+      --color-surface: #FFFFFF;
+      --color-text: #1F1F1F;
+      --color-muted: #6A6A6A;
+      --color-primary: #1B6A63; /* teal */
+      --color-accent:  #C9A64C; /* gold */
+      --color-border: #E8E1D8;
 
       --radius-lg: 20px;
       --radius-sm: 10px;
@@ -86,8 +86,17 @@
       .menu-toggle { display: inline-block; }
     }
 
-    .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--color-border); }
-    .hero picture, .hero img { width: 100%; height: clamp(50vh, 65vh, 720px); object-fit: cover; }
+    /* Hide header and main site until entered */
+    .site-header, #main { display: none; }
+    body.entered .site-header,
+    body.entered #main { display: block; }
+
+    /* Optional: lock scrolling on the welcome screen only */
+    body:not(.entered) { overflow: hidden; height: 100vh; }
+
+    /* Fullscreen hero video (welcome) */
+    .hero { position: relative; height: 100vh; border-bottom: 1px solid var(--color-border); overflow: hidden; }
+    .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .hero .overlay {
       position: absolute; inset: 0; display: grid; place-items: center;
       background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
@@ -97,17 +106,42 @@
       backdrop-filter: blur(6px); background: rgba(0,0,0,0.2);
       border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.35);
     }
+
+    /* Headline + Subline on the welcome screen */
     .hero h1 {
-      font-family: "Safira March", cursive;
+      font-family: var(--font-script-2); /* Safira March */
       font-weight: 400;
-      font-size: clamp(48px, 8vw, 80px); /* make sure it's clearly larger */
-      margin: 0 0 0.2em; /* tighten space below */
+      font-size: clamp(48px, 8vw, 80px);
+      margin: 0 0 0.1em;       /* tight spacing below the names */
+      line-height: 1.05;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
     }
-    .hero p { margin: 0; font-size: clamp(16px, 2.5vw, 20px); opacity: 0.95; }
+
+    /* IMPORTANT: keep generic hero <p> small, but exclude the subline */
+    .hero p:not(.hero-subline) {
+      margin: 0;
+      font-size: clamp(16px, 2.5vw, 20px);
+      opacity: 0.95;
+      font-family: var(--font-script-1);
+      color: var(--color-accent);
+      letter-spacing: 0.2px;
+    }
+
+    /* Bigger, bolder subline — wins via specificity and order */
+    .hero .hero-subline {
+      font-family: var(--font-script-1);
+      color: var(--color-accent);
+      font-weight: 700;
+      font-size: clamp(32px, 5vw, 48px);
+      letter-spacing: 0.3px;
+      margin: 0.05em 0 0;   /* very tight to the names */
+      line-height: 1.1;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    }
 
     section { padding: var(--space-10) 0; }
     .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); }
-    .section-title { font-family: var(--font-display); font-size: clamp(28px, 4vw, 40px); color: var(--color-primary); margin: 0 0 var(--space-5); }
+    .section-title { font-family: var(--font-body); font-size: clamp(28px, 4vw, 40px); color: var(--color-primary); margin: 0 0 var(--space-5); letter-spacing: 0.2px; }
 
     .grid { display: grid; gap: var(--space-6); }
     @media (min-width: 820px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: repeat(3, 1fr); } }
@@ -118,106 +152,30 @@
 
     .clean-list { list-style: none; padding: 0; margin: 0; }
     .clean-list li { padding: 8px 0; border-bottom: 1px dashed var(--color-border); }
-
     footer { border-top: 1px solid var(--color-border); background: #fff; padding: var(--space-8) 0; color: var(--color-muted); }
     .center { text-align: center; }
     .muted { color: var(--color-muted); }
     .chip { display: inline-block; background: #f5efe7; border: 1px solid var(--color-border); border-radius: 999px; padding: 4px 10px; font-size: 12px; }
-  
-  /* --- Carousel --- */
+
+    /* --- Carousel --- */
     .carousel { position: relative; overflow: hidden; border-radius: var(--radius-lg); }
     .carousel-track { display: flex; transition: transform 350ms ease; }
     .carousel-slide { min-width: 100%; }
     .carousel img { width: 100%; height: auto; display: block; }
-
     .carousel-btn {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    background: rgba(0,0,0,0.45); color: #fff; border: 0; width: 36px; height: 36px;
-    border-radius: 999px; display: grid; place-items: center; cursor: pointer;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.45); color: #fff; border: 0; width: 36px; height: 36px;
+      border-radius: 999px; display: grid; place-items: center; cursor: pointer;
     }
     .carousel-btn:hover { background: rgba(0,0,0,0.6); }
     .carousel-btn.prev { left: 10px; }
     .carousel-btn.next { right: 10px; }
-
     .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: var(--space-4); }
     .carousel-dots .dot {
-    width: 10px; height: 10px; border-radius: 999px; border: 1px solid var(--color-border);
-    background: #fff; text-indent: -9999px; overflow: hidden; cursor: pointer;
+      width: 10px; height: 10px; border-radius: 999px; border: 1px solid var(--color-border);
+      background: #fff; text-indent: -9999px; overflow: hidden; cursor: pointer;
     }
     .carousel-dots .dot.is-active { background: var(--color-accent); border-color: var(--color-accent); }
-
-    /* Hide header and main site until entered */
-    .site-header, #main {
-      display: none;
-    }
-
-    /* Show them once we add a .entered class to body */
-    body.entered .site-header,
-    body.entered #main {
-      display: block;
-    }
-
-    /* Fullscreen hero video */
-    .hero { position: relative; height: 100vh; border-bottom: 1px solid var(--color-border); }
-    .hero-video {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;  /* fills without squishing */
-    }
-    .hero .overlay { position: absolute; inset: 0; display: grid; place-items: center;
-      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
-    }
-
-    /* Body & UI (nav, buttons, inputs) */
-    body, .nav a, .btn, input, select, textarea {
-    font-family: var(--font-body);
-    }
-
-    /* Section titles: keep clean like the stationery’s supporting text */
-    .section-title {
-    font-family: var(--font-body);
-    letter-spacing: 0.2px;
-    }
-
-    /* HERO names — use Safira March (big, elegant) */
-    .hero h1 {
-    font-family: "Safira March", cursive;
-    font-weight: 400;
-    }
-
-    /* HERO subline — flowing script + your gold accent */
-    .hero p {
-    font-family: var(--font-script-1);
-    color: var(--color-accent);   /* already defined in your tokens */
-    letter-spacing: 0.2px;
-    }
-
-
-    .hero-subline {
-      font-family: var(--font-script-1);
-      color: var(--color-accent);
-      font-weight: 700;
-      font-size: clamp(28px, 4vw, 40px); /* ~twice as large as before */
-      letter-spacing: 0.3px;
-      margin: 0;
-    }
-
-    /* Small uppercase meta (times/locations) to echo the card */
-    small, .muted, .chip, #schedule .muted {
-    font-family: var(--font-body);
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    }
-/* Bigger, bolder subline under the names */
-.hero-subline {
-  font-family: var(--font-script-1);
-  color: var(--color-accent);
-  font-weight: 700;
-  font-size: clamp(32px, 5vw, 48px); /* noticeably larger */
-  letter-spacing: 0.5px;
-  margin: 0.4em 0 0; /* add some space below the names */
-}
   </style>
 </head>
 <body id="top">
@@ -236,25 +194,24 @@
     </div>
   </header>
 
-    <section class="hero" aria-label="Hero video welcome" id="welcome">
-    <video class="hero-video" autoplay muted playsinline loop
-            poster="assets/img/hero-poster.jpg">
-        <source src="assets/video/oahu.mp4" type="video/mp4" />
-        <!-- <source src="assets/video/oahu.webm" type="video/webm" /> -->
-        Your browser does not support the video tag.
+  <!-- Welcome video -->
+  <section class="hero" aria-label="Hero video welcome" id="welcome">
+    <video class="hero-video" autoplay muted playsinline loop poster="assets/img/hero-poster.jpg">
+      <source src="assets/video/oahu.mp4" type="video/mp4" />
+      <!-- <source src="assets/video/oahu.webm" type="video/webm" /> -->
+      Your browser does not support the video tag.
     </video>
 
     <div class="overlay">
-        <div class="title-card">
-          <h1>Stephen &amp; Daniel</h1>
-          <p class="hero-subline">Honolulu, HI — July 10, 2026</p>
-          <div style="margin-top: var(--space-4)">
-            <a href="#main" class="btn primary" id="enterSiteBtn" role="button" tabindex="0" aria-label="Enter site">Enter Site</a>
-          </div>
+      <div class="title-card">
+        <h1>Stephen &amp; Daniel</h1>
+        <p class="hero-subline">Honolulu, HI — July 10, 2026</p>
+        <div style="margin-top: var(--space-4)">
+          <a href="#main" class="btn primary" id="enterSiteBtn" role="button" tabindex="0" aria-label="Enter site">Enter Site</a>
         </div>
+      </div>
     </div>
-    </section>
-
+  </section>
 
   <main id="main">
     <!-- Our Story -->
@@ -285,8 +242,8 @@
             <button class="carousel-btn next" aria-label="Next photo">›</button>
 
             <div class="carousel-dots" role="tablist" aria-label="Choose slide">
-                <button class="dot is-active" role="tab" aria-selected="true" aria-controls="slide-1">1</button>
-                <button class="dot" role="tab" aria-selected="false" aria-controls="slide-2">2</button>
+              <button class="dot is-active" role="tab" aria-selected="true" aria-controls="slide-1">1</button>
+              <button class="dot" role="tab" aria-selected="false" aria-controls="slide-2">2</button>
             </div>
           </div>
         </div>
@@ -333,7 +290,8 @@
         </div>
       </div>
     </section>
-        <!-- Travel -->
+
+    <!-- Travel -->
     <section id="travel">
       <div class="container">
         <div class="card">
@@ -432,10 +390,11 @@
       </div>
     </section>
   </main>
+
   <script>
     (function(){
-    const carousels = document.querySelectorAll('.carousel');
-    carousels.forEach((carousel) => {
+      const carousels = document.querySelectorAll('.carousel');
+      carousels.forEach((carousel) => {
         const track = carousel.querySelector('.carousel-track');
         const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
         const prev = carousel.querySelector('.carousel-btn.prev');
@@ -444,56 +403,50 @@
         let index = 0;
 
         function update() {
-        track.style.transform = `translateX(-${index * 100}%)`;
-        slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
-        dots.forEach((d, i) => {
+          track.style.transform = `translateX(-${index * 100}%)`;
+          slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+          dots.forEach((d, i) => {
             d.classList.toggle('is-active', i === index);
             d.setAttribute('aria-selected', i === index ? 'true' : 'false');
-        });
+          });
         }
 
-        prev.addEventListener('click', () => {
-        index = (index - 1 + slides.length) % slides.length;
-        update();
-        });
-        next.addEventListener('click', () => {
-        index = (index + 1) % slides.length;
-        update();
-        });
+        prev.addEventListener('click', () => { index = (index - 1 + slides.length) % slides.length; update(); });
+        next.addEventListener('click', () => { index = (index + 1) % slides.length; update(); });
         dots.forEach((dot, i) => dot.addEventListener('click', () => { index = i; update(); }));
 
         // keyboard support
         carousel.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') { prev.click(); }
-        if (e.key === 'ArrowRight') { next.click(); }
+          if (e.key === 'ArrowLeft') { prev.click(); }
+          if (e.key === 'ArrowRight') { next.click(); }
         });
 
         update();
-    });
-    })();
-</script>
-
-<script>
-  (function () {
-    const btn = document.getElementById('enterSiteBtn');
-    function enter() {
-      document.body.classList.add('entered');
-      const main = document.getElementById('main');
-      if (main) main.scrollIntoView({ behavior: 'smooth' });
-    }
-    if (btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        enter();
       });
-      btn.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const btn = document.getElementById('enterSiteBtn');
+      function enter() {
+        document.body.classList.add('entered');
+        const main = document.getElementById('main');
+        if (main) main.scrollIntoView({ behavior: 'smooth' });
+      }
+      if (btn) {
+        btn.addEventListener('click', function(e) {
           e.preventDefault();
           enter();
-        }
-      });
-    }
-  })();
-</script>
+        });
+        btn.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            enter();
+          }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
