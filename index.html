@@ -226,18 +226,42 @@
         border-radius: var(--radius-sm);
       }
 
+        /* 1) Make the two Welcome cards equal height */
+        #welcome .grid {
+          align-items: stretch;            /* grid items match row height */
+        }
+        #welcome .card {
+          height: 100%;                    /* each card fills the row height */
+        }
+
+        /* 2) Turn the photo card into a tidy crop window */
+        #welcome-photo {
+          display: flex;                   /* lets the img stretch nicely */
+          padding: 0;                      /* remove inner padding so image touches edges */
+          overflow: hidden;                /* hide the extra bottom */
+        }
+
+        /* 3) Gentle bottom-only crop (favor the top) */
+        #welcome-photo img {
+          width: 100%;
+          height: 100%;                    /* fill the card’s height */
+          object-fit: cover;               /* crop as needed without distortion */
+          object-position: top center;     /* keep the top; trim from the bottom */
+          border-radius: var(--radius-lg); /* match the card’s rounded corners */
+        }
+
       #welcome-photo {
-      height: 350px;       /* adjust until it looks right */
-      overflow: hidden;    /* hides the extra bottom part */
-      border-radius: var(--radius-sm);
+        max-height: 95%;     /* show 95% of the image, hide the last 5% */
+        overflow: hidden;
+        border-radius: var(--radius-sm);
       }
 
       #welcome-photo img {
         width: 100%;
         height: auto;
         display: block;
-        object-fit: cover;   /* keeps it nicely cropped */
-        object-position: top center; /* crop from the bottom only */
+        object-fit: cover;
+        object-position: top center; /* trims only from the bottom */
       }
 
   </style>
