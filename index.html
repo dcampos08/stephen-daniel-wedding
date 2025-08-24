@@ -226,6 +226,13 @@
         border-radius: var(--radius-sm);
     }
 
+    /* Crop overly tall images to a tidy rectangle */
+      #welcome-photo img {
+      aspect-ratio: 4 / 3;     /* try 3/4 or 16/9 if you prefer */
+      object-fit: cover;
+}
+
+
   </style>
 </head>
 <body id="top">
