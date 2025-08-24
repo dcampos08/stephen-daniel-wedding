@@ -197,6 +197,104 @@
         </div>
       </div>
     </section>
+        <!-- Travel -->
+    <section id="travel">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title">Travel & Stay</h2>
+          <div class="grid grid-2">
+            <div>
+              <h3>Flights</h3>
+              <p>Fly into HNL. The venue is ~25 minutes by car depending on traffic.</p>
+              <h3>Hotel Block</h3>
+              <p>We’ve reserved rooms at the <strong>Venue Hotel</strong>. Use code <code>WED2026</code> for a discounted rate.</p>
+            </div>
+            <div>
+              <h3>Things to Do</h3>
+              <ul>
+                <li>Beach day at Waikīkī</li>
+                <li>Hike Diamond Head</li>
+                <li>Shave ice at Matsumoto</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Registry -->
+    <section id="registry">
+      <div class="container">
+        <div class="card center">
+          <h2 class="section-title">Registry</h2>
+          <p>We’re grateful for your love and support. If you’d like, here are a few places we’re registered.</p>
+          <p style="margin-top: var(--space-4)">
+            <a class="btn ghost" href="#">Zola</a>
+            <a class="btn ghost" href="#" style="margin-left: 8px;">Crate & Barrel</a>
+            <a class="btn ghost" href="#" style="margin-left: 8px;">Honeyfund</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title">FAQ</h2>
+          <details>
+            <summary>What’s the dress code?</summary>
+            <p>Festive cocktail. Light fabrics recommended for warm weather.</p>
+          </details>
+          <details>
+            <summary>Are kids welcome?</summary>
+            <p>We love your little ones, but the event is adults-only.</p>
+          </details>
+          <details>
+            <summary>Will the ceremony be outdoors?</summary>
+            <p>Yes—please plan accordingly. We’ll have shade and refreshments.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP -->
+    <section id="rsvp">
+      <div class="container">
+        <div class="card">
+          <h2 class="section-title center">RSVP</h2>
+          <p class="center">RSVP by May 15, 2026. If you have dietary restrictions, include them in the notes.</p>
+
+          <!-- Netlify Forms version (native submissions, no backend needed) -->
+          <form name="rsvp" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="rsvp" />
+            <p>
+              <label>Your Name: <br><input type="text" name="name" required></label>
+            </p>
+            <p>
+              <label>Email: <br><input type="email" name="email" required></label>
+            </p>
+            <p>
+              <label>Will you attend?<br>
+                <select name="attendance" required>
+                  <option value="">Select…</option>
+                  <option value="yes">Yes, can't wait!</option>
+                  <option value="no">Sorry, can't make it</option>
+                </select>
+              </label>
+            </p>
+            <p>
+              <label>Notes (dietary restrictions, plus-ones, etc.):<br>
+                <textarea name="notes" rows="4"></textarea>
+              </label>
+            </p>
+            <p class="center">
+              <button type="submit" class="btn primary">Submit RSVP</button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
 </body>
 </html>
