@@ -67,18 +67,16 @@
       font-size: 16px;
       position: relative;              
     }
-    /* Subtle site-wide botanical background layer */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;                 /* cover the entire viewport */
-      z-index: 0;              /* sit behind everything */
-      background-image: url("assets/img/bg-botanical.png");
-      background-repeat: repeat;          /* tile softly down the page */
-      background-size: 1200px auto;       /* scale of the motif (adjust to taste) */
+    /* Botanical background applied directly (simpler than ::before) */
+    html {
+      /* cache-busting query (bump the v= number if you update the image) */
+      --bg-url: url("assets/img/bg-botanical.png?v=1");
+      background-color: var(--color-bg);     /* keep the cream */
+      background-image: var(--bg-url);
+      background-repeat: repeat;             /* tile softly */
+      background-size: 1200px auto;          /* adjust motif scale */
       background-position: top center;
-      opacity: 0.16;                      /* overall subtlety control */
-      pointer-events: none;               /* never intercept clicks */
+      background-attachment: fixed;          /* stays put while scrolling */
     }
 
     /* Optional: slightly lighter on small screens */
