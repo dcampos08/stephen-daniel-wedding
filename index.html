@@ -60,28 +60,15 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      background: var(--color-bg);
+      /* cream + botanical image in one line */
+      background: var(--color-bg) url("assets/img/bg-botanical.png?v=2")
+                  top center / 800px auto repeat fixed;
+
       color: var(--color-text);
       font-family: var(--font-body);
       line-height: 1.65;
       font-size: 16px;
-      position: relative;              
-    }
-    /* Botanical background applied directly (simpler than ::before) */
-    html {
-      /* cache-busting query (bump the v= number if you update the image) */
-      --bg-url: url("assets/img/bg-botanical.png?v=1");
-      background-color: var(--color-bg);     /* keep the cream */
-      background-image: var(--bg-url);
-      background-repeat: repeat;             /* tile softly */
-      background-size: 800px auto;          /* adjust motif scale */
-      background-position: top center;
-      background-attachment: fixed;          /* stays put while scrolling */
-    }
-
-    /* Optional: slightly lighter on small screens */
-    @media (max-width: 820px) {
-      body::before { opacity: 0.12; }
+      position: relative;
     }
 
     img { max-width: 100%; display: block; }
