@@ -65,13 +65,14 @@
       font-family: var(--font-body);
       line-height: 1.65;
       font-size: 16px;
+      position: relative;              
     }
     /* Subtle site-wide botanical background layer */
     body::before {
       content: "";
       position: fixed;
       inset: 0;                 /* cover the entire viewport */
-      z-index: -1;              /* sit behind everything */
+      z-index: 0;              /* sit behind everything */
       background-image: url("assets/img/bg-botanical.png");
       background-repeat: repeat;          /* tile softly down the page */
       background-size: 1200px auto;       /* scale of the motif (adjust to taste) */
@@ -213,6 +214,10 @@
       height: auto;
       border-radius: var(--radius-sm);
     }
+    .site-header, .hero, #main { 
+      position: relative; 
+      z-index: 1; 
+    }  
   </style>
 </head>
 <body id="top">
