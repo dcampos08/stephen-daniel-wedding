@@ -388,10 +388,11 @@
 
 <script>
   (function () {
-    const btn = document.getElementById('enterSiteBtn');
+    const btn  = document.getElementById('enterSiteBtn');
     const hero = document.getElementById('banner');
     const root = document.documentElement;
 
+    // keep a live CSS var of the header height (helps when it wraps on smaller screens)
     function setHeaderHeightVar() {
       const header = document.querySelector('.site-header');
       if (header) root.style.setProperty('--header-height', header.offsetHeight + 'px');
@@ -399,42 +400,47 @@
     window.addEventListener('load', setHeaderHeightVar);
     window.addEventListener('resize', setHeaderHeightVar);
 
-    function enter() {
-      document.body.classList.add('entered');
-      const target = document.getElementById('welcome-card');
-      if (!target) return;
+    // shared smooth-scroll function (accounts for sticky header)
+    function smoothScrollTo(el) {
+      if (!el) return;
       const header = document.querySelector('.site-header');
       const headerH = header ? header.offsetHeight : 0;
-      const gap = 16;
-      const top = target.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
+      const gap = 16; // comfy space below the header
+      const top = el.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
       window.scrollTo({ top, behavior: 'smooth' });
+    }
+
+    // "Enter Site" behavior
+    function enter() {
+      document.body.classList.add('entered');
+      smoothScrollTo(document.getElementById('welcome-card'));
     }
 
     if (btn) {
       btn.addEventListener('click', (e) => { e.preventDefault(); enter(); });
-    }
-
-    if (hero) {
-      hero.addEventListener('click', (e) => {
-        if (!e.target.closest('a')) enter();
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
       });
     }
 
-    // Smooth scroll for nav Welcome link
-    const welcomeLink = document.querySelector('.nav-link[href="#welcome-card"]');
-    if (welcomeLink) {
-      welcomeLink.addEventListener('click', (e) => {
+    // Clicking the hero (except actual links) also enters
+    if (hero) hero.addEventListener('click', (e) => { if (!e.target.closest('a')) enter(); });
+
+    // ALL top-nav links: smooth scroll with header offset
+    document.querySelectorAll('nav.topnav a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const hash = a.getAttribute('href');
+        if (!hash || hash.length < 2) return;
+        const target = document.getElementById(hash.slice(1));
+        if (!target) return; // let browser handle if we didn't find it
         e.preventDefault();
-        const target = document.getElementById('welcome-card');
-        if (!target) return;
-        const header = document.querySelector('.site-header');
-        const headerH = header ? header.offsetHeight : 0;
-        const gap = 16;
-        const top = target.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
-        window.scrollTo({ top, behavior: 'smooth' });
+        // ensure site is "entered" before scrolling (just in case)
+        document.body.classList.add('entered');
+        smoothScrollTo(target);
       });
-    }
+    });
   })();
 </script>
+
 </body>
 </html>
