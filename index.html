@@ -205,13 +205,13 @@
       </div>
       <nav class="topnav" aria-label="Primary">
         <ul>
-          <li><a href="#welcome-card">Welcome</a></li>
-          <li><a href="#events-title">Events</a></li>
-          <li><a href="#location-title">Location</a></li>
-          <li><a href="#lodging-title">Lodging &amp; Travel</a></li>
-          <li><a href="#rsvp-title">RSVP</a></li>
-          <li><a href="#honeymoon-title">Honeymoon Fund</a></li>
-          <li><a href="#guestbook-title">Guestbook</a></li>
+          <li><a href="#welcome-card" class="nav-link">Welcome</a></li>
+          <li><a href="#events-title" class="nav-link">Events</a></li>
+          <li><a href="#location-title" class="nav-link">Location</a></li>
+          <li><a href="#lodging-title" class="nav-link">Lodging &amp; Travel</a></li>
+          <li><a href="#rsvp-title" class="nav-link">RSVP</a></li>
+          <li><a href="#honeymoon-title" class="nav-link">Honeymoon Fund</a></li>
+          <li><a href="#guestbook-title" class="nav-link">Guestbook</a></li>
         </ul>
       </nav>
     </div>
@@ -386,7 +386,7 @@
     </section>
   </main>
 
-  <script>
+<script>
   (function () {
     const btn = document.getElementById('enterSiteBtn');
     const hero = document.getElementById('banner');
@@ -413,8 +413,28 @@
     if (btn) {
       btn.addEventListener('click', (e) => { e.preventDefault(); enter(); });
     }
-    if (hero) hero.addEventListener('click', (e) => { if (!e.target.closest('a')) enter(); });
+
+    if (hero) {
+      hero.addEventListener('click', (e) => {
+        if (!e.target.closest('a')) enter();
+      });
+    }
+
+    // Smooth scroll for nav Welcome link
+    const welcomeLink = document.querySelector('.nav-link[href="#welcome-card"]');
+    if (welcomeLink) {
+      welcomeLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById('welcome-card');
+        if (!target) return;
+        const header = document.querySelector('.site-header');
+        const headerH = header ? header.offsetHeight : 0;
+        const gap = 16;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    }
   })();
-  </script>
+</script>
 </body>
 </html>
