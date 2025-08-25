@@ -410,7 +410,7 @@
       window.scrollTo({ top, behavior: 'smooth' });
     }
 
-    // "Enter Site" behavior
+    // "Enter Site" behavior -> scroll to the card itself
     function enter() {
       document.body.classList.add('entered');
       smoothScrollTo(document.getElementById('welcome-card'));
@@ -426,17 +426,21 @@
     // Clicking the hero (except actual links) also enters
     if (hero) hero.addEventListener('click', (e) => { if (!e.target.closest('a')) enter(); });
 
-    // ALL top-nav links: smooth scroll with header offset
+    // ALL top-nav links: target the header's containing .card (falls back to the header itself)
     document.querySelectorAll('nav.topnav a[href^="#"]').forEach((a) => {
       a.addEventListener('click', (e) => {
         const hash = a.getAttribute('href');
         if (!hash || hash.length < 2) return;
-        const target = document.getElementById(hash.slice(1));
-        if (!target) return; // let browser handle if we didn't find it
+        const rawTarget = document.getElementById(hash.slice(1));
+        if (!rawTarget) return; // let browser handle if not found
         e.preventDefault();
+
         // ensure site is "entered" before scrolling (just in case)
         document.body.classList.add('entered');
-        smoothScrollTo(target);
+
+        // prefer the closest card wrapper; otherwise use the header element itself
+        const cardTarget = rawTarget.closest('.card') || rawTarget;
+        smoothScrollTo(cardTarget);
       });
     });
   })();
