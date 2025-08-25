@@ -66,6 +66,25 @@
       line-height: 1.65;
       font-size: 16px;
     }
+    /* Subtle site-wide botanical background layer */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;                 /* cover the entire viewport */
+      z-index: -1;              /* sit behind everything */
+      background-image: url("assets/img/bg-botanical.png");
+      background-repeat: repeat;          /* tile softly down the page */
+      background-size: 1200px auto;       /* scale of the motif (adjust to taste) */
+      background-position: top center;
+      opacity: 0.16;                      /* overall subtlety control */
+      pointer-events: none;               /* never intercept clicks */
+    }
+
+    /* Optional: slightly lighter on small screens */
+    @media (max-width: 820px) {
+      body::before { opacity: 0.12; }
+    }
+
     img { max-width: 100%; display: block; }
     a { color: var(--color-accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
