@@ -867,38 +867,40 @@
     window.open(`${base}&${params}`, '_blank', 'noopener');
   }
 
-  // Wire up buttons in each panel
-  document.querySelectorAll('.event-panel .panel-details').forEach(details => {
-    const title = details.dataset.title || 'Event';
-    const desc  = details.dataset.description || '';
-    const locNm = details.dataset.locationName || '';
-    const locLk = details.dataset.locationLink || '';
-    const start = details.dataset.start; // ISO string: 2026-07-10T15:00:00
-    const end   = details.dataset.end;
+    // Wire up links in each panel
+    document.querySelectorAll('.event-panel .panel-details').forEach(details => {
+      const title = details.dataset.title || 'Event';
+      const desc  = details.dataset.description || '';
+      const locNm = details.dataset.locationName || '';
+      const start = details.dataset.start;
+      const end   = details.dataset.end;
 
-    // .ics
-    const icsBtn = details.parentElement.querySelector('.add-ics');
-    if (icsBtn) icsBtn.addEventListener('click', () => {
-      if (!start || !end) { alert('Calendar times coming soon.'); return; }
-      const ics = buildICS({ title, description: desc, start, end, location: locNm });
-      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${title.replace(/\s+/g,'_')}.ics`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      // .ics
+      const icsLink = details.parentElement.querySelector('.add-ics');
+      if (icsLink) icsLink.addEventListener('click', (e) => {
+        e.preventDefault(); // don't jump to top
+        if (!start || !end) { alert('Calendar times coming soon.'); return; }
+        const ics = buildICS({ title, description: desc, start, end, location: locNm });
+        const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${title.replace(/\s+/g,'_')}.ics`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      // Google Calendar
+      const gcalLink = details.parentElement.querySelector('.add-gcal');
+      if (gcalLink) gcalLink.addEventListener('click', (e) => {
+        e.preventDefault(); // don't jump to top
+        if (!start || !end) { alert('Calendar times coming soon.'); return; }
+        openGoogleCalendar({ title, description: desc, start, end, location: locNm });
+      });
     });
 
-    // Google Calendar
-    const gBtn = details.parentElement.querySelector('.add-gcal');
-    if (gBtn) gBtn.addEventListener('click', () => {
-      if (!start || !end) { alert('Calendar times coming soon.'); return; }
-      openGoogleCalendar({ title, description: desc, start, end, location: locNm });
-    });
-  });
 </script>
 
 </body>
