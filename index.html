@@ -267,7 +267,29 @@
 
     /* Optional: make event headings tighter */
     .event-panel h3 { margin-top: 0; }
+    
+    /* Calendar links: gold, italic, compact */
+    .cal-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: var(--space-4);
+    }
+    .cal-link {
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--color-accent);
+      background: none;
+      border: 0;
+      padding: 0;
+      cursor: pointer;          /* works for <a> and <button> if you ever switch */
+    }
+    .cal-link:hover { text-decoration: underline; }
+    .cal-sep { color: var(--color-accent); opacity: 0.9; }
+
   </style>
+
 </head>
 <body id="top">
   <header class="site-header">
@@ -362,11 +384,13 @@
                     </p>
                     <p class="event-desc">Kick off the week with a casual toast.</p>
 
-                    <div class="btn-row">
-                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
-                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
-                      <button class="btn ghost add-gcal">Google Calendar</button>
-                    </div>
+                  <div class="btn-row">
+                    <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                  </div>
+                  <div class="cal-links">
+                    <a href="#" class="cal-link add-ics">Add to Calendar (.ics)</a>
+                    <span class="cal-sep">•</span>
+                    <a href="#" class="cal-link add-gcal">Google Calendar</a>
                   </div>
 
                   <div class="panel-photo">
@@ -392,11 +416,15 @@
                     </p>
                     <p class="event-desc">Sun, sand, and swims!</p>
 
-                    <div class="btn-row">
-                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
-                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
-                      <button class="btn ghost add-gcal">Google Calendar</button>
-                    </div>
+                  <div class="btn-row">
+                    <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                  </div>
+                  <div class="cal-links">
+                    <a href="#" class="cal-link add-ics">Add to Calendar (.ics)</a>
+                    <span class="cal-sep">•</span>
+                    <a href="#" class="cal-link add-gcal">Google Calendar</a>
+                  </div>
+
                   </div>
                   <div class="panel-photo">
                     <img src="assets/img/events/beach-party.jpg" alt="Beach Party (placeholder)">
@@ -421,12 +449,15 @@
                     </p>
                     <p class="event-desc">Boat to the sandbar for a swim.</p>
 
-                    <div class="btn-row">
-                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
-                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
-                      <button class="btn ghost add-gcal">Google Calendar</button>
-                    </div>
+                  <div class="btn-row">
+                    <a class="btn ghost" href="#rsvp-title">RSVP</a>
                   </div>
+                  <div class="cal-links">
+                    <a href="#" class="cal-link add-ics">Add to Calendar (.ics)</a>
+                    <span class="cal-sep">•</span>
+                    <a href="#" class="cal-link add-gcal">Google Calendar</a>
+                  </div>
+
                   <div class="panel-photo">
                     <img src="assets/img/events/sandbar.jpg" alt="Sandbar Outing (placeholder)">
                   </div>
@@ -450,11 +481,15 @@
                     </p>
                     <p class="event-desc">An intimate evening before the big day.</p>
 
-                    <div class="btn-row">
-                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
-                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
-                      <button class="btn ghost add-gcal">Google Calendar</button>
-                    </div>
+                  <div class="btn-row">
+                    <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                  </div>
+                  <div class="cal-links">
+                    <a href="#" class="cal-link add-ics">Add to Calendar (.ics)</a>
+                    <span class="cal-sep">•</span>
+                    <a href="#" class="cal-link add-gcal">Google Calendar</a>
+                  </div>
+
                   </div>
                   <div class="panel-photo">
                     <img src="assets/img/events/rehearsal.jpg" alt="Rehearsal Dinner (placeholder)">
@@ -479,11 +514,15 @@
                     </p>
                     <p class="event-desc">The main event—ceremony followed by dinner &amp; dancing.</p>
 
-                    <div class="btn-row">
-                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
-                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
-                      <button class="btn ghost add-gcal">Google Calendar</button>
-                    </div>
+                  <div class="btn-row">
+                    <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                  </div>
+                  <div class="cal-links">
+                    <a href="#" class="cal-link add-ics">Add to Calendar (.ics)</a>
+                    <span class="cal-sep">•</span>
+                    <a href="#" class="cal-link add-gcal">Google Calendar</a>
+                  </div>
+
                   </div>
                   <div class="panel-photo">
                     <img src="assets/img/events/ceremony.jpg" alt="Ceremony & Reception (placeholder)">
@@ -508,11 +547,15 @@
                     </p>
                     <p class="event-desc">Keep the celebration going.</p>
 
-                    <div class="btn-row">
-                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
-                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
-                      <button class="btn ghost add-gcal">Google Calendar</button>
-                    </div>
+                  <div class="btn-row">
+                    <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                  </div>
+                  <div class="cal-links">
+                    <a href="#" class="cal-link add-ics">Add to Calendar (.ics)</a>
+                    <span class="cal-sep">•</span>
+                    <a href="#" class="cal-link add-gcal">Google Calendar</a>
+                  </div>
+
                   </div>
                   <div class="panel-photo">
                     <img src="assets/img/events/after-party.jpg" alt="After Party (placeholder)">
@@ -537,11 +580,15 @@
                     </p>
                     <p class="event-desc">Casual coffee and goodbyes.</p>
 
-                    <div class="btn-row">
-                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
-                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
-                      <button class="btn ghost add-gcal">Google Calendar</button>
-                    </div>
+                  <div class="btn-row">
+                    <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                  </div>
+                  <div class="cal-links">
+                    <a href="#" class="cal-link add-ics">Add to Calendar (.ics)</a>
+                    <span class="cal-sep">•</span>
+                    <a href="#" class="cal-link add-gcal">Google Calendar</a>
+                  </div>
+
                   </div>
                   <div class="panel-photo">
                     <img src="assets/img/events/recovery.jpg" alt="Recovery (placeholder)">
