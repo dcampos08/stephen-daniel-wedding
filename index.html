@@ -202,7 +202,44 @@
     .site-header, .hero, #main { 
       position: relative; 
       z-index: 1; 
-    }  
+    }
+    /* Events layout: left list (sticky), right content */
+    .events-layout {
+      display: grid;
+      gap: var(--space-6);
+    }
+    @media (min-width: 820px) {
+      .events-layout { grid-template-columns: 300px 1fr; }
+    }
+
+    .events-nav {
+      display: flex;
+      gap: 8px;
+      border-right: none;
+      align-self: start;
+    }
+    @media (min-width: 820px) {
+      .events-nav {
+        flex-direction: column;
+        position: sticky;
+        top: calc(var(--header-height) + 16px); /* stays visible while you scroll the details */
+      }
+    }
+    .events-nav .event-link {
+      display: block;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: #fff;
+      font-weight: 700;
+    }
+    .events-nav .event-link.is-active {
+      background: #f7f3eb;
+      border-color: var(--color-accent);
+    }
+
+    .events-panels .event-panel { display: none; }
+    .events-panels .event-panel.is-active { display: block; }  
   </style>
 </head>
 <body id="top">
@@ -250,7 +287,7 @@
         <div class="card" id="welcome-card">
           <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
           <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends in beautiful Oahu!</p>
-          <p>While we're still adding the finishing touches to our website, we've included information about expected events, lodging, and travel for the week to help you start planning your trip. We'll be updating the site regularly with additional details, so please check back soon!</p>
+          <p>While we're still adding the finishing touches to our website, we've included information about expected events, lodging, and expected events for the week to help you start planning your trip. We'll be updating the site regularly with additional details, so please check back soon!</p>
           <p>We can't wait to share this incredible adventure with our favorite people.</p>
           <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
         </div>
@@ -263,12 +300,39 @@
     <!-- Events -->
     <section id="events">
       <div class="container">
-        <div class="card">
+        <div class="card" id="events-card">
           <h2 class="section-title" id="events-title">Events</h2>
-          <div class="grid grid-3">
-            <div><h3>Ceremony</h3><p class="muted">3:00 PM — The Lawn</p><p>Join us for an outdoor ceremony overlooking the ocean.</p></div>
-            <div><h3>Cocktail Hour</h3><p class="muted">4:00 PM — Garden Terrace</p><p>Drinks, bites, and live music while we take photos.</p></div>
-            <div><h3>Reception</h3><p class="muted">5:30 PM — Ballroom</p><p>Dinner, speeches, and dancing. Festive attire encouraged.</p></div>
+
+          <div class="events-layout">
+            <!-- Left: sticky list -->
+            <nav class="events-nav" aria-label="Event list">
+              <a href="#event-ceremony" class="event-link is-active" data-event="ceremony">Ceremony</a>
+              <a href="#event-cocktail" class="event-link" data-event="cocktail">Cocktail Hour</a>
+              <a href="#event-reception" class="event-link" data-event="reception">Reception</a>
+            </nav>
+
+            <!-- Right: details panels -->
+            <div class="events-panels">
+              <article id="event-ceremony" class="event-panel is-active" role="tabpanel" aria-labelledby="link-ceremony">
+                <h3>Ceremony</h3>
+                <p class="muted">3:00 PM — The Lawn</p>
+                <p>Join us for an outdoor ceremony overlooking the ocean.</p>
+                <!-- (Optional) Inline RSVP/CTA for this event -->
+                <p><a class="btn ghost" href="#rsvp-title">RSVP for Ceremony</a></p>
+              </article>
+
+              <article id="event-cocktail" class="event-panel" role="tabpanel" aria-labelledby="link-cocktail">
+                <h3>Cocktail Hour</h3>
+                <p class="muted">4:00 PM — Garden Terrace</p>
+                <p>Drinks, bites, and live music while we take photos.</p>
+              </article>
+
+              <article id="event-reception" class="event-panel" role="tabpanel" aria-labelledby="link-reception">
+                <h3>Reception</h3>
+                <p class="muted">5:30 PM — Ballroom</p>
+                <p>Dinner, speeches, and dancing. Festive attire encouraged.</p>
+              </article>
+            </div>
           </div>
         </div>
       </div>
@@ -441,6 +505,40 @@
       });
     });
   })();
+  // --- Events: tabbed panels with deep-linking (#event-ceremony, etc.)
+    const eventLinks  = Array.from(document.querySelectorAll('.events-nav .event-link'));
+    const eventPanels = Array.from(document.querySelectorAll('.events-panels .event-panel'));
+
+    function activateEvent(key) {
+      const id = `event-${key}`;
+      eventLinks.forEach(a => a.classList.toggle('is-active', a.dataset.event === key));
+      eventPanels.forEach(p => p.classList.toggle('is-active', p.id === id));
+    }
+
+    function eventKeyFromHash() {
+      const m = location.hash.match(/^#event-(.+)$/);
+      return m ? m[1] : null;
+    }
+
+    // click handling
+    eventLinks.forEach(a => {
+      a.addEventListener('click', (e) => {
+        // allow default hash change for shareable URL
+        const key = a.dataset.event;
+        // If you're already on that hash, still activate without scrolling away
+        activateEvent(key);
+      });
+    });
+
+    // respond to direct links or manual hash changes
+    window.addEventListener('hashchange', () => {
+      const key = eventKeyFromHash();
+      if (key) activateEvent(key);
+    });
+
+    // initial state: use hash if present, else first link
+    const initialKey = eventKeyFromHash() || (eventLinks[0] && eventLinks[0].dataset.event);
+    if (initialKey) activateEvent(initialKey);
 </script>
 
 </body>
