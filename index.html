@@ -736,31 +736,51 @@
         return m ? m[1] : null;
       }
 
-      // click handling
+      // click handling (no page scroll)
+      function scrollToEventsCard() {
+        const card = document.getElementById('events-card');
+        if (!card) return;
+        const header = document.querySelector('.site-header');
+        const headerH = header ? header.offsetHeight : 0;
+        const gap = 16;
+        const top = card.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+
       eventLinks.forEach(a => {
         a.addEventListener('click', (e) => {
-          // allow default hash change for shareable URL
+          e.preventDefault();                    // stop the browser from jumping to #event-…
           const key = a.dataset.event;
-          // If you're already on that hash, still activate without scrolling away
-          activateEvent(key);
+          activateEvent(key);                    // swap the right-hand panel
+          history.replaceState(null, '', `#event-${key}`); // update URL without triggering hashchange
+          scrollToEventsCard();                  // keep view parked on the Events card
         });
       });
 
-      // respond to direct links or manual hash changes
+      // respond to direct links or manual hash changes (keep viewport steady)
       window.addEventListener('hashchange', () => {
         const key = eventKeyFromHash();
-        if (key) activateEvent(key);
+        if (key) {
+          activateEvent(key);
+          scrollToEventsCard();   // if the browser jumped, pull it back to the Events card
+        }
       });
 
       // initial state: use hash if present, else first link
       const initialKey = eventKeyFromHash() || (eventLinks[0] && eventLinks[0].dataset.event);
-      if (initialKey) activateEvent(initialKey);
-    // --- Add to Calendar utilities (ICS + Google Calendar)
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function toICSDate(dt){ // UTC Z format yyyymmddThhmmssZ
-    const z = new Date(dt);
-    return `${z.getUTCFullYear()}${pad(z.getUTCMonth()+1)}${pad(z.getUTCDate())}T${pad(z.getUTCHours())}${pad(z.getUTCMinutes())}${pad(z.getUTCSeconds())}Z`;
-  }
+      
+      if (initialKey) {
+        activateEvent(initialKey);
+        // If the page opened on a deep link, ensure we’re parked on the Events card, not the panel anchor
+        if (eventKeyFromHash()) setTimeout(scrollToEventsCard, 0);
+      }
+
+      // --- Add to Calendar utilities (ICS + Google Calendar)
+      function pad(n){ return String(n).padStart(2,'0'); }
+      function toICSDate(dt){ // UTC Z format yyyymmddThhmmssZ
+        const z = new Date(dt);
+        return `${z.getUTCFullYear()}${pad(z.getUTCMonth()+1)}${pad(z.getUTCDate())}T${pad(z.getUTCHours())}${pad(z.getUTCMinutes())}${pad(z.getUTCSeconds())}Z`;
+      }
 
   function buildICS({title, description, start, end, location}) {
     const dtStamp = toICSDate(new Date());
@@ -806,7 +826,6 @@
     const desc  = details.dataset.description || '';
     const locNm = details.dataset.locationName || '';
     const locLk = details.dataset.locationLink || '';
-    const loc   = locNm ? `${locNm}${locLk ? ' ('+locLk+')' : ''}` : '';
     const start = details.dataset.start; // ISO string: 2026-07-10T15:00:00
     const end   = details.dataset.end;
 
