@@ -240,6 +240,33 @@
 
     .events-panels .event-panel { display: none; }
     .events-panels .event-panel.is-active { display: block; }  
+    
+    /* Two-column details/photo inside each event panel */
+    .panel-grid {
+      display: grid;
+      gap: var(--space-6);
+    }
+    @media (min-width: 900px) {
+      .panel-grid {
+        grid-template-columns: 1fr 360px; /* details | photo */
+      }
+    }
+    .panel-photo img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Buttons row under the blurb */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: var(--space-4);
+    }
+
+    /* Optional: make event headings tighter */
+    .event-panel h3 { margin-top: 0; }
   </style>
 </head>
 <body id="top">
@@ -306,31 +333,220 @@
           <div class="events-layout">
             <!-- Left: sticky list -->
             <nav class="events-nav" aria-label="Event list">
-              <a href="#event-ceremony" class="event-link is-active" data-event="ceremony">Ceremony</a>
-              <a href="#event-cocktail" class="event-link" data-event="cocktail">Cocktail Hour</a>
-              <a href="#event-reception" class="event-link" data-event="reception">Reception</a>
+              <a href="#event-welcome-drinks" class="event-link is-active" data-event="welcome-drinks">Welcome Drinks</a>
+              <a href="#event-beach-party" class="event-link" data-event="beach-party">Beach Party</a>
+              <a href="#event-sandbar" class="event-link" data-event="sandbar">Sandbar Outing</a>
+              <a href="#event-rehearsal-dinner" class="event-link" data-event="rehearsal-dinner">Rehearsal Dinner</a>
+              <a href="#event-ceremony-reception" class="event-link" data-event="ceremony-reception">Ceremony &amp; Reception</a>
+              <a href="#event-after-party" class="event-link" data-event="after-party">After Party</a>
+              <a href="#event-recovery" class="event-link" data-event="recovery">Recovery</a>
             </nav>
 
-            <!-- Right: details panels -->
+            <!-- Right: details panels (each has a details column + photo column) -->
             <div class="events-panels">
-              <article id="event-ceremony" class="event-panel is-active" role="tabpanel" aria-labelledby="link-ceremony">
-                <h3>Ceremony</h3>
-                <p class="muted">3:00 PM — The Lawn</p>
-                <p>Join us for an outdoor ceremony overlooking the ocean.</p>
-                <!-- (Optional) Inline RSVP/CTA for this event -->
-                <p><a class="btn ghost" href="#rsvp-title">RSVP for Ceremony</a></p>
+              <!-- Example panel. Duplicate structure for each event below with your real details. -->
+              <article id="event-welcome-drinks" class="event-panel is-active" role="tabpanel">
+                <div class="panel-grid">
+                  <div class="panel-details"
+                      data-title="Welcome Drinks"
+                      data-description="Kick off the week with a casual toast."
+                      data-location-name="(Venue / Bar name)"
+                      data-location-link="https://maps.google.com/?q=Your+Place"
+                      data-start="2026-07-07T18:00:00"
+                      data-end="2026-07-07T20:00:00"
+                      data-timezone="Pacific/Honolulu">
+                    <h3>Welcome Drinks</h3>
+                    <p class="muted">
+                      <span class="event-datetime">Tue • Jul 7, 2026 • 6:00–8:00 PM</span><br>
+                      <a class="event-location" href="https://maps.google.com/?q=Your+Place" target="_blank" rel="noopener">(Venue / Bar name)</a>
+                    </p>
+                    <p class="event-desc">Kick off the week with a casual toast.</p>
+
+                    <div class="btn-row">
+                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
+                      <button class="btn ghost add-gcal">Google Calendar</button>
+                    </div>
+                  </div>
+
+                  <div class="panel-photo">
+                    <img src="assets/img/events/welcome-drinks.jpg" alt="Welcome Drinks (placeholder)">
+                  </div>
+                </div>
               </article>
 
-              <article id="event-cocktail" class="event-panel" role="tabpanel" aria-labelledby="link-cocktail">
-                <h3>Cocktail Hour</h3>
-                <p class="muted">4:00 PM — Garden Terrace</p>
-                <p>Drinks, bites, and live music while we take photos.</p>
+              <article id="event-beach-party" class="event-panel" role="tabpanel">
+                <div class="panel-grid">
+                  <div class="panel-details"
+                      data-title="Beach Party"
+                      data-description="Sun, sand, and swims!"
+                      data-location-name="(Beach name)"
+                      data-location-link="https://maps.google.com/?q=Beach"
+                      data-start="2026-07-08T11:00:00"
+                      data-end="2026-07-08T15:00:00"
+                      data-timezone="Pacific/Honolulu">
+                    <h3>Beach Party</h3>
+                    <p class="muted">
+                      <span class="event-datetime">Wed • Jul 8, 2026 • 11:00 AM–3:00 PM</span><br>
+                      <a class="event-location" href="https://maps.google.com/?q=Beach" target="_blank" rel="noopener">(Beach name)</a>
+                    </p>
+                    <p class="event-desc">Sun, sand, and swims!</p>
+
+                    <div class="btn-row">
+                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
+                      <button class="btn ghost add-gcal">Google Calendar</button>
+                    </div>
+                  </div>
+                  <div class="panel-photo">
+                    <img src="assets/img/events/beach-party.jpg" alt="Beach Party (placeholder)">
+                  </div>
+                </div>
               </article>
 
-              <article id="event-reception" class="event-panel" role="tabpanel" aria-labelledby="link-reception">
-                <h3>Reception</h3>
-                <p class="muted">5:30 PM — Ballroom</p>
-                <p>Dinner, speeches, and dancing. Festive attire encouraged.</p>
+              <article id="event-sandbar" class="event-panel" role="tabpanel">
+                <div class="panel-grid">
+                  <div class="panel-details"
+                      data-title="Sandbar Outing"
+                      data-description="Boat to the sandbar for a swim."
+                      data-location-name="Kaneohe Sandbar (dock)"
+                      data-location-link="https://maps.google.com/?q=Kaneohe+Sandbar"
+                      data-start="2026-07-09T09:00:00"
+                      data-end="2026-07-09T12:00:00"
+                      data-timezone="Pacific/Honolulu">
+                    <h3>Sandbar Outing</h3>
+                    <p class="muted">
+                      <span class="event-datetime">Thu • Jul 9, 2026 • 9:00 AM–12:00 PM</span><br>
+                      <a class="event-location" href="https://maps.google.com/?q=Kaneohe+Sandbar" target="_blank" rel="noopener">Kaneohe Sandbar (dock)</a>
+                    </p>
+                    <p class="event-desc">Boat to the sandbar for a swim.</p>
+
+                    <div class="btn-row">
+                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
+                      <button class="btn ghost add-gcal">Google Calendar</button>
+                    </div>
+                  </div>
+                  <div class="panel-photo">
+                    <img src="assets/img/events/sandbar.jpg" alt="Sandbar Outing (placeholder)">
+                  </div>
+                </div>
+              </article>
+
+              <article id="event-rehearsal-dinner" class="event-panel" role="tabpanel">
+                <div class="panel-grid">
+                  <div class="panel-details"
+                      data-title="Rehearsal Dinner"
+                      data-description="An intimate evening before the big day."
+                      data-location-name="(Restaurant / Venue)"
+                      data-location-link="https://maps.google.com/?q=Venue"
+                      data-start="2026-07-09T18:30:00"
+                      data-end="2026-07-09T21:00:00"
+                      data-timezone="Pacific/Honolulu">
+                    <h3>Rehearsal Dinner</h3>
+                    <p class="muted">
+                      <span class="event-datetime">Thu • Jul 9, 2026 • 6:30–9:00 PM</span><br>
+                      <a class="event-location" href="https://maps.google.com/?q=Venue" target="_blank" rel="noopener">(Restaurant / Venue)</a>
+                    </p>
+                    <p class="event-desc">An intimate evening before the big day.</p>
+
+                    <div class="btn-row">
+                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
+                      <button class="btn ghost add-gcal">Google Calendar</button>
+                    </div>
+                  </div>
+                  <div class="panel-photo">
+                    <img src="assets/img/events/rehearsal.jpg" alt="Rehearsal Dinner (placeholder)">
+                  </div>
+                </div>
+              </article>
+
+              <article id="event-ceremony-reception" class="event-panel" role="tabpanel">
+                <div class="panel-grid">
+                  <div class="panel-details"
+                      data-title="Ceremony & Reception"
+                      data-description="The main event—ceremony followed by dinner & dancing."
+                      data-location-name="Lanikūhonua Cultural Institute"
+                      data-location-link="https://goo.gl/maps/H3b49Eq1kLoQnSFL8"
+                      data-start="2026-07-10T15:00:00"
+                      data-end="2026-07-10T22:00:00"
+                      data-timezone="Pacific/Honolulu">
+                    <h3>Ceremony &amp; Reception</h3>
+                    <p class="muted">
+                      <span class="event-datetime">Fri • Jul 10, 2026 • 3:00–10:00 PM</span><br>
+                      <a class="event-location" href="https://goo.gl/maps/H3b49Eq1kLoQnSFL8" target="_blank" rel="noopener">Lanikūhonua Cultural Institute</a>
+                    </p>
+                    <p class="event-desc">The main event—ceremony followed by dinner &amp; dancing.</p>
+
+                    <div class="btn-row">
+                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
+                      <button class="btn ghost add-gcal">Google Calendar</button>
+                    </div>
+                  </div>
+                  <div class="panel-photo">
+                    <img src="assets/img/events/ceremony.jpg" alt="Ceremony & Reception (placeholder)">
+                  </div>
+                </div>
+              </article>
+
+              <article id="event-after-party" class="event-panel" role="tabpanel">
+                <div class="panel-grid">
+                  <div class="panel-details"
+                      data-title="After Party"
+                      data-description="Keep the celebration going."
+                      data-location-name="(Bar / Lounge)"
+                      data-location-link="https://maps.google.com/?q=Bar"
+                      data-start="2026-07-10T22:30:00"
+                      data-end="2026-07-11T01:00:00"
+                      data-timezone="Pacific/Honolulu">
+                    <h3>After Party</h3>
+                    <p class="muted">
+                      <span class="event-datetime">Fri • Jul 10, 2026 • 10:30 PM–1:00 AM</span><br>
+                      <a class="event-location" href="https://maps.google.com/?q=Bar" target="_blank" rel="noopener">(Bar / Lounge)</a>
+                    </p>
+                    <p class="event-desc">Keep the celebration going.</p>
+
+                    <div class="btn-row">
+                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
+                      <button class="btn ghost add-gcal">Google Calendar</button>
+                    </div>
+                  </div>
+                  <div class="panel-photo">
+                    <img src="assets/img/events/after-party.jpg" alt="After Party (placeholder)">
+                  </div>
+                </div>
+              </article>
+
+              <article id="event-recovery" class="event-panel" role="tabpanel">
+                <div class="panel-grid">
+                  <div class="panel-details"
+                      data-title="Recovery"
+                      data-description="Casual coffee and goodbyes."
+                      data-location-name="(Cafe / Hotel Lobby)"
+                      data-location-link="https://maps.google.com/?q=Cafe"
+                      data-start="2026-07-11T10:00:00"
+                      data-end="2026-07-11T12:00:00"
+                      data-timezone="Pacific/Honolulu">
+                    <h3>Recovery</h3>
+                    <p class="muted">
+                      <span class="event-datetime">Sat • Jul 11, 2026 • 10:00 AM–12:00 PM</span><br>
+                      <a class="event-location" href="https://maps.google.com/?q=Cafe" target="_blank" rel="noopener">(Cafe / Hotel Lobby)</a>
+                    </p>
+                    <p class="event-desc">Casual coffee and goodbyes.</p>
+
+                    <div class="btn-row">
+                      <a class="btn ghost" href="#rsvp-title">RSVP</a>
+                      <button class="btn primary add-ics">Add to Calendar (.ics)</button>
+                      <button class="btn ghost add-gcal">Google Calendar</button>
+                    </div>
+                  </div>
+                  <div class="panel-photo">
+                    <img src="assets/img/events/recovery.jpg" alt="Recovery (placeholder)">
+                  </div>
+                </div>
               </article>
             </div>
           </div>
@@ -505,40 +721,118 @@
       });
     });
   })();
-  // --- Events: tabbed panels with deep-linking (#event-ceremony, etc.)
-    const eventLinks  = Array.from(document.querySelectorAll('.events-nav .event-link'));
-    const eventPanels = Array.from(document.querySelectorAll('.events-panels .event-panel'));
+    // --- Events: tabbed panels with deep-linking (#event-ceremony, etc.)
+      const eventLinks  = Array.from(document.querySelectorAll('.events-nav .event-link'));
+      const eventPanels = Array.from(document.querySelectorAll('.events-panels .event-panel'));
 
-    function activateEvent(key) {
-      const id = `event-${key}`;
-      eventLinks.forEach(a => a.classList.toggle('is-active', a.dataset.event === key));
-      eventPanels.forEach(p => p.classList.toggle('is-active', p.id === id));
-    }
+      function activateEvent(key) {
+        const id = `event-${key}`;
+        eventLinks.forEach(a => a.classList.toggle('is-active', a.dataset.event === key));
+        eventPanels.forEach(p => p.classList.toggle('is-active', p.id === id));
+      }
 
-    function eventKeyFromHash() {
-      const m = location.hash.match(/^#event-(.+)$/);
-      return m ? m[1] : null;
-    }
+      function eventKeyFromHash() {
+        const m = location.hash.match(/^#event-(.+)$/);
+        return m ? m[1] : null;
+      }
 
-    // click handling
-    eventLinks.forEach(a => {
-      a.addEventListener('click', (e) => {
-        // allow default hash change for shareable URL
-        const key = a.dataset.event;
-        // If you're already on that hash, still activate without scrolling away
-        activateEvent(key);
+      // click handling
+      eventLinks.forEach(a => {
+        a.addEventListener('click', (e) => {
+          // allow default hash change for shareable URL
+          const key = a.dataset.event;
+          // If you're already on that hash, still activate without scrolling away
+          activateEvent(key);
+        });
       });
+
+      // respond to direct links or manual hash changes
+      window.addEventListener('hashchange', () => {
+        const key = eventKeyFromHash();
+        if (key) activateEvent(key);
+      });
+
+      // initial state: use hash if present, else first link
+      const initialKey = eventKeyFromHash() || (eventLinks[0] && eventLinks[0].dataset.event);
+      if (initialKey) activateEvent(initialKey);
+    // --- Add to Calendar utilities (ICS + Google Calendar)
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function toICSDate(dt){ // UTC Z format yyyymmddThhmmssZ
+    const z = new Date(dt);
+    return `${z.getUTCFullYear()}${pad(z.getUTCMonth()+1)}${pad(z.getUTCDate())}T${pad(z.getUTCHours())}${pad(z.getUTCMinutes())}${pad(z.getUTCSeconds())}Z`;
+  }
+
+  function buildICS({title, description, start, end, location}) {
+    const dtStamp = toICSDate(new Date());
+    const dtStart = toICSDate(start);
+    const dtEnd   = toICSDate(end);
+    const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@wedding-site`;
+    // Outlook, Apple, Google all read .ics
+    return [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Stephen & Daniel Wedding//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,
+      `DTSTAMP:${dtStamp}`,
+      `DTSTART:${dtStart}`,
+      `DTEND:${dtEnd}`,
+      `SUMMARY:${title}`,
+      `DESCRIPTION:${(description||'').replace(/\n/g,'\\n')}`,
+      `LOCATION:${location||''}`,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+  }
+
+  function openGoogleCalendar({title, description, start, end, location}) {
+    // Google expects RFC3339 local or UTC; simplest: use UTC with Z
+    const fmt = (d)=>encodeURIComponent(new Date(d).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z'));
+    const base = 'https://calendar.google.com/calendar/render?action=TEMPLATE';
+    const params = [
+      `text=${encodeURIComponent(title)}`,
+      `details=${encodeURIComponent(description||'')}`,
+      `location=${encodeURIComponent(location||'')}`,
+      `dates=${fmt(start)}/${fmt(end)}`
+    ].join('&');
+    window.open(`${base}&${params}`, '_blank', 'noopener');
+  }
+
+  // Wire up buttons in each panel
+  document.querySelectorAll('.event-panel .panel-details').forEach(details => {
+    const title = details.dataset.title || 'Event';
+    const desc  = details.dataset.description || '';
+    const locNm = details.dataset.locationName || '';
+    const locLk = details.dataset.locationLink || '';
+    const loc   = locNm ? `${locNm}${locLk ? ' ('+locLk+')' : ''}` : '';
+    const start = details.dataset.start; // ISO string: 2026-07-10T15:00:00
+    const end   = details.dataset.end;
+
+    // .ics
+    const icsBtn = details.parentElement.querySelector('.add-ics');
+    if (icsBtn) icsBtn.addEventListener('click', () => {
+      if (!start || !end) { alert('Calendar times coming soon.'); return; }
+      const ics = buildICS({ title, description: desc, start, end, location: locNm });
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${title.replace(/\s+/g,'_')}.ics`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
     });
 
-    // respond to direct links or manual hash changes
-    window.addEventListener('hashchange', () => {
-      const key = eventKeyFromHash();
-      if (key) activateEvent(key);
+    // Google Calendar
+    const gBtn = details.parentElement.querySelector('.add-gcal');
+    if (gBtn) gBtn.addEventListener('click', () => {
+      if (!start || !end) { alert('Calendar times coming soon.'); return; }
+      openGoogleCalendar({ title, description: desc, start, end, location: locNm });
     });
-
-    // initial state: use hash if present, else first link
-    const initialKey = eventKeyFromHash() || (eventLinks[0] && eventLinks[0].dataset.event);
-    if (initialKey) activateEvent(initialKey);
+  });
 </script>
 
 </body>
