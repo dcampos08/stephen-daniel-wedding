@@ -17,7 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
 
-  <!-- Local font: Safira March (optional but keeps your look) -->
+  <!-- Local font: Safira March -->
   <style>
     @font-face {
       font-family: "Safira March";
@@ -33,15 +33,14 @@
       --font-display: "Safira March", cursive;
 
       --color-accent: #C9A64C;
-      --color-primary: #1B6A63;
       --color-text-on-video: #fff;
     }
 
-    *{ box-sizing: border-box; }
+    * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
     body {
       font-family: var(--font-body);
-      background: #000;
+      background: #000;             /* fallback behind video */
       color: var(--color-text-on-video);
     }
 
@@ -77,10 +76,10 @@
 
     h1 {
       margin: 0 0 0.1em 0;
-      font-family: var(--font-scipt-2);
+      font-family: var(--font-display);   /* ✅ fixed variable */
       font-weight: 400;
       letter-spacing: 0.04em;
-      color: white;
+      color: #fff;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       font-size: clamp(48px, 8vw, 80px);
       line-height: 1.05;
@@ -102,10 +101,9 @@
       font-size: clamp(14px, 2.2vw, 18px);
       opacity: 0.95;
       font-style: italic;
-      color: var(--color-text-on-video);
+      color: #fff;
     }
 
-    /* Prefer reduced motion users */
     @media (prefers-reduced-motion: reduce) {
       .hero-video { animation: none; }
     }
@@ -113,7 +111,8 @@
 </head>
 <body>
   <section class="hero" aria-label="Hero video">
-    <video class="hero-video" autoplay muted playsinline loop poster="/assets/img/hero-poster.jpg">
+    <!-- Use a poster that exists; you have /assets/img/hero.jpg -->
+    <video class="hero-video" autoplay muted playsinline loop poster="/assets/img/hero.jpg">
       <source src="/assets/video/oahu.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
