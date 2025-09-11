@@ -123,11 +123,63 @@
 </head>
 <body>
   <section class="hero" aria-label="Hero video">
-    <video class="hero-video" autoplay muted playsinline loop preload="auto">
-      <source src="assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
-      <source src="assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
-      Your browser does not support the video tag.
-    </video>
+<video
+  class="hero-video"
+  autoplay
+  muted
+  playsinline
+  webkit-playsinline
+  loop
+  preload="auto"
+>
+  <source src="assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
+  <source src="assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const v = document.querySelector(".hero-video");
+    if (!v) return;
+
+    // Belt-and-suspenders: set properties & attributes for iOS
+    v.muted = true;
+    v.autoplay = true;
+    v.playsInline = true;
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "");
+
+    const tryPlay = () => v.play().catch(() => {});
+
+    // Kick immediately
+    tryPlay();
+
+    // If autoplay was deferred, nudge again after metadata arrives
+    v.addEventListener("loadedmetadata", tryPlay, { once: true });
+
+    // If a pause sneaks in (common on iOS), force-load src then retry
+    v.addEventListener("pause", () => {
+      if (!v.ended && !v.seeking) {
+        if (!v.currentSrc) {
+          const mp4 = v.querySelector('source[type="video/mp4"]');
+          if (mp4 && mp4.src) {
+            v.src = mp4.src;  // prompts eager fetch on some iOS versions
+            v.load();
+          }
+        }
+        setTimeout(tryPlay, 50);
+      }
+    });
+
+    // Final fallback: first touch starts it (no visible controls needed)
+    const kickOnTouch = () => {
+      tryPlay();
+      window.removeEventListener("touchstart", kickOnTouch, { passive: true });
+    };
+    window.addEventListener("touchstart", kickOnTouch, { passive: true });
+  });
+</script>
+
 
     <div class="overlay">
       <div class="title-card">
