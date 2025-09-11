@@ -11,9 +11,11 @@
   <meta property="og:image" content="assets/img/og-cover.jpg" />
   <meta name="theme-color" content="#7a6a56">
 
-  <!-- Typekit (beloved-sans / beloved-script) -->
+  <!-- Typekit (beloved-sans / beloved-script for body + accents) -->
   <link rel="preconnect" href="https://use.typekit.net">
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
+  <!-- Google: Satisfy (for the Oʻahu, Hawaiʻi / date lines) -->
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
 
   <!-- Preloads -->
   <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
@@ -21,8 +23,8 @@
   <link rel="preload" href="assets/img/bg-botanical.png" as="image" fetchpriority="high">
   <link rel="preload" href="assets/fonts/SafiraMarch.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Local font: Safira March (for the main headline / names) -->
   <style>
+    /* Local display font */
     @font-face {
       font-family: "Safira March";
       src: url("assets/fonts/SafiraMarch.woff2") format("woff2"),
@@ -37,14 +39,15 @@
 
       /* WIP fonts */
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      --font-script-1: "beloved-script", cursive;   /* used for the blurb accents & dateplace */
-      --font-display: "Safira March", cursive;      /* used for names & big H1 */
+      --font-script-1: "beloved-script", cursive;    /* accents/signature */
+      --font-script-2: "Satisfy", cursive;           /* Oʻahu / date lines */
+      --font-display: "Safira March", cursive;       /* big names */
 
       --color-accent: #C9A64C;
       --color-text: #1F1F1F;
       --color-text-on-video: #fff;
 
-      --color-bg: #FFFDF8;
+      --color-bg: #FFFDF8;        /* cream */
       --color-surface: #FFFFFF;
       --color-border: #E8E1D8;
 
@@ -61,33 +64,36 @@
 
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
+    html { scroll-behavior: smooth; }
 
-    /* --- Global states --- */
+    /* Global bg: botanical */
     body {
       font-family: var(--font-body);
-      color: var(--color-text-on-video);
-      background: #000;
+      color: var(--color-text);
+      background: var(--color-bg) url("assets/img/bg-botanical.png")
+                  top center / 800px auto repeat fixed;
       font-synthesis-weight: none;
     }
 
-    /* Before entering: only the hero shows, no page scroll */
-    body:not(.entered) { overflow: hidden; height: 100vh; }
-
-    /* After entering: lock to one screen (header + welcome only) */
-    body.entered { overflow: hidden; height: 100vh; }
+    /* States */
+    body:not(.entering):not(.entered) { overflow: hidden; height: 100vh; } /* before click */
+    body.entering { overflow: auto; }   /* allow the smooth scroll animation */
+    body.entered  { overflow: hidden; height: 100vh; } /* lock after we land */
 
     .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
 
-    /* --- Hero with video --- */
+    /* Hero */
     .hero {
       position: relative;
       height: 100vh;
       overflow: hidden;
       display: grid;
       place-items: center;
+      /* botanical sits behind video as fallback */
       background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
-    /* After entering, hide the hero entirely */
+    /* During the scroll animation, keep the hero visible.
+       After we arrive, hide it entirely. */
     body.entered .hero { display: none; }
 
     .hero-video {
@@ -100,10 +106,10 @@
       background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
       display: grid; place-items: center;
       padding: 24px;
+      color: var(--color-text-on-video);
     }
     .title-card {
       text-align: center;
-      color: var(--color-text-on-video);
       backdrop-filter: blur(6px);
       background: rgba(0,0,0,0.2);
       border: 1px solid rgba(255,255,255,0.35);
@@ -122,7 +128,7 @@
     }
     .hero-subline {
       margin: 0.15em 0 0.8em 0;
-      font-family: var(--font-script-1);  /* beloved-script */
+      font-family: var(--font-script-2);  /* Satisfy */
       font-weight: 400;
       color: var(--color-accent);
       letter-spacing: 0.3px;
@@ -137,18 +143,17 @@
     }
     .btn.primary { background: var(--color-accent); color: white; }
 
-    /* --- Header (no buttons/links) --- */
+    /* Header (solid cream) */
     header.site-header {
       display: none;
       position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(255,255,255,0.78);
-      backdrop-filter: blur(10px);
+      top: 0; z-index: 10;
+      background: var(--color-bg);              /* solid cream */
       border-bottom: 1px solid var(--color-border);
       color: var(--color-text);
     }
-    body.entered header.site-header { display: block; }
+    body.entering header.site-header,
+    body.entered  header.site-header { display: block; }
 
     .site-header .mast { padding: var(--space-4) 0; text-align: center; }
     .site-header .mast .names {
@@ -160,22 +165,21 @@
       line-height: 1;
     }
     .site-header .mast .dateplace {
-      font-family: var(--font-script-1);  /* beloved-script */
+      font-family: var(--font-script-2);  /* Satisfy */
       color: var(--color-accent);
       font-weight: 400;
       font-size: clamp(14px, 1.8vw, 18px);
       margin-top: 4px;
     }
 
-    /* --- Main welcome view (only visible after entering) --- */
+    /* Main welcome view */
     main#main {
       display: none;
-      background: var(--color-bg);
-      color: var(--color-text);
       height: calc(100vh - var(--header-height));
-      overflow: hidden; /* prevent page scroll */
+      overflow: hidden; /* lock after we land */
     }
-    body.entered main#main { display: block; }
+    body.entering main#main,
+    body.entered  main#main { display: block; }
 
     .welcome-wrap {
       height: 100%;
@@ -184,16 +188,12 @@
       padding: var(--space-6) 0;
     }
 
-    /* Two-column: blurb LEFT, photo RIGHT (matches WIP intent) */
-    .grid { display: grid; gap: var(--space-6); align-items: start; }
+    /* Blurb LEFT, photo RIGHT. Equal-height cards. */
+    .grid { display: grid; gap: var(--space-6); align-items: stretch; }
     @media (min-width: 850px) {
-      .grid-2 {
-        grid-template-columns: min(560px, 52%) 1fr; /* left text | right photo */
-      }
+      .grid-2 { grid-template-columns: min(560px, 52%) 1fr; }
     }
-    @media (max-width: 849px) {
-      .grid-2 { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 849px) { .grid-2 { grid-template-columns: 1fr; } }
 
     .card {
       background: var(--color-surface);
@@ -201,11 +201,12 @@
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm);
       padding: var(--space-6);
+      height: 100%;                 /* <- equal heights */
+      display: flex; flex-direction: column;
     }
 
-    /* WIP-style blurb typography */
     .section-title {
-      font-family: var(--font-body);                 /* beloved-sans */
+      font-family: var(--font-body); /* beloved-sans */
       font-size: clamp(28px, 4vw, 40px);
       color: #1B6A63;
       margin: 0 0 var(--space-5);
@@ -213,7 +214,7 @@
     }
     .welcome-card p { margin: 0 0 12px; }
     .signature {
-      font-family: var(--font-script-1);             /* beloved-script */
+      font-family: var(--font-script-1); /* beloved-script */
       color: var(--color-accent);
       font-weight: 400;
       font-size: clamp(18px, 2.2vw, 24px);
@@ -222,18 +223,24 @@
       line-height: 1.2;
     }
 
+    /* Photo card: keep image slightly smaller so white border shows */
+    .photo-card { display: flex; align-items: center; justify-content: center; }
     .photo-card img {
-      width: 100%; height: auto; display: block; border-radius: var(--radius-sm);
+      width: 100%;
+      height: auto;
+      max-height: 92%;           /* <- just a touch smaller */
+      border-radius: var(--radius-sm);
       object-fit: cover;
     }
 
     @media (prefers-reduced-motion: reduce) {
       .hero-video { animation: none; }
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
 <body id="top">
-  <!-- HERO (first view) -->
+  <!-- HERO -->
   <section class="hero" aria-label="Hero video welcome" id="banner">
     <video
       class="hero-video"
@@ -263,18 +270,18 @@
     </div>
   </section>
 
-  <!-- HEADER (no nav buttons) -->
+  <!-- HEADER (solid cream) -->
   <header class="site-header" role="banner" aria-label="Site header">
     <div class="container" id="siteNav">
       <div class="mast">
         <div class="names">Stephen &amp; Daniel</div>
         <div class="dateplace">Oʻahu, Hawaiʻi — July 10, 2026</div>
       </div>
-      <!-- No nav links/buttons per request -->
+      <!-- No nav buttons per request -->
     </div>
   </header>
 
-  <!-- WELCOME (only view after entering) -->
+  <!-- WELCOME -->
   <main id="main" role="main">
     <div class="welcome-wrap">
       <div class="container">
@@ -298,21 +305,37 @@
     </div>
   </main>
 
-  <!-- Autoplay helpers + Enter behavior -->
+  <!-- Smooth 'Enter Site' like WIP + iOS video nudges -->
   <script>
-    // Keep a live CSS var of the header height (helps on wrap)
     function setHeaderHeightVar() {
       const header = document.querySelector('.site-header');
       if (header) document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
     }
     window.addEventListener('resize', setHeaderHeightVar);
 
-    // Reveal header + main, and focus the welcome card
+    function smoothScrollTo(el) {
+      if (!el) return;
+      const header = document.querySelector('.site-header');
+      const headerH = header ? header.offsetHeight : 0;
+      const gap = 16;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+
     function enter() {
-      document.body.classList.add('entered');
+      // Show header + main but keep hero visible so the page has scroll room
+      document.body.classList.add('entering');
       setHeaderHeightVar();
-      const target = document.getElementById('welcome-card');
-      if (target) target.focus?.();
+      // Smooth-scroll to the welcome card (like WIP)
+      smoothScrollTo(document.getElementById('welcome-card'));
+
+      // After the scroll animation, hide the hero and lock layout
+      setTimeout(() => {
+        document.body.classList.remove('entering');
+        document.body.classList.add('entered');
+        // Ensure we're at the top of the "final" layout (header + welcome only)
+        window.scrollTo({ top: 0 });
+      }, 700);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -332,12 +355,8 @@
 
       // iOS/Safari autoplay nudges
       if (v) {
-        v.muted = true;
-        v.autoplay = true;
-        v.playsInline = true;
-        v.setAttribute("playsinline", "");
-        v.setAttribute("webkit-playsinline", "");
-
+        v.muted = true; v.autoplay = true; v.playsInline = true;
+        v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", "");
         const tryPlay = () => v.play().catch(() => {});
         if (!v.currentSrc) {
           const mp4 = v.querySelector('source[type="video/mp4"]');
