@@ -11,19 +11,20 @@
   <meta property="og:image" content="assets/img/og-cover.jpg" />
   <meta name="theme-color" content="#7a6a56">
 
-  <!-- Fonts: Google (use display=optional to avoid mid-render swap) -->
+  <!-- Google Fonts (no forced swap) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=optional" rel="stylesheet">
 
-  <!-- Adobe Fonts async loader (replaces the old Typekit <link>) -->
+  <!-- Adobe Fonts async loader (replaces the old <link>) -->
   <script>
     (function(d) {
       var config = { kitId: 'yoj5rjq', scriptTimeout: 3000, async: true };
       var h = d.documentElement;
-      h.className += " wf-loading";
+      h.classList.add("wf-loading");
       var t = setTimeout(function () {
-        h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+        h.classList.remove("wf-loading");
+        h.classList.add("wf-inactive");
       }, config.scriptTimeout);
       var tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0];
       tk.src = "https://use.typekit.net/" + config.kitId + ".js"; tk.async = true;
@@ -51,11 +52,11 @@
            url("assets/fonts/SafiraMarch.ttf") format("truetype");
       font-weight: 400;
       font-style: normal;
-      font-display: swap; /* try 'optional' if you prefer no swap at all */
+      font-display: optional; /* avoid mid-render swap */
     }
 
     :root{
-      /* Custom families (Adobe kit fonts referenced by name in CSS) */
+      /* Web fonts (applied only when .fonts-ready is set) */
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       --font-script-1: "beloved-script", cursive;
       --font-display: "Safira March", cursive;
@@ -67,16 +68,16 @@
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
 
-    /* Default to system stack to avoid FOUT; switch to Adobe when .wf-active */
+    /* Default: system stack to prevent any flash */
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       background: #000;
       color: var(--color-text-on-video);
-      font-synthesis-weight: none; /* reduces bold “jump” during swaps */
+      font-synthesis-weight: none;
     }
-    .wf-active body {
-      font-family: var(--font-body);
-    }
+
+    /* Apply web fonts ONLY when all are ready */
+    .fonts-ready body { font-family: var(--font-body); }
 
     /* Fullscreen hero with fallback background */
     .hero {
@@ -85,8 +86,6 @@
       overflow: hidden;
       display: grid;
       place-items: center;
-
-      /* botanical fallback */
       background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
 
@@ -115,20 +114,22 @@
       padding: clamp(20px, 4vw, 36px);
     }
 
+    /* Headline uses fallback first; switches only when fonts-ready */
     h1 {
       margin: 0 0 0.1em 0;
-      font-family: var(--font-display);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       font-weight: 400;
       letter-spacing: 0.04em;
       color: #fff;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       font-size: clamp(48px, 8vw, 80px);
       line-height: 1.05;
+      font-size-adjust: 0.43; /* helps reduce reflow; tweak if needed */
     }
+    .fonts-ready h1 { font-family: var(--font-display); }
 
     .hero-subline {
       margin: 0.15em 0 0.6em 0;
-      /* Start with system fallback to avoid flash; upgrade when Adobe active */
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       font-weight: 700;
       color: var(--color-accent);
@@ -137,9 +138,7 @@
       font-size: clamp(20px, 3.5vw, 32px);
       line-height: 1.1;
     }
-    .wf-active .hero-subline {
-      font-family: var(--font-script-1);
-    }
+    .fonts-ready .hero-subline { font-family: var(--font-script-1); }
 
     .coming-soon {
       margin: 0;
@@ -179,13 +178,12 @@
     </div>
   </section>
 
-  <!-- Mobile/Safari: force eager fetch & autoplay, with gentle retries -->
+  <!-- Mobile/Safari: force eager fetch & autoplay -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const v = document.querySelector(".hero-video");
       if (!v) return;
 
-      // Ensure autoplay-friendly settings stick on iOS
       v.muted = true;
       v.autoplay = true;
       v.playsInline = true;
@@ -193,34 +191,44 @@
       v.setAttribute("webkit-playsinline", "");
 
       const tryPlay = () => v.play().catch(() => {});
-
-      // If the <video> hasn't resolved a currentSrc yet, force it from the MP4 <source>
       if (!v.currentSrc) {
         const mp4 = v.querySelector('source[type="video/mp4"]');
-        if (mp4 && mp4.src) {
-          v.src = mp4.src;   // prompts eager fetch on some iOS versions
-          v.load();
-        }
+        if (mp4 && mp4.src) { v.src = mp4.src; v.load(); }
       }
-
-      // Kick immediately and on metadata
       tryPlay();
       v.addEventListener("loadedmetadata", tryPlay, { once: true });
-
-      // If a pause sneaks in (common on iOS), retry shortly
-      v.addEventListener("pause", () => {
-        if (!v.ended && !v.seeking) {
-          setTimeout(tryPlay, 50);
-        }
-      });
-
-      // Final fallback: first touch starts it (no visible controls needed)
-      const kickOnTouch = () => {
-        tryPlay();
-        window.removeEventListener("touchstart", kickOnTouch, { passive: true });
-      };
+      v.addEventListener("pause", () => { if (!v.ended && !v.seeking) setTimeout(tryPlay, 50); });
+      const kickOnTouch = () => { tryPlay(); window.removeEventListener("touchstart", kickOnTouch, { passive: true }); };
       window.addEventListener("touchstart", kickOnTouch, { passive: true });
     });
+  </script>
+
+  <!-- Gate web fonts: apply only when Adobe kit is active AND Safira March is loaded -->
+  <script>
+    (function() {
+      const html = document.documentElement;
+
+      function whenTypekitActive() {
+        return new Promise(resolve => {
+          if (html.classList.contains("wf-active")) return resolve();
+          const obs = new MutationObserver(() => {
+            if (html.classList.contains("wf-active")) { obs.disconnect(); resolve(); }
+          });
+          obs.observe(html, { attributes: true, attributeFilter: ["class"] });
+        });
+      }
+
+      function whenSafiraLoaded() {
+        // Load one glyph to ensure the font is ready; returns after it’s available
+        return document.fonts && document.fonts.load
+          ? document.fonts.load('1em "Safira March"', "A")
+          : Promise.resolve();
+      }
+
+      Promise.all([whenTypekitActive(), whenSafiraLoaded()])
+        .then(() => { html.classList.add("fonts-ready"); })
+        .catch(() => { /* if anything fails, we just keep the system fallback (no flash) */ });
+    })();
   </script>
 </body>
 </html>
