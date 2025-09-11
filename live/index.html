@@ -108,14 +108,19 @@
       .hero-video { animation: none; }
     }
   </style>
+  <link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.mp4" as="video" type="video/mp4" fetchpriority="high">
+<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.webm" as="video" type="video/webm" fetchpriority="high">
+
 </head>
 <body>
   <section class="hero" aria-label="Hero video">
-    <!-- Use a poster that exists; you have /assets/img/hero.jpg -->
-    <video class="hero-video" autoplay muted playsinline loop poster="/assets/img/hero.jpg">
-      <source src="/assets/video/oahu.mp4" type="video/mp4" />
+    <video class="hero-video" autoplay muted playsinline loop preload="auto" poster="/assets/img/hero.jpg">
+      <source src="/assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
+      <source src="/assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
       Your browser does not support the video tag.
     </video>
+
+
 
     <div class="overlay">
       <div class="title-card">

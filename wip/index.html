@@ -20,7 +20,7 @@
     /* Local font: Safira March */
     @font-face {
       font-family: "Safira March";
-      src: url("assets/fonts/SafiraMarch.ttf") format("truetype");
+      src: url("/assets/fonts/SafiraMarch.ttf") format("truetype");
       font-weight: 400;
       font-style: normal;
       font-display: swap;
@@ -61,7 +61,7 @@
     html, body { margin: 0; padding: 0; }
     body {
       /* cream + botanical image in one line */
-      background: var(--color-bg) url("assets/img/bg-botanical.png?v=2")
+      background: var(--color-bg) url("/assets/img/bg-botanical.png?v=2")
                   top center / 800px auto repeat fixed;
 
       color: var(--color-text);
@@ -311,7 +311,10 @@
     .event-date, .event-time { display: block; }
 
   </style>
-
+<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.mp4" as="video" type="video/mp4" fetchpriority="high">
+<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.webm" as="video" type="video/webm" fetchpriority="high">
+<link rel="preload" href="/assets/img/hero-poster.jpg" as="image" fetchpriority="high">
+<link rel="prefetch" href="/assets/img/bg-botanical.png?v=2" as="image">
 </head>
 <body id="top">
   <header class="site-header">
@@ -336,8 +339,9 @@
 
   <!-- Hero -->
   <section class="hero" aria-label="Hero video welcome" id="banner">
-    <video class="hero-video" autoplay muted playsinline loop poster="assets/img/hero-poster.jpg">
-      <source src="assets/video/oahu.mp4" type="video/mp4" />
+    <video class="hero-video" autoplay muted playsinline loop preload="auto" poster="/assets/img/hero-poster.jpg">
+      <source src="/assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
+      <source src="/assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
       Your browser does not support the video tag.
     </video>
     <div class="overlay">
@@ -363,7 +367,7 @@
           <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
         </div>
         <div class="card">
-          <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo">
+          <img src=/assets/img/couple-1.jpg" alt="Stephen and Daniel — photo">
         </div>
       </div>
     </section>
@@ -432,7 +436,7 @@
                   </div><!-- /.panel-details -->
 
                   <div class="panel-photo">
-                    <img src="assets/img/events/welcome-drinks.jpg" alt="Welcome Drinks (placeholder)">
+                    <img src="/assets/img/events/welcome-drinks.jpg" alt="Welcome Drinks (placeholder)">
                   </div>
                 </div>
               </article>
@@ -471,7 +475,7 @@
                     </div>
                   </div>
                   <div class="panel-photo">
-                    <img src="assets/img/events/beach-party.jpg" alt="Beach Party (placeholder)">
+                    <img src="/assets/img/events/beach-party.jpg" alt="Beach Party (placeholder)">
                   </div>
                 </div>
               </article>
@@ -510,7 +514,7 @@
                     </div>
                   </div>
                   <div class="panel-photo">
-                    <img src="assets/img/events/sandbar.jpg" alt="Sandbar Outing (placeholder)">
+                    <img src="/assets/img/events/sandbar.jpg" alt="Sandbar Outing (placeholder)">
                   </div>
                 </div>
               </article>
@@ -549,7 +553,7 @@
                     </div>
                   </div>
                   <div class="panel-photo">
-                    <img src="assets/img/events/rehearsal.jpg" alt="Rehearsal Dinner (placeholder)">
+                    <img src="/assets/img/events/rehearsal.jpg" alt="Rehearsal Dinner (placeholder)">
                   </div>
                 </div>
               </article>
@@ -588,7 +592,7 @@
                     </div>
                   </div>
                   <div class="panel-photo">
-                    <img src="assets/img/events/ceremony.jpg" alt="Ceremony & Reception (placeholder)">
+                    <img src="/assets/img/events/ceremony.jpg" alt="Ceremony & Reception (placeholder)">
                   </div>
                 </div>
               </article>
@@ -627,7 +631,7 @@
                     </div>
                   </div>
                   <div class="panel-photo">
-                    <img src="assets/img/events/after-party.jpg" alt="After Party (placeholder)">
+                    <img src="/assets/img/events/after-party.jpg" alt="After Party (placeholder)">
                   </div>
                 </div>
               </article>
@@ -666,7 +670,7 @@
                     </div>
                   </div>
                   <div class="panel-photo">
-                    <img src="assets/img/events/recovery.jpg" alt="Recovery (placeholder)">
+                    <img src="/assets/img/events/recovery.jpg" alt="Recovery (placeholder)">
                   </div>
                 </div>
               </article>
@@ -697,7 +701,7 @@
 
             <!-- Map (from old Location image) -->
             <div>
-              <img src="assets/img/venue-map.jpg" alt="Map to Lanikūhonua Cultural Institute" />
+              <img src="/assets/img/venue-map.jpg" alt="Map to Lanikūhonua Cultural Institute" />
             </div>
 
             <!-- Travel / Lodging -->
