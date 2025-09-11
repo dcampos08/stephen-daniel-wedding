@@ -11,32 +11,11 @@
   <meta property="og:image" content="assets/img/og-cover.jpg" />
   <meta name="theme-color" content="#7a6a56">
 
-  <!-- Google Fonts (no forced mid-render swap) -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=optional" rel="stylesheet">
-
-  <!-- Adobe Fonts async loader (DON'T use the old <link>) -->
-  <script>
-    (function(d) {
-      var config = { kitId: 'yoj5rjq', scriptTimeout: 3000, async: true };
-      var h = d.documentElement;
-      h.classList.add("wf-loading");
-      var t = setTimeout(function () {
-        h.classList.remove("wf-loading");
-        h.classList.add("wf-inactive");  // kit failed or took too long
-      }, config.scriptTimeout);
-      var tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0];
-      tk.src = "https://use.typekit.net/" + config.kitId + ".js"; tk.async = true;
-      tk.onload = tk.onreadystatechange = function () {
-        var a = this.readyState;
-        if (f || a && a !== "complete" && a !== "loaded") return;
-        f = true; clearTimeout(t);
-        try { Typekit.load(config); } catch (e) {}
-      };
-      s.parentNode.insertBefore(tk, s);
-    })(document);
-  </script>
+  <!-- Cormorant (optional serif you used before) and Satisfy for script -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Satisfy&display=swap" rel="stylesheet">
 
   <!-- Preloads (Safari-friendly) -->
   <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
@@ -44,7 +23,7 @@
   <link rel="preload" href="assets/img/bg-botanical.png" as="image" fetchpriority="high">
   <link rel="preload" href="assets/fonts/SafiraMarch.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Local font: Safira March (display:swap is fine; we manually hide text until ready) -->
+  <!-- Local font: Safira March (for the main headline) -->
   <style>
     @font-face {
       font-family: "Safira March";
@@ -52,12 +31,13 @@
            url("assets/fonts/SafiraMarch.ttf") format("truetype");
       font-weight: 400;
       font-style: normal;
-      font-display: swap;
+      font-display: swap; /* preloaded above, so it should render immediately */
     }
 
     :root{
-      --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      --font-script-1: "beloved-script", cursive;
+      /* Keep body on fast system stack; use Satisfy for script, Safira for display */
+      --font-body: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      --font-script-1: "Satisfy", cursive;          /* <- updated */
       --font-display: "Safira March", cursive;
 
       --color-accent: #C9A64C;
@@ -67,21 +47,22 @@
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
 
-    /* System stack everywhere at first paint (no flash) */
     body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family: var(--font-body);
       background: #000;
       color: var(--color-text-on-video);
       font-synthesis-weight: none;
     }
 
-    /* Fullscreen hero with botanical fallback */
+    /* Fullscreen hero with fallback background */
     .hero {
       position: relative;
       height: 100vh;
       overflow: hidden;
       display: grid;
       place-items: center;
+
+      /* botanical fallback while video buffers */
       background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
 
@@ -110,15 +91,8 @@
       padding: clamp(20px, 4vw, 36px);
     }
 
-    /* No-flash tactic: start hidden; reveal with the correct font */
-    h1, .hero-subline {
-      opacity: 0;
-      transition: opacity .18s ease-in;
-    }
-
-    /* When Safira March is ready, show the H1 with that font */
-    .font-h1-ready h1 {
-      opacity: 1;
+    h1 {
+      margin: 0 0 0.1em 0;
       font-family: var(--font-display);
       font-weight: 400;
       letter-spacing: 0.04em;
@@ -128,16 +102,15 @@
       line-height: 1.05;
     }
 
-    /* When Typekit script font is ready, show the subline with it */
-    .font-script-ready .hero-subline {
-      opacity: 1;
-      font-family: var(--font-script-1);
-      font-weight: 700;
+    .hero-subline {
+      margin: 0.15em 0 0.6em 0;
+      font-family: var(--font-script-1);   /* Satisfy */
+      font-weight: 400;                    /* Satisfy ships at 400 */
       color: var(--color-accent);
       letter-spacing: 0.3px;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      font-size: clamp(20px, 3.5vw, 32px);
-      line-height: 1.1;
+      font-size: clamp(24px, 4vw, 36px);
+      line-height: 1.15;
     }
 
     .coming-soon {
@@ -172,18 +145,23 @@
     <div class="overlay">
       <div class="title-card">
         <h1>Stephen &amp; Daniel</h1>
-        <p class="hero-subline">Honolulu, HI — July 10, 2026</p>
+        <!-- Two-line subline: place on first line; date on second -->
+        <p class="hero-subline">
+          <span class="place">Honolulu, HI</span><br>
+          <span class="date">July 10, 2026</span>
+        </p>
         <p class="coming-soon">Full website coming soon!</p>
       </div>
     </div>
   </section>
 
-  <!-- Video autoplay hardening (iOS/Safari) -->
+  <!-- Mobile/Safari: force eager fetch & autoplay, with gentle retries -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const v = document.querySelector(".hero-video");
       if (!v) return;
 
+      // Ensure autoplay-friendly settings stick on iOS
       v.muted = true;
       v.autoplay = true;
       v.playsInline = true;
@@ -191,66 +169,34 @@
       v.setAttribute("webkit-playsinline", "");
 
       const tryPlay = () => v.play().catch(() => {});
+
+      // If the <video> hasn't resolved a currentSrc yet, force it from the MP4 <source>
       if (!v.currentSrc) {
         const mp4 = v.querySelector('source[type="video/mp4"]');
-        if (mp4 && mp4.src) { v.src = mp4.src; v.load(); }
+        if (mp4 && mp4.src) {
+          v.src = mp4.src;   // prompts eager fetch on some iOS versions
+          v.load();
+        }
       }
+
+      // Kick immediately and on metadata
       tryPlay();
       v.addEventListener("loadedmetadata", tryPlay, { once: true });
-      v.addEventListener("pause", () => { if (!v.ended && !v.seeking) setTimeout(tryPlay, 50); });
-      const kickOnTouch = () => { tryPlay(); window.removeEventListener("touchstart", kickOnTouch, { passive: true }); };
+
+      // If a pause sneaks in (common on iOS), retry shortly
+      v.addEventListener("pause", () => {
+        if (!v.ended && !v.seeking) {
+          setTimeout(tryPlay, 50);
+        }
+      });
+
+      // Final fallback: first touch starts it (no visible controls needed)
+      const kickOnTouch = () => {
+        tryPlay();
+        window.removeEventListener("touchstart", kickOnTouch, { passive: true });
+      };
       window.addEventListener("touchstart", kickOnTouch, { passive: true });
     });
-  </script>
-
-  <!-- Font readiness: reveal H1 when Safira is loaded; reveal subline when Typekit script font is ready.
-       Safety timeouts ensure content appears even if a font is blocked. -->
-  <script>
-    (function() {
-      const html = document.documentElement;
-
-      function mark(cls){ html.classList.add(cls); }
-
-      // 1) Safira March (local) -> reveal H1
-      function loadSafira() {
-        if (document.fonts && document.fonts.load) {
-          Promise.race([
-            document.fonts.load('400 1em "Safira March"'),
-            new Promise(res => setTimeout(res, 1400)) // safety: show fallback after ~1.4s
-          ]).then(() => mark('font-h1-ready'));
-        } else {
-          // No Font Loading API: reveal quickly
-          setTimeout(() => mark('font-h1-ready'), 600);
-        }
-      }
-
-      // 2) beloved-script (Adobe) -> reveal subline
-      function whenTypekitActive() {
-        return new Promise(resolve => {
-          if (html.classList.contains("wf-active")) return resolve();
-          const obs = new MutationObserver(() => {
-            if (html.classList.contains("wf-active")) { obs.disconnect(); resolve(); }
-          });
-          obs.observe(html, { attributes: true, attributeFilter: ["class"] });
-        });
-      }
-      function loadBelovedScript() {
-        if (document.fonts && document.fonts.load) {
-          // Wait until kit is active, then ensure the face is resolved
-          whenTypekitActive()
-            .then(() => Promise.race([
-              document.fonts.load('700 1em "beloved-script"'),
-              new Promise(res => setTimeout(res, 1600))
-            ]))
-            .then(() => mark('font-script-ready'));
-        } else {
-          setTimeout(() => mark('font-script-ready'), 800);
-        }
-      }
-
-      loadSafira();
-      loadBelovedScript();
-    })();
   </script>
 </body>
 </html>
