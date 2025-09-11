@@ -11,28 +11,51 @@
   <meta property="og:image" content="assets/img/og-cover.jpg" />
   <meta name="theme-color" content="#7a6a56">
 
-  <!-- Fonts -->
+  <!-- Fonts: Google (use display=optional to avoid mid-render swap) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=optional" rel="stylesheet">
 
-  <!-- Preloads -->
+  <!-- Adobe Fonts async loader (replaces the old Typekit <link>) -->
+  <script>
+    (function(d) {
+      var config = { kitId: 'yoj5rjq', scriptTimeout: 3000, async: true };
+      var h = d.documentElement;
+      h.className += " wf-loading";
+      var t = setTimeout(function () {
+        h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+      }, config.scriptTimeout);
+      var tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0];
+      tk.src = "https://use.typekit.net/" + config.kitId + ".js"; tk.async = true;
+      tk.onload = tk.onreadystatechange = function () {
+        var a = this.readyState;
+        if (f || a && a !== "complete" && a !== "loaded") return;
+        f = true; clearTimeout(t);
+        try { Typekit.load(config); } catch (e) {}
+      };
+      s.parentNode.insertBefore(tk, s);
+    })(document);
+  </script>
+
+  <!-- Preloads (Safari-friendly) -->
   <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
   <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.webm" as="fetch" type="video/webm" crossorigin="anonymous" fetchpriority="high">
   <link rel="preload" href="assets/img/bg-botanical.png" as="image" fetchpriority="high">
+  <link rel="preload" href="assets/fonts/SafiraMarch.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- Local font: Safira March -->
   <style>
     @font-face {
       font-family: "Safira March";
-      src: url("assets/fonts/SafiraMarch.ttf") format("truetype");
+      src: url("assets/fonts/SafiraMarch.woff2") format("woff2"),
+           url("assets/fonts/SafiraMarch.ttf") format("truetype");
       font-weight: 400;
       font-style: normal;
-      font-display: swap;
+      font-display: swap; /* try 'optional' if you prefer no swap at all */
     }
 
     :root{
+      /* Custom families (Adobe kit fonts referenced by name in CSS) */
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       --font-script-1: "beloved-script", cursive;
       --font-display: "Safira March", cursive;
@@ -43,10 +66,16 @@
 
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
+
+    /* Default to system stack to avoid FOUT; switch to Adobe when .wf-active */
     body {
-      font-family: var(--font-body);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       background: #000;
       color: var(--color-text-on-video);
+      font-synthesis-weight: none; /* reduces bold “jump” during swaps */
+    }
+    .wf-active body {
+      font-family: var(--font-body);
     }
 
     /* Fullscreen hero with fallback background */
@@ -99,13 +128,17 @@
 
     .hero-subline {
       margin: 0.15em 0 0.6em 0;
-      font-family: var(--font-script-1);
+      /* Start with system fallback to avoid flash; upgrade when Adobe active */
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       font-weight: 700;
       color: var(--color-accent);
       letter-spacing: 0.3px;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
       font-size: clamp(20px, 3.5vw, 32px);
       line-height: 1.1;
+    }
+    .wf-active .hero-subline {
+      font-family: var(--font-script-1);
     }
 
     .coming-soon {
@@ -123,63 +156,19 @@
 </head>
 <body>
   <section class="hero" aria-label="Hero video">
-<video
-  class="hero-video"
-  autoplay
-  muted
-  playsinline
-  webkit-playsinline
-  loop
-  preload="auto"
->
-  <source src="assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
-  <source src="assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
-  Your browser does not support the video tag.
-</video>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const v = document.querySelector(".hero-video");
-    if (!v) return;
-
-    // Belt-and-suspenders: set properties & attributes for iOS
-    v.muted = true;
-    v.autoplay = true;
-    v.playsInline = true;
-    v.setAttribute("playsinline", "");
-    v.setAttribute("webkit-playsinline", "");
-
-    const tryPlay = () => v.play().catch(() => {});
-
-    // Kick immediately
-    tryPlay();
-
-    // If autoplay was deferred, nudge again after metadata arrives
-    v.addEventListener("loadedmetadata", tryPlay, { once: true });
-
-    // If a pause sneaks in (common on iOS), force-load src then retry
-    v.addEventListener("pause", () => {
-      if (!v.ended && !v.seeking) {
-        if (!v.currentSrc) {
-          const mp4 = v.querySelector('source[type="video/mp4"]');
-          if (mp4 && mp4.src) {
-            v.src = mp4.src;  // prompts eager fetch on some iOS versions
-            v.load();
-          }
-        }
-        setTimeout(tryPlay, 50);
-      }
-    });
-
-    // Final fallback: first touch starts it (no visible controls needed)
-    const kickOnTouch = () => {
-      tryPlay();
-      window.removeEventListener("touchstart", kickOnTouch, { passive: true });
-    };
-    window.addEventListener("touchstart", kickOnTouch, { passive: true });
-  });
-</script>
-
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      playsinline
+      webkit-playsinline
+      loop
+      preload="auto"
+    >
+      <source src="assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
+      <source src="assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
+      Your browser does not support the video tag.
+    </video>
 
     <div class="overlay">
       <div class="title-card">
@@ -190,23 +179,47 @@
     </div>
   </section>
 
-  <!-- iOS/Safari: force eager fetch & playback -->
+  <!-- Mobile/Safari: force eager fetch & autoplay, with gentle retries -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const v = document.querySelector(".hero-video");
       if (!v) return;
 
+      // Ensure autoplay-friendly settings stick on iOS
+      v.muted = true;
+      v.autoplay = true;
+      v.playsInline = true;
+      v.setAttribute("playsinline", "");
+      v.setAttribute("webkit-playsinline", "");
+
+      const tryPlay = () => v.play().catch(() => {});
+
+      // If the <video> hasn't resolved a currentSrc yet, force it from the MP4 <source>
       if (!v.currentSrc) {
         const mp4 = v.querySelector('source[type="video/mp4"]');
         if (mp4 && mp4.src) {
-          v.src = mp4.src;
+          v.src = mp4.src;   // prompts eager fetch on some iOS versions
           v.load();
         }
       }
 
-      v.play().catch(() => {
-        // Safari may still defer autoplay; botanical fallback stays visible
+      // Kick immediately and on metadata
+      tryPlay();
+      v.addEventListener("loadedmetadata", tryPlay, { once: true });
+
+      // If a pause sneaks in (common on iOS), retry shortly
+      v.addEventListener("pause", () => {
+        if (!v.ended && !v.seeking) {
+          setTimeout(tryPlay, 50);
+        }
       });
+
+      // Final fallback: first touch starts it (no visible controls needed)
+      const kickOnTouch = () => {
+        tryPlay();
+        window.removeEventListener("touchstart", kickOnTouch, { passive: true });
+      };
+      window.addEventListener("touchstart", kickOnTouch, { passive: true });
     });
   </script>
 </body>
