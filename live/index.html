@@ -130,5 +130,16 @@
       </div>
     </div>
   </section>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const vid = document.querySelector(".hero-video");
+    if (vid) {
+      vid.play().catch(err => {
+        // On some devices Safari might delay autoplay — fallback is fine
+        console.log("Autoplay deferral:", err);
+      });
+    }
+  });
+</script>
 </body>
 </html>
