@@ -11,7 +11,7 @@
   <meta property="og:image" content="assets/img/og-cover.jpg" />
   <meta name="theme-color" content="#7a6a56">
 
-  <!-- Typekit (beloved-sans / beloved-script for body + accents) -->
+  <!-- Typekit (beloved-sans / beloved-script) -->
   <link rel="preconnect" href="https://use.typekit.net">
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
   <!-- Google: Satisfy (for Oʻahu / date lines) -->
@@ -80,7 +80,7 @@
     /* States */
     body:not(.entering):not(.entered) { overflow: hidden; height: 100vh; } /* before click */
     body.entering { overflow: auto; }   /* allow the smooth scroll animation */
-    body.entered  { overflow: hidden; height: 100vh; } /* lock after we land */
+    body.entered  { overflow: hidden; height: 100vh; } /* lock after we land (desktop) */
 
     .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
 
@@ -219,6 +219,7 @@
       margin: 0 0 16px;
       letter-spacing: 0.2px;
     }
+    .welcome-card { scroll-margin-top: calc(var(--header-height) + 16px); } /* <-- keeps smooth scroll aligned under sticky header */
     .welcome-card p { margin: 0 0 10px; }
 
     .signature {
@@ -248,11 +249,10 @@
       /* Let the main content grow naturally and scroll */
       main#main {
         height: auto;                         /* remove fixed vh */
-        min-height: calc(100svh - var(--header-height)); /* ensure at least screen height */
+        min-height: calc(100svh - var(--header-height)); /* at least screen height */
         overflow: visible;
       }
 
-      /* Remove the strict grid height and center; just flow top-to-bottom */
       .welcome-wrap {
         height: auto;
         display: block;
@@ -261,23 +261,21 @@
 
       .grid-2 {
         grid-template-columns: 1fr;           /* stack */
-        height: auto !important;              /* ensure no cropping */
+        height: auto !important;
       }
 
-      /* Slightly tighter padding so both cards fit comfortably */
       .card {
         padding: clamp(14px, 4vw, 20px);
       }
 
-      /* Ensure the full image (and its border) is visible */
       .photo-card {
         align-items: stretch;
       }
       .photo-card img {
         width: 100%;
-        height: auto;                         /* let height be natural */
-        max-height: none;                     /* no cap */
-        object-fit: contain;                  /* no crop */
+        height: auto;
+        max-height: none;
+        object-fit: contain;
       }
     }
 
@@ -325,7 +323,7 @@
         <div class="names">Stephen &amp; Daniel</div>
         <div class="dateplace">Oʻahu, Hawaiʻi — July 10, 2026</div>
       </div>
-      <!-- No nav buttons per request -->
+      <!-- no nav buttons (coming soon) -->
     </div>
   </header>
 
@@ -361,28 +359,30 @@
     }
     window.addEventListener('resize', setHeaderHeightVar);
 
-    function smoothScrollTo(el) {
-      if (!el) return;
-      const header = document.querySelector('.site-header');
-      const headerH = header ? header.offsetHeight : 0;
-      const gap = 16;
-      const top = el.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-
     function enter() {
       // Show header + main, allow one smooth scroll like WIP
       document.body.classList.add('entering');
       setHeaderHeightVar();
-      smoothScrollTo(document.getElementById('welcome-card'));
 
-      // After the scroll animation, hide the hero and lock the layout (desktop).
-      // On mobile we let CSS unlock scrolling via media query.
-      setTimeout(() => {
+      const card = document.getElementById('welcome-card');
+      if (card) {
+        // Let CSS handle sticky header via scroll-margin-top
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // When the smooth scroll finishes (or after a short fallback), finalize
+      const finalize = () => {
         document.body.classList.remove('entering');
-        document.body.classList.add('entered');
-        window.scrollTo({ top: 0 });
-      }, 700);
+        document.body.classList.add('entered'); // hides hero on desktop; mobile remains scrollable via CSS
+      };
+
+      if ('onscrollend' in window) {
+        window.addEventListener('scrollend', finalize, { once: true });
+        // Safety fallback in case scrollend doesn't fire
+        setTimeout(finalize, 800);
+      } else {
+        setTimeout(finalize, 800);
+      }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
