@@ -17,6 +17,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
 
+  <!-- Preloads -->
+  <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
+  <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.webm" as="fetch" type="video/webm" crossorigin="anonymous" fetchpriority="high">
+  <link rel="preload" href="assets/img/bg-botanical.png" as="image" fetchpriority="high">
+
   <!-- Local font: Safira March -->
   <style>
     @font-face {
@@ -40,23 +45,30 @@
     html, body { height: 100%; margin: 0; }
     body {
       font-family: var(--font-body);
-      background: #000;             /* fallback behind video */
+      background: #000;
       color: var(--color-text-on-video);
     }
 
-    /* Fullscreen hero with video background */
+    /* Fullscreen hero with fallback background */
     .hero {
       position: relative;
       height: 100vh;
       overflow: hidden;
       display: grid;
       place-items: center;
+
+      /* botanical fallback */
+      background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
+
     .hero-video {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
     }
+
     .overlay {
       position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
@@ -76,7 +88,7 @@
 
     h1 {
       margin: 0 0 0.1em 0;
-      font-family: var(--font-display);   /* ✅ fixed variable */
+      font-family: var(--font-display);
       font-weight: 400;
       letter-spacing: 0.04em;
       color: #fff;
@@ -108,19 +120,14 @@
       .hero-video { animation: none; }
     }
   </style>
-  <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.mp4" as="video" type="video/mp4" fetchpriority="high">
-<link rel="preload" href="assets/video/oahu-web-8s-720p.v1.webm" as="video" type="video/webm" fetchpriority="high">
-
 </head>
 <body>
   <section class="hero" aria-label="Hero video">
-    <video class="hero-video" autoplay muted playsinline loop preload="auto" poster="assets/img/hero.jpg">
+    <video class="hero-video" autoplay muted playsinline loop preload="auto">
       <source src="assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
       <source src="assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
       Your browser does not support the video tag.
     </video>
-
-
 
     <div class="overlay">
       <div class="title-card">
@@ -130,16 +137,25 @@
       </div>
     </div>
   </section>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const vid = document.querySelector(".hero-video");
-    if (vid) {
-      vid.play().catch(err => {
-        // On some devices Safari might delay autoplay — fallback is fine
-        console.log("Autoplay deferral:", err);
+
+  <!-- iOS/Safari: force eager fetch & playback -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const v = document.querySelector(".hero-video");
+      if (!v) return;
+
+      if (!v.currentSrc) {
+        const mp4 = v.querySelector('source[type="video/mp4"]');
+        if (mp4 && mp4.src) {
+          v.src = mp4.src;
+          v.load();
+        }
+      }
+
+      v.play().catch(() => {
+        // Safari may still defer autoplay; botanical fallback stays visible
       });
-    }
-  });
-</script>
+    });
+  </script>
 </body>
 </html>
