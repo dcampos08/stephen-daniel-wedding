@@ -58,10 +58,10 @@
       --max-w: 1100px;
       --space-5: 24px;
 
-      /* Tuned for fit-in-viewport */
-      --vpad: clamp(12px, 2vh, 20px);          /* vertical padding around grid */
-      --grid-gap: clamp(12px, 2vw, 20px);      /* gap between blurb/photo */
-      --card-pad: clamp(14px, 2vw, 20px);      /* inner card padding */
+      /* Fit-in-viewport tuning (desktop/tablet) */
+      --vpad: clamp(12px, 2vh, 20px);
+      --grid-gap: clamp(12px, 2vw, 20px);
+      --card-pad: clamp(14px, 2vw, 20px);
     }
 
     * { box-sizing: border-box; }
@@ -137,9 +137,9 @@
     }
     .btn {
       display: inline-block;
-      padding: 12px 22px;                 /* wider */
+      padding: 12px 22px;
       font-weight: 700;
-      font-size: clamp(16px, 2.1vw, 19px);/* ↑ slightly bigger */
+      font-size: clamp(16px, 2.1vw, 19px);
       line-height: 1.1;
       border-radius: 999px;
       border: 2px solid var(--color-accent);
@@ -180,7 +180,7 @@
     main#main {
       display: none;
       height: calc(100vh - var(--header-height));
-      overflow: hidden; /* lock after we land */
+      overflow: hidden; /* lock after we land on desktop/tablet */
     }
     body.entering main#main,
     body.entered  main#main { display: block; }
@@ -192,17 +192,13 @@
       padding: var(--vpad) 0;
     }
 
-    /* Blurb LEFT, photo RIGHT. Equal-height cards sized to viewport. */
+    /* Blurb LEFT, photo RIGHT. Equal-height cards (desktop/tablet). */
     .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
     @media (min-width: 850px) {
       .grid-2 {
-        grid-template-columns: min(540px, 50%) 1fr;            /* a touch narrower */
+        grid-template-columns: min(540px, 50%) 1fr;
         height: calc(100vh - var(--header-height) - (var(--vpad) * 2));
       }
-    }
-    @media (max-width: 849px) {
-      .grid-2 { grid-template-columns: 1fr; height: auto; }
-      body.entered { overflow: auto; } /* allow scroll on very small screens */
     }
 
     .card {
@@ -211,14 +207,14 @@
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm);
       padding: var(--card-pad);
-      height: 100%;                 /* equal heights in two-column layout */
+      height: 100%;
       display: flex; flex-direction: column;
-      min-height: 0;                /* allow children to size properly */
+      min-height: 0;
     }
 
     .section-title {
       font-family: var(--font-body); /* beloved-sans */
-      font-size: clamp(26px, 3.6vw, 36px);  /* slightly smaller */
+      font-size: clamp(26px, 3.6vw, 36px);
       color: #1B6A63;
       margin: 0 0 16px;
       letter-spacing: 0.2px;
@@ -235,13 +231,54 @@
       line-height: 1.2;
     }
 
-    /* Photo card: full image visible (no crop) */
+    /* Photo card */
     .photo-card { display: flex; align-items: center; justify-content: center; }
     .photo-card img {
       width: 100%;
       height: 100%;
       object-fit: contain;          /* show whole picture */
       border-radius: var(--radius-sm);
+    }
+
+    /* ======== Mobile fixes (stacked layout, full image visible) ======== */
+    @media (max-width: 849px) {
+      /* Allow page to scroll after entering on small screens */
+      body.entered { overflow: auto; height: auto; }
+
+      /* Let the main content grow naturally and scroll */
+      main#main {
+        height: auto;                         /* remove fixed vh */
+        min-height: calc(100svh - var(--header-height)); /* ensure at least screen height */
+        overflow: visible;
+      }
+
+      /* Remove the strict grid height and center; just flow top-to-bottom */
+      .welcome-wrap {
+        height: auto;
+        display: block;
+        padding: clamp(12px, 3vh, 24px) 0;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;           /* stack */
+        height: auto !important;              /* ensure no cropping */
+      }
+
+      /* Slightly tighter padding so both cards fit comfortably */
+      .card {
+        padding: clamp(14px, 4vw, 20px);
+      }
+
+      /* Ensure the full image (and its border) is visible */
+      .photo-card {
+        align-items: stretch;
+      }
+      .photo-card img {
+        width: 100%;
+        height: auto;                         /* let height be natural */
+        max-height: none;                     /* no cap */
+        object-fit: contain;                  /* no crop */
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -339,7 +376,8 @@
       setHeaderHeightVar();
       smoothScrollTo(document.getElementById('welcome-card'));
 
-      // After the scroll animation, hide the hero and lock the layout
+      // After the scroll animation, hide the hero and lock the layout (desktop).
+      // On mobile we let CSS unlock scrolling via media query.
       setTimeout(() => {
         document.body.classList.remove('entering');
         document.body.classList.add('entered');
