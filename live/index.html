@@ -11,11 +11,9 @@
   <meta property="og:image" content="assets/img/og-cover.jpg" />
   <meta name="theme-color" content="#7a6a56">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Cormorant (optional serif you used before) + Satisfy for script -->
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Satisfy&display=swap" rel="stylesheet">
+  <!-- Typekit (beloved-sans / beloved-script) -->
+  <link rel="preconnect" href="https://use.typekit.net">
+  <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
 
   <!-- Preloads -->
   <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
@@ -23,7 +21,7 @@
   <link rel="preload" href="assets/img/bg-botanical.png" as="image" fetchpriority="high">
   <link rel="preload" href="assets/fonts/SafiraMarch.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Local font: Safira March (for the main headline) -->
+  <!-- Local font: Safira March (for the main headline / names) -->
   <style>
     @font-face {
       font-family: "Safira March";
@@ -36,9 +34,11 @@
 
     :root{
       --header-height: 88px;
-      --font-body: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      --font-script-1: "Satisfy", cursive;
-      --font-display: "Safira March", cursive;
+
+      /* WIP fonts */
+      --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      --font-script-1: "beloved-script", cursive;   /* used for the blurb accents & dateplace */
+      --font-display: "Safira March", cursive;      /* used for names & big H1 */
 
       --color-accent: #C9A64C;
       --color-text: #1F1F1F;
@@ -73,51 +73,10 @@
     /* Before entering: only the hero shows, no page scroll */
     body:not(.entered) { overflow: hidden; height: 100vh; }
 
-    /* After entering: lock the page to one screen — no scrolling beyond header + welcome */
+    /* After entering: lock to one screen (header + welcome only) */
     body.entered { overflow: hidden; height: 100vh; }
 
-    /* --- Header (hidden until entered) --- */
-    header.site-header {
-      display: none;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(255,255,255,0.78);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--color-border);
-      color: var(--color-text);
-    }
-    body.entered header.site-header { display: block; }
-
     .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
-
-    .site-header .mast { padding: var(--space-4) 0; text-align: center; }
-    .site-header .mast .names {
-      font-family: var(--font-display);
-      color: #1B6A63;
-      font-weight: 400;
-      font-size: clamp(28px, 4.8vw, 48px);
-      letter-spacing: 0.06em;
-      line-height: 1;
-    }
-    .site-header .mast .dateplace {
-      font-family: var(--font-script-1);
-      color: var(--color-accent);
-      font-weight: 400;
-      font-size: clamp(14px, 1.8vw, 18px);
-      margin-top: 4px;
-    }
-
-    nav.topnav { border-top: 1px solid var(--color-border); }
-    .topnav ul {
-      display: flex; flex-wrap: wrap; gap: var(--space-5);
-      list-style: none; margin: 0; padding: var(--space-4) 0;
-      justify-content: center;
-    }
-    .topnav .nav-link.disabled {
-      color: #4f4f4f; font-weight: 700; opacity: 0.7;
-      pointer-events: none; cursor: default; text-decoration: none;
-    }
 
     /* --- Hero with video --- */
     .hero {
@@ -163,7 +122,7 @@
     }
     .hero-subline {
       margin: 0.15em 0 0.8em 0;
-      font-family: var(--font-script-1);
+      font-family: var(--font-script-1);  /* beloved-script */
       font-weight: 400;
       color: var(--color-accent);
       letter-spacing: 0.3px;
@@ -174,8 +133,39 @@
     .btn {
       display: inline-block; padding: 12px 18px; font-weight: 700;
       border-radius: 999px; border: 2px solid var(--color-accent);
+      text-decoration: none;
     }
-    .btn.primary { background: var(--color-accent); color: white; text-decoration: none; }
+    .btn.primary { background: var(--color-accent); color: white; }
+
+    /* --- Header (no buttons/links) --- */
+    header.site-header {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text);
+    }
+    body.entered header.site-header { display: block; }
+
+    .site-header .mast { padding: var(--space-4) 0; text-align: center; }
+    .site-header .mast .names {
+      font-family: var(--font-display);
+      color: #1B6A63;
+      font-weight: 400;
+      font-size: clamp(28px, 4.8vw, 48px);
+      letter-spacing: 0.06em;
+      line-height: 1;
+    }
+    .site-header .mast .dateplace {
+      font-family: var(--font-script-1);  /* beloved-script */
+      color: var(--color-accent);
+      font-weight: 400;
+      font-size: clamp(14px, 1.8vw, 18px);
+      margin-top: 4px;
+    }
 
     /* --- Main welcome view (only visible after entering) --- */
     main#main {
@@ -187,7 +177,6 @@
     }
     body.entered main#main { display: block; }
 
-    /* center the content area within the fixed-height main */
     .welcome-wrap {
       height: 100%;
       display: grid;
@@ -195,15 +184,15 @@
       padding: var(--space-6) 0;
     }
 
-    /* Right-sided layout: empty left column, content on the right */
+    /* Two-column: blurb LEFT, photo RIGHT (matches WIP intent) */
     .grid { display: grid; gap: var(--space-6); align-items: start; }
     @media (min-width: 850px) {
-      .grid-right-2 {
-        grid-template-columns: 1fr min(520px, 46%);
+      .grid-2 {
+        grid-template-columns: min(560px, 52%) 1fr; /* left text | right photo */
       }
     }
     @media (max-width: 849px) {
-      .grid-right-2 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
     }
 
     .card {
@@ -213,15 +202,18 @@
       box-shadow: var(--shadow-sm);
       padding: var(--space-6);
     }
+
+    /* WIP-style blurb typography */
     .section-title {
-      font-family: var(--font-body);
-      font-size: clamp(26px, 3.6vw, 38px);
+      font-family: var(--font-body);                 /* beloved-sans */
+      font-size: clamp(28px, 4vw, 40px);
       color: #1B6A63;
       margin: 0 0 var(--space-5);
       letter-spacing: 0.2px;
     }
+    .welcome-card p { margin: 0 0 12px; }
     .signature {
-      font-family: var(--font-script-1);
+      font-family: var(--font-script-1);             /* beloved-script */
       color: var(--color-accent);
       font-weight: 400;
       font-size: clamp(18px, 2.2vw, 24px);
@@ -229,8 +221,10 @@
       margin-top: var(--space-4);
       line-height: 1.2;
     }
+
     .photo-card img {
       width: 100%; height: auto; display: block; border-radius: var(--radius-sm);
+      object-fit: cover;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -269,24 +263,14 @@
     </div>
   </section>
 
-  <!-- HEADER (disabled nav) -->
+  <!-- HEADER (no nav buttons) -->
   <header class="site-header" role="banner" aria-label="Site header">
     <div class="container" id="siteNav">
       <div class="mast">
         <div class="names">Stephen &amp; Daniel</div>
         <div class="dateplace">Oʻahu, Hawaiʻi — July 10, 2026</div>
       </div>
-      <nav class="topnav" aria-label="Primary">
-        <ul>
-          <li><span class="nav-link disabled">Welcome - Coming Soon</span></li>
-          <li><span class="nav-link disabled">Events - Coming Soon</span></li>
-          <li><span class="nav-link disabled">Lodging &amp; Travel - Coming Soon</span></li>
-          <li><span class="nav-link disabled">FAQs - Coming Soon</span></li>
-          <li><span class="nav-link disabled">RSVP - Coming Soon</span></li>
-          <li><span class="nav-link disabled">Honeymoon Fund - Coming Soon</span></li>
-          <li><span class="nav-link disabled">Guestbook - Coming Soon</span></li>
-        </ul>
-      </nav>
+      <!-- No nav links/buttons per request -->
     </div>
   </header>
 
@@ -294,43 +278,41 @@
   <main id="main" role="main">
     <div class="welcome-wrap">
       <div class="container">
-        <!-- Empty left column, content stacks on the RIGHT -->
-        <div class="grid grid-right-2">
-          <div aria-hidden="true"></div>
-          <div>
-            <section id="welcome">
-              <div class="card" id="welcome-card">
-                <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
-                <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends in beautiful Oʻahu!</p>
-                <p>While we're still adding the finishing touches to our website, we’ll share all the details soon. We can’t wait to celebrate with you!</p>
-                <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
-              </div>
+        <div class="grid grid-2">
+          <!-- LEFT: blurb -->
+          <section id="welcome">
+            <div class="card welcome-card" id="welcome-card" tabindex="-1">
+              <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
+              <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends in beautiful Oʻahu!</p>
+              <p>While we're still adding the finishing touches to our website, we’ll share all the details soon. We can’t wait to celebrate with you!</p>
+              <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
+            </div>
+          </section>
 
-              <div class="card photo-card" style="margin-top: var(--space-6);">
-                <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
-              </div>
-            </section>
+          <!-- RIGHT: photo -->
+          <div class="card photo-card">
+            <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
           </div>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Autoplay helpers for iOS/Safari -->
+  <!-- Autoplay helpers + Enter behavior -->
   <script>
-    // Maintain a CSS custom prop for header height (in case it wraps)
+    // Keep a live CSS var of the header height (helps on wrap)
     function setHeaderHeightVar() {
       const header = document.querySelector('.site-header');
       if (header) document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
     }
     window.addEventListener('resize', setHeaderHeightVar);
 
-    // Enter Site behavior: reveal header + main, and focus welcome
+    // Reveal header + main, and focus the welcome card
     function enter() {
       document.body.classList.add('entered');
       setHeaderHeightVar();
-      const welcome = document.getElementById('welcome-card');
-      if (welcome) welcome.focus?.();
+      const target = document.getElementById('welcome-card');
+      if (target) target.focus?.();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -338,10 +320,7 @@
       const btn = document.getElementById('enterSiteBtn');
 
       if (btn) {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          enter();
-        });
+        btn.addEventListener('click', (e) => { e.preventDefault(); enter(); });
         btn.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
         });
