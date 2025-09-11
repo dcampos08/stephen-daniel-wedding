@@ -14,7 +14,7 @@
   <!-- Typekit (beloved-sans / beloved-script for body + accents) -->
   <link rel="preconnect" href="https://use.typekit.net">
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
-  <!-- Google: Satisfy (for the Oʻahu, Hawaiʻi / date lines) -->
+  <!-- Google: Satisfy (for Oʻahu / date lines) -->
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
 
   <!-- Preloads -->
@@ -56,10 +56,12 @@
       --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
 
       --max-w: 1100px;
-      --space-4: 16px;
       --space-5: 24px;
-      --space-6: 32px;
-      --space-8: 48px;
+
+      /* Tuned for fit-in-viewport */
+      --vpad: clamp(12px, 2vh, 20px);          /* vertical padding around grid */
+      --grid-gap: clamp(12px, 2vw, 20px);      /* gap between blurb/photo */
+      --card-pad: clamp(14px, 2vw, 20px);      /* inner card padding */
     }
 
     * { box-sizing: border-box; }
@@ -89,11 +91,8 @@
       overflow: hidden;
       display: grid;
       place-items: center;
-      /* botanical sits behind video as fallback */
       background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
-    /* During the scroll animation, keep the hero visible.
-       After we arrive, hide it entirely. */
     body.entered .hero { display: none; }
 
     .hero-video {
@@ -137,8 +136,13 @@
       line-height: 1.15;
     }
     .btn {
-      display: inline-block; padding: 12px 18px; font-weight: 700;
-      border-radius: 999px; border: 2px solid var(--color-accent);
+      display: inline-block;
+      padding: 12px 22px;                 /* wider */
+      font-weight: 700;
+      font-size: clamp(16px, 2.1vw, 19px);/* ↑ slightly bigger */
+      line-height: 1.1;
+      border-radius: 999px;
+      border: 2px solid var(--color-accent);
       text-decoration: none;
     }
     .btn.primary { background: var(--color-accent); color: white; }
@@ -155,7 +159,7 @@
     body.entering header.site-header,
     body.entered  header.site-header { display: block; }
 
-    .site-header .mast { padding: var(--space-4) 0; text-align: center; }
+    .site-header .mast { padding: 12px 0; text-align: center; }
     .site-header .mast .names {
       font-family: var(--font-display);
       color: #1B6A63;
@@ -185,52 +189,59 @@
       height: 100%;
       display: grid;
       place-items: center;
-      padding: var(--space-6) 0;
+      padding: var(--vpad) 0;
     }
 
-    /* Blurb LEFT, photo RIGHT. Equal-height cards. */
-    .grid { display: grid; gap: var(--space-6); align-items: stretch; }
+    /* Blurb LEFT, photo RIGHT. Equal-height cards sized to viewport. */
+    .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
     @media (min-width: 850px) {
-      .grid-2 { grid-template-columns: min(560px, 52%) 1fr; }
+      .grid-2 {
+        grid-template-columns: min(540px, 50%) 1fr;            /* a touch narrower */
+        height: calc(100vh - var(--header-height) - (var(--vpad) * 2));
+      }
     }
-    @media (max-width: 849px) { .grid-2 { grid-template-columns: 1fr; } }
+    @media (max-width: 849px) {
+      .grid-2 { grid-template-columns: 1fr; height: auto; }
+      body.entered { overflow: auto; } /* allow scroll on very small screens */
+    }
 
     .card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm);
-      padding: var(--space-6);
-      height: 100%;                 /* <- equal heights */
+      padding: var(--card-pad);
+      height: 100%;                 /* equal heights in two-column layout */
       display: flex; flex-direction: column;
+      min-height: 0;                /* allow children to size properly */
     }
 
     .section-title {
       font-family: var(--font-body); /* beloved-sans */
-      font-size: clamp(28px, 4vw, 40px);
+      font-size: clamp(26px, 3.6vw, 36px);  /* slightly smaller */
       color: #1B6A63;
-      margin: 0 0 var(--space-5);
+      margin: 0 0 16px;
       letter-spacing: 0.2px;
     }
-    .welcome-card p { margin: 0 0 12px; }
+    .welcome-card p { margin: 0 0 10px; }
+
     .signature {
       font-family: var(--font-script-1); /* beloved-script */
       color: var(--color-accent);
       font-weight: 400;
       font-size: clamp(18px, 2.2vw, 24px);
       letter-spacing: 0.3px;
-      margin-top: var(--space-4);
+      margin-top: 10px;
       line-height: 1.2;
     }
 
-    /* Photo card: keep image slightly smaller so white border shows */
+    /* Photo card: full image visible (no crop) */
     .photo-card { display: flex; align-items: center; justify-content: center; }
     .photo-card img {
       width: 100%;
-      height: auto;
-      max-height: 92%;           /* <- just a touch smaller */
+      height: 100%;
+      object-fit: contain;          /* show whole picture */
       border-radius: var(--radius-sm);
-      object-fit: cover;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -305,7 +316,7 @@
     </div>
   </main>
 
-  <!-- Smooth 'Enter Site' like WIP + iOS video nudges -->
+  <!-- Smooth 'Enter Site' + iOS video nudges -->
   <script>
     function setHeaderHeightVar() {
       const header = document.querySelector('.site-header');
@@ -323,17 +334,15 @@
     }
 
     function enter() {
-      // Show header + main but keep hero visible so the page has scroll room
+      // Show header + main, allow one smooth scroll like WIP
       document.body.classList.add('entering');
       setHeaderHeightVar();
-      // Smooth-scroll to the welcome card (like WIP)
       smoothScrollTo(document.getElementById('welcome-card'));
 
-      // After the scroll animation, hide the hero and lock layout
+      // After the scroll animation, hide the hero and lock the layout
       setTimeout(() => {
         document.body.classList.remove('entering');
         document.body.classList.add('entered');
-        // Ensure we're at the top of the "final" layout (header + welcome only)
         window.scrollTo({ top: 0 });
       }, 700);
     }
