@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
   <!-- Google: Satisfy (for Oʻahu / date lines) -->
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+  <!-- NEW: Google Antic Slab for blurb -->
+  <link href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap" rel="stylesheet">
 
   <!-- Preloads -->
   <link rel="preload" href="assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
@@ -24,183 +26,281 @@
   <link rel="preload" href="assets/fonts/SafiraMarch.woff2" as="font" type="font/woff2" crossorigin>
 
   <style>
-    @font-face{
-      font-family:"Safira March";
-      src:url("assets/fonts/SafiraMarch.woff2") format("woff2"),
-          url("assets/fonts/SafiraMarch.ttf") format("truetype");
-      font-weight:400; font-style:normal; font-display:swap;
+    /* Local display font */
+    @font-face {
+      font-family: "Safira March";
+      src: url("assets/fonts/SafiraMarch.woff2") format("woff2"),
+           url("assets/fonts/SafiraMarch.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
     }
 
     :root{
-      --header-height: 92px;
+      --header-height: 88px;
 
+      /* WIP fonts */
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      --font-script-1:"beloved-script", cursive;
-      --font-script-2:"Satisfy", cursive;
-      --font-display:"Safira March", cursive;
+      --font-script-1: "beloved-script", cursive;    /* accents/signature */
+      --font-script-2: "Satisfy", cursive;           /* Oʻahu / date lines */
+      --font-display: "Safira March", cursive;       /* big names */
 
-      --color-accent:#C9A64C;
-      --color-text:#1F1F1F;
-      --color-text-on-video:#fff;
+      --color-accent: #C9A64C;
+      --color-text: #1F1F1F;
+      --color-text-on-video: #fff;
 
-      --color-bg:#FFFDF8;
-      --color-surface:#FFFFFF;
-      --color-border:#E8E1D8;
+      --color-bg: #FFFDF8;        /* cream */
+      --color-surface: #FFFFFF;
+      --color-border: #E8E1D8;
 
-      --radius-lg:20px;
-      --radius-sm:10px;
-      --shadow-sm:0 4px 16px rgba(0,0,0,0.08);
+      --radius-lg: 20px;
+      --radius-sm: 10px;
+      --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
 
-      --max-w: 1440px;
-      --side-pad: 18px;
+      --max-w: 1200px;            /* a touch wider to give more room */
+      --space-5: 24px;
 
-      --vpad:clamp(10px,2vh,18px);
-      --grid-gap:clamp(10px,1.6vw,16px);
-      --card-pad:clamp(12px,1.6vw,16px);
-
-      --fit-adjust: 66px;
+      --vpad: clamp(12px, 2vh, 20px);
+      --grid-gap: clamp(12px, 2vw, 20px);
+      --card-pad: clamp(14px, 2vw, 20px);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0}
-    html,body{overflow-anchor:none}
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    html { scroll-behavior: smooth; }
 
-    body{
-      font-family:var(--font-body);
-      color:var(--color-text);
-      background:var(--color-bg) url("assets/img/bg-botanical.png")
-                 top center/800px auto repeat fixed;
-      font-synthesis-weight:none;
+    /* Global bg: botanical */
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-bg) url("assets/img/bg-botanical.png")
+                  top center / 800px auto repeat fixed;
+      font-synthesis-weight: none;
     }
 
-    body:not(.entering):not(.entered){overflow:hidden;height:100vh}
-    body.entering{overflow:auto;height:auto}
-    body.entered{overflow:auto;height:auto}
+    /* States */
+    body:not(.entering):not(.entered) { overflow: hidden; height: 100vh; } /* before click */
+    body.entering { overflow: auto; }
+    body.entered  { overflow: hidden; height: 100vh; } /* lock after we land (desktop) */
 
-    .container{width:min(100%,var(--max-w));margin-inline:auto;padding:0 var(--side-pad)}
+    .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
 
-    .hero{
-      position:relative;height:100vh;overflow:hidden;
-      display:grid;place-items:center;
-      background:url("assets/img/bg-botanical.png") center/cover no-repeat;
+    /* Hero */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
-    @media (min-width:900px){ body.entered .hero{display:none!important} }
+    body.entered .hero { display: none; }
 
-    .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .overlay{
-      position:absolute;inset:0;display:grid;place-items:center;padding:24px;
-      background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.35));
-      color:var(--color-text-on-video);
+    .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
+      display: grid; place-items: center;
+      padding: 24px;
+      color: var(--color-text-on-video);
     }
-    .title-card{
-      text-align:center;backdrop-filter:blur(6px);
-      background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.35);
-      border-radius:20px;padding:clamp(20px,4vw,36px);
+    .title-card {
+      text-align: center;
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: clamp(20px, 4vw, 36px);
     }
-    h1{
-      margin:0 0 .1em 0;font-family:var(--font-display);font-weight:400;letter-spacing:.04em;
-      color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.35);
-      font-size:clamp(48px,8vw,80px);line-height:1.08;
+    h1 {
+      margin: 0 0 0.1em 0;
+      font-family: var(--font-display);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      font-size: clamp(48px, 8vw, 80px);
+      line-height: 1.05;
     }
-    .hero-subline{
-      margin:.15em 0 .8em 0;font-family:var(--font-script-2);font-weight:400;
-      color:var(--color-accent);letter-spacing:.3px;text-shadow:0 2px 12px rgba(0,0,0,.35);
-      font-size:clamp(22px,3.6vw,32px);line-height:1.15;
+    .hero-subline {
+      margin: 0.15em 0 0.8em 0;
+      font-family: var(--font-script-2);  /* Satisfy */
+      font-weight: 400;
+      color: var(--color-accent);
+      letter-spacing: 0.3px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      font-size: clamp(22px, 3.6vw, 32px);
+      line-height: 1.15;
     }
-    .btn{
-      display:inline-block;padding:12px 28px;font-weight:700;
-      font-size:clamp(18px,2.3vw,21px);line-height:1.1;border-radius:999px;
-      border:2px solid var(--color-accent);text-decoration:none;-webkit-tap-highlight-color:transparent;
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      font-weight: 700;
+      font-size: clamp(16px, 2.1vw, 19px);
+      line-height: 1.1;
+      border-radius: 999px;
+      border: 2px solid var(--color-accent);
+      text-decoration: none;
     }
-    .btn.primary{background:var(--color-accent);color:#fff}
+    .btn.primary { background: var(--color-accent); color: white; }
 
-    header.site-header{
-      display:none;position:sticky;top:0;z-index:10;
-      background:var(--color-bg);border-bottom:1px solid var(--color-border);color:var(--color-text);
+    /* Header (solid cream) */
+    header.site-header {
+      display: none;
+      position: sticky;
+      top: 0; z-index: 10;
+      background: var(--color-bg);              /* solid cream */
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text);
     }
     body.entering header.site-header,
-    body.entered  header.site-header{display:block}
-    .site-header .mast{padding:14px 0;text-align:center;overflow:visible}
-    .site-header .mast .names{
-      font-family:var(--font-display);color:#1B6A63;font-weight:400;
-      font-size:clamp(30px,4.8vw,50px);letter-spacing:.06em;line-height:1.15;
+    body.entered  header.site-header { display: block; }
+
+    .site-header .mast { padding: 12px 0; text-align: center; }
+    .site-header .mast .names {
+      font-family: var(--font-display);
+      color: #1B6A63;
+      font-weight: 400;
+      font-size: clamp(28px, 4.8vw, 48px);
+      letter-spacing: 0.06em;
+      line-height: 1;
     }
-    .site-header .mast .dateplace{
-      font-family:var(--font-script-2);color:var(--color-accent);font-weight:400;
-      font-size:clamp(14px,1.8vw,18px);margin-top:4px;
+    .site-header .mast .dateplace {
+      font-family: var(--font-script-2);  /* Satisfy */
+      color: var(--color-accent);
+      font-weight: 400;
+      font-size: clamp(14px, 1.8vw, 18px);
+      margin-top: 4px;
     }
 
-    main#main{display:none}
+    /* Main welcome view */
+    main#main {
+      display: none;
+      height: calc(100vh - var(--header-height));
+      overflow: hidden; /* lock after we land on desktop/tablet */
+    }
     body.entering main#main,
-    body.entered  main#main{display:block}
+    body.entered  main#main { display: block; }
 
-    .welcome-wrap{height:100%;display:grid;place-items:center;padding:var(--vpad) 0}
+    .welcome-wrap {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: var(--vpad) 0;
+    }
 
-    .grid{display:grid;gap:var(--grid-gap);align-items:stretch}
-    @media (min-width:900px){
-      .grid-2{
-        grid-template-columns: minmax(0, 2fr) minmax(340px, 1fr);
-        height:calc(100dvh - var(--header-height) - (var(--vpad)*2) - var(--fit-adjust));
+    /* Blurb LEFT (3/4), photo RIGHT (1/4). Equal-height cards (desktop/tablet). */
+    .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
+    @media (min-width: 850px) {
+      .grid-2 {
+        grid-template-columns: 3fr 1fr; /* 75% | 25% */
+        height: calc(100vh - var(--header-height) - (var(--vpad) * 2));
       }
     }
 
-    .card{
-      background:var(--color-surface);border:1px solid var(--color-border);
-      border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);
-      padding:var(--card-pad);height:100%;display:flex;flex-direction:column;
-      min-height:0;overflow:visible;-webkit-tap-highlight-color:transparent;
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--card-pad);
+      height: 100%;
+      display: flex; flex-direction: column;
+      min-height: 0;
     }
 
-    .card-content{
-      flex:1 1 auto;min-height:0;overflow:auto;
-      -webkit-overflow-scrolling:touch;
-      font-size:clamp(15px,1.12vw,16.5px);
-      line-height:1.58;
+    .section-title {
+      font-family: var(--font-body); /* beloved-sans */
+      font-size: clamp(26px, 3.6vw, 36px);
+      color: #1B6A63;
+      margin: 0 0 16px;
+      letter-spacing: 0.2px;
     }
-    .card-content p{margin:0 0 8px}
-    .card-content p:last-child{margin-bottom:0}
+    .welcome-card { scroll-margin-top: calc(var(--header-height) + 16px); }
+    .welcome-card p { margin: 0 0 10px; }
 
-    .section-title{
-      font-family:var(--font-body);
-      font-size:clamp(23px,2.8vw,30px);
-      color:#1B6A63;margin:0 0 10px;letter-spacing:.2px;
-    }
-    .welcome-card{scroll-margin-top:calc(var(--header-height) + 12px)}
-    .signature{
-      font-family:var(--font-script-1);color:var(--color-accent);font-weight:400;
-      font-size:clamp(16px,1.9vw,20px);letter-spacing:.3px;margin-top:8px;line-height:1.25;
-      padding-left:.2em;
+    /* NEW: Antic Slab for blurb body text (not the signature) */
+    .welcome-card p:not(.signature),
+    .welcome-card a {
+      font-family: "Antic Slab", serif;
+      font-size: clamp(15px, 1.55vw, 18px);
+      line-height: 1.55;
     }
 
-    .photo-card .card-content{
-      display:flex;align-items:center;justify-content:center;padding:4px;
-    }
-    .photo-card img{
-      width:100%;height:100%;
-      max-width:100%;
-      max-height:95%;
-      object-fit:contain;
-      border-radius:var(--radius-sm);
-    }
-
-    @media (max-width:899px){
-      .grid-2{grid-template-columns:1fr;height:auto!important}
-      .welcome-wrap{height:auto;display:block;padding:clamp(12px,3vh,22px) 0}
-      .card{padding:clamp(14px,4vw,18px)}
-      .card-content{overflow:visible;font-size:16px;line-height:1.6}
-      .photo-card .card-content{padding:0}
-      .photo-card img{width:100%;height:auto;max-height:none}
+    .signature {
+      font-family: var(--font-script-1); /* beloved-script */
+      color: var(--color-accent);
+      font-weight: 400;
+      font-size: clamp(18px, 2.2vw, 24px);
+      letter-spacing: 0.3px;
+      margin-top: 10px;
+      line-height: 1.2;
     }
 
-    @media (prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}
+    /* Photo card */
+    .photo-card { display: flex; align-items: center; justify-content: center; }
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;          /* show whole picture */
+      border-radius: var(--radius-sm);
+    }
+
+    /* ======== Mobile fixes (stacked layout, full image visible) ======== */
+    @media (max-width: 849px) {
+      body.entered { overflow: auto; height: auto; }
+
+      main#main {
+        height: auto;
+        min-height: calc(100svh - var(--header-height));
+        overflow: visible;
+      }
+
+      .welcome-wrap {
+        height: auto;
+        display: block;
+        padding: clamp(12px, 3vh, 24px) 0;
+      }
+
+      .grid-2 { grid-template-columns: 1fr; height: auto !important; }
+
+      .card { padding: clamp(14px, 4vw, 20px); }
+
+      .photo-card { align-items: stretch; }
+      .photo-card img { width: 100%; height: auto; max-height: none; object-fit: contain; }
+
+      /* Keep Antic Slab comfortable on small screens */
+      .welcome-card p:not(.signature),
+      .welcome-card a { font-size: clamp(15px, 3.9vw, 18px); line-height: 1.6; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-video { animation: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + 8px);
+    }
+
+    @media (min-width: 850px) {
+      body.entered .hero { display: none; }
     }
   </style>
 </head>
 <body id="top">
   <!-- HERO -->
   <section class="hero" aria-label="Hero video welcome" id="banner">
-    <video class="hero-video" autoplay muted playsinline webkit-playsinline loop preload="auto">
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      playsinline
+      webkit-playsinline
+      loop
+      preload="auto"
+    >
       <source src="assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
       <source src="assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
       Your browser does not support the video tag.
@@ -213,14 +313,14 @@
           <span class="place">Oʻahu, Hawaiʻi</span><br>
           <span class="date">July 10, 2026</span>
         </p>
-        <div style="margin-top:12px">
+        <div style="margin-top: 12px">
           <a href="#welcome-card" class="btn primary" id="enterSiteBtn">Enter Site</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- HEADER -->
+  <!-- HEADER (solid cream) -->
   <header class="site-header" role="banner" aria-label="Site header">
     <div class="container" id="siteNav">
       <div class="mast">
@@ -237,110 +337,98 @@
         <div class="grid grid-2">
           <!-- LEFT: blurb -->
           <section id="welcome">
-            <div class="card welcome-card" id="welcome-card">
-              <div class="card-content" aria-labelledby="welcome-title">
-                <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
-
-                <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends on beautiful Oahu! Hawaii holds such a special place in our hearts as it's where our love story began.</p>
-                <p>We have some exciting events planned leading up to our wedding day, starting as early as Tuesday! Oahu offers incredible diversity for those looking to turn this into a memorable vacation... from secluded retreats like Makaha Valley on the west coast (where we've rented a house to truly relax away from it all) to the vibrant city resort experience of Waikiki with its beaches, dining, and nightlife.</p>
-                <p>For those interested in staying in the Waikiki area, we're providing complimentary shuttle service to and from the wedding venue.</p>
-                <p>We're currently working on securing a room block and would love your input. Please fill out <a href="https://docs.google.com/forms/d/e/1FAIpQLSedXyHmcBn_zBNSfaO9a6gIsvfqLj9VSmL-QIF-4CbLtW-dNA/viewform" target="_blank" rel="noopener">this form</a> to help identify your accommodation preferences.</p>
-                <p>While we're still adding the finishing touches to our website, we'll be updating regularly with additional details. Please check back after November 1st as we finalize everything!</p>
-                <p>We can't wait to share this incredible adventure with our favorite people.</p>
-
-                <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
-              </div>
+            <div class="card welcome-card" id="welcome-card" tabindex="-1">
+              <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
+              <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends on beautiful Oahu! Hawaii holds such a special place in our hearts as it's where our love story began.</p>
+              <p>We have some exciting events planned leading up to our wedding day, starting as early as Tuesday! Oahu offers incredible diversity for those looking to turn this into a memorable vacation... from secluded retreats like Makaha Valley on the west coast (where we've rented a house to truly relax away from it all) to the vibrant city resort experience of Waikiki with its beaches, dining, and nightlife.</p>
+              <p>For those interested in staying in the Waikiki area, we're providing complimentary shuttle service to and from the wedding venue.</p>
+              <p>We're currently working on securing a room block and would love your input. Please fill out <a href="https://docs.google.com/forms/d/e/1FAIpQLSedXyHmcBn_zBNSfaO9a6gIsvfqLj9VSmL-QIF-4CbLtW-dNA/viewform" target="_blank" rel="noopener">this form</a> to help identify your accommodation preferences.</p>
+              <p>While we're still adding the finishing touches to our website, we'll be updating regularly with additional details. Please check back after November 1st as we finalize everything!</p>
+              <p>We can't wait to share this incredible adventure with our favorite people.</p>
+              <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
             </div>
           </section>
 
           <!-- RIGHT: photo -->
           <div class="card photo-card">
-            <div class="card-content">
-              <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
-            </div>
+            <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
           </div>
         </div>
       </div>
     </div>
   </main>
 
+  <!-- Smooth 'Enter Site' + iOS video nudges -->
   <script>
-    function setHeaderHeightVar(){
-      const header=document.querySelector('.site-header');
-      if(header){ document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px'); }
+  function setHeaderHeightVar() {
+    const header = document.querySelector('.site-header');
+    if (header) {
+      document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
     }
-    function headerH(){
-      const header=document.querySelector('.site-header');
-      return header ? Math.round(header.getBoundingClientRect().height) : 0;
-    }
-    function smoothScrollToY(targetY, duration=720){
-      const startY = window.pageYOffset || document.documentElement.scrollTop;
-      const delta  = targetY - startY;
-      const startT = performance.now();
-      const easeInOutCubic = t => t<0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
-      function step(now){
-        const t=Math.min(1,(now-startT)/duration);
-        const eased=easeInOutCubic(t);
-        window.scrollTo(0, Math.round(startY + delta*eased));
-        if(t<1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
+  }
+  function headerH() {
+    const header = document.querySelector('.site-header');
+    return header ? Math.round(header.getBoundingClientRect().height) : 0;
+  }
+  function scrollToEl(el) {
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
 
-    function alignToCardInstant(){
-      const card = document.getElementById('welcome-card');
-      if(!card) return;
-      const y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
-      window.scrollTo(0, Math.max(0, Math.round(y)));
-    }
+  function enter() {
+    document.body.classList.add('entering');
+    setHeaderHeightVar();
 
-    document.addEventListener('DOMContentLoaded', () => {
+    const card = document.getElementById('welcome-card');
+    if (!card) { document.body.classList.add('entered'); return; }
+
+    requestAnimationFrame(() => {
       setHeaderHeightVar();
-      window.addEventListener('resize', setHeaderHeightVar);
-
-      const btn = document.getElementById('enterSiteBtn');
-      if(btn){
-        btn.addEventListener('click', (e)=>{
-          e.preventDefault();
-
-          document.body.classList.add('entering');
-          setHeaderHeightVar();
-
-          const card = document.getElementById('welcome-card');
-          if(!card) return;
-
-          const y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
-          smoothScrollToY(y, 720);
-
-          setTimeout(()=>{
-            document.body.classList.remove('entering');
-            document.body.classList.add('entered');
-
-            if (window.matchMedia('(min-width: 900px)').matches) {
-              setTimeout(()=>{ setHeaderHeightVar(); alignToCardInstant(); }, 50);
-            }
-          }, 780);
-
-          history.replaceState(null, '', '#welcome-card');
-        });
-      }
-
-      const v = document.querySelector('.hero-video');
-      if(v){
-        v.muted = true; v.autoplay = true; v.playsInline = true;
-        v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
-        const tryPlay = () => v.play().catch(()=>{});
-        if(!v.currentSrc){
-          const mp4 = v.querySelector('source[type="video/mp4"]');
-          if(mp4 && mp4.src){ v.src = mp4.src; v.load(); }
-        }
-        tryPlay();
-        v.addEventListener('loadedmetadata', tryPlay, { once:true });
-        v.addEventListener('pause', ()=>{ if(!v.ended && !v.seeking) setTimeout(tryPlay, 50); });
-        const kickOnTouch = ()=>{ tryPlay(); window.removeEventListener('touchstart', kickOnTouch, { passive:true }); };
-        window.addEventListener('touchstart', kickOnTouch, { passive:true });
-      }
+      requestAnimationFrame(() => {
+        scrollToEl(card);
+      });
     });
+
+    const finalize = () => {
+      document.body.classList.remove('entering');
+      document.body.classList.add('entered');
+    };
+
+    if ('onscrollend' in window) {
+      window.addEventListener('scrollend', finalize, { once: true });
+      setTimeout(finalize, 1200);
+    } else {
+      setTimeout(finalize, 700);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setHeaderHeightVar();
+    window.addEventListener('resize', setHeaderHeightVar);
+
+    const btn  = document.getElementById('enterSiteBtn');
+    const hero = document.getElementById('banner');
+    if (btn) {
+      btn.addEventListener('click', (e) => { e.preventDefault(); enter(); });
+      btn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } });
+    }
+    if (hero) hero.addEventListener('click', (e) => { if (!e.target.closest('a,button')) enter(); });
+
+    // Video autoplay helpers (iOS)
+    const v = document.querySelector(".hero-video");
+    if (v) {
+      v.muted = true; v.autoplay = true; v.playsInline = true;
+      v.setAttribute("playsinline",""); v.setAttribute("webkit-playsinline","");
+      const tryPlay = () => v.play().catch(() => {});
+      if (!v.currentSrc) { const mp4 = v.querySelector('source[type="video/mp4"]'); if (mp4 && mp4.src) { v.src = mp4.src; v.load(); } }
+      tryPlay();
+      v.addEventListener("loadedmetadata", tryPlay, { once: true });
+      v.addEventListener("pause", () => { if (!v.ended && !v.seeking) setTimeout(tryPlay, 50); });
+      const kickOnTouch = () => { tryPlay(); window.removeEventListener("touchstart", kickOnTouch, { passive: true }); };
+      window.addEventListener("touchstart", kickOnTouch, { passive: true });
+    }
+  });
   </script>
 </body>
 </html>
