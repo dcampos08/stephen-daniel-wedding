@@ -188,10 +188,7 @@
       padding: var(--vpad) 0;
     }
 
-    /* DESKTOP/TABLET:
-       - Widen LEFT column, slightly narrow RIGHT column
-       - Photo card shows a narrower white "frame" behind the image
-       - Image is nudged to the right but stays the same size (fills row height) */
+    /* DESKTOP/TABLET layout */
     .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
     @media (min-width: 850px) {
       .grid-2 {
@@ -221,7 +218,7 @@
     .welcome-card { scroll-margin-top: calc(var(--header-height) + 16px); }
     .welcome-card p { margin: 0 0 10px; }
 
-    /* Antic Slab for blurb body text (keep signature on beloved-script) */
+    /* Antic Slab for blurb body text */
     .welcome-card p:not(.signature),
     .welcome-card a {
       font-family: "Antic Slab", serif;
@@ -239,36 +236,36 @@
       line-height: 1.2;
     }
 
-    /* Photo card: make the white box narrower without shrinking the image */
+    /* Photo card:
+       - Keep the card the same height as the blurb
+       - Use an INNER "photo-frame" that is narrower, has the same padding/border as a card,
+         and is right-aligned. This guarantees the frame's height exactly matches the blurb card. */
     .photo-card {
-      position: relative;
-      background: transparent;  /* remove card bg/border; use a narrower frame instead */
+      background: transparent;
       border: none;
       box-shadow: none;
-      padding: var(--card-pad);
+      padding: 0;                     /* no padding so inner frame can be 100% height */
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
     }
-    /* Narrow white frame behind the photo */
-    .photo-card::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: var(--card-pad);
-      transform: translate(-50%, 0);
-      width: 84%;                                   /* <-- narrower white box */
-      height: calc(100% - (var(--card-pad) * 2));
+    .photo-frame {
+      margin-left: auto;              /* push to the right */
+      width: 84%;                     /* narrower white box */
+      height: 100%;                   /* EXACTLY match blurb card height */
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm);
-      z-index: 0;
+      padding: var(--card-pad);       /* same inner padding as blurb card */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .photo-card img {
-      position: relative;
-      z-index: 1;
+    .photo-frame img {
       width: 100%;
       height: 100%;
-      object-fit: contain;                          /* show entire photo */
-      transform: translateX(4%);                    /* <-- nudge photo slightly right */
+      object-fit: contain;            /* show entire photo */
       border-radius: var(--radius-sm);
     }
 
@@ -288,9 +285,9 @@
 
       .card { padding: clamp(14px, 4vw, 20px); }
 
-      /* Slightly wider frame on mobile and no right nudge */
-      .photo-card::before { width: 94%; }
-      .photo-card img { transform: none; }
+      .photo-card { padding: 0; }
+      .photo-frame { width: 94%; height: auto; }  /* allow natural height on mobile */
+      .photo-frame img { height: auto; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -369,9 +366,11 @@
             </div>
           </section>
 
-          <!-- RIGHT: photo with narrower white frame behind it -->
+          <!-- RIGHT: photo with right-aligned, equal-height white frame -->
           <div class="card photo-card">
-            <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
+            <div class="photo-frame">
+              <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
+            </div>
           </div>
         </div>
       </div>
