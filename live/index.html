@@ -51,13 +51,16 @@
       --radius-sm:10px;
       --shadow-sm:0 4px 16px rgba(0,0,0,0.08);
 
-      /* Wider canvas + slightly tighter side padding */
+      /* Wider canvas + side padding */
       --max-w: 1440px;
       --side-pad: 18px;
 
       --vpad:clamp(10px,2vh,18px);
-      --grid-gap:clamp(12px,2vw,20px);
-      --card-pad:clamp(14px,2vw,20px);
+      --grid-gap:clamp(10px,1.6vw,16px);
+      --card-pad:clamp(12px,1.6vw,16px);
+
+      /* Leave some breathing room so cards fully fit in viewport */
+      --fit-adjust: 54px; /* tweak if you still see cut-off on short viewports */
     }
 
     *{box-sizing:border-box}
@@ -125,7 +128,7 @@
     .site-header .mast{padding:14px 0;text-align:center;overflow:visible}
     .site-header .mast .names{
       font-family:var(--font-display);color:#1B6A63;font-weight:400;
-      font-size:clamp(30px,4.8vw,50px);letter-spacing:.06em;line-height:1.15; /* give the S more headroom */
+      font-size:clamp(30px,4.8vw,50px);letter-spacing:.06em;line-height:1.15;
     }
     .site-header .mast .dateplace{
       font-family:var(--font-script-2);color:var(--color-accent);font-weight:400;
@@ -142,9 +145,9 @@
     .grid{display:grid;gap:var(--grid-gap);align-items:stretch}
     @media (min-width:900px){
       .grid-2{
-        /* Wider overall + bigger photo: 2/3 : 1/3 split, but keep right sensible */
-        grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr);
-        height:calc(100dvh - var(--header-height) - (var(--vpad)*2));
+        /* 2/3 : 1/3, but keep right sensible */
+        grid-template-columns: minmax(0, 2fr) minmax(340px, 1fr);
+        height:calc(100dvh - var(--header-height) - (var(--vpad)*2) - var(--fit-adjust));
       }
     }
 
@@ -152,38 +155,40 @@
       background:var(--color-surface);border:1px solid var(--color-border);
       border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);
       padding:var(--card-pad);height:100%;display:flex;flex-direction:column;
-      min-height:0; /* allow inner scroll area to size */
-      overflow:visible; /* prevent glyph clipping like the “S” swash */
-      -webkit-tap-highlight-color:transparent;
+      min-height:0;overflow:visible;-webkit-tap-highlight-color:transparent;
     }
 
-    /* Inner content scroll so layout fits the viewport */
+    /* Inner content (smaller text & tighter) */
     .card-content{
       flex:1 1 auto;min-height:0;overflow:auto;
       -webkit-overflow-scrolling:touch;
+      font-size:clamp(14px,1.02vw,15.5px);   /* smaller blurb text */
+      line-height:1.55;
     }
+    .card-content p{margin:0 0 8px}
+    .card-content p:last-child{margin-bottom:0}
 
     .section-title{
-      font-family:var(--font-body);font-size:clamp(24px,3.1vw,32px);
-      color:#1B6A63;margin:0 0 12px;letter-spacing:.2px;
+      font-family:var(--font-body);
+      font-size:clamp(22px,2.6vw,28px);  /* slightly smaller heading */
+      color:#1B6A63;margin:0 0 10px;letter-spacing:.2px;
     }
     .welcome-card{scroll-margin-top:calc(var(--header-height) + 12px)}
-    .welcome-card p{margin:0 0 10px}
-
     .signature{
       font-family:var(--font-script-1);color:var(--color-accent);font-weight:400;
-      font-size:clamp(18px,2.2vw,24px);letter-spacing:.3px;margin-top:10px;line-height:1.25;
-      padding-left:.2em; /* avoids left-edge swash clipping */
+      font-size:clamp(16px,1.8vw,20px);letter-spacing:.3px;margin-top:8px;line-height:1.25;
+      padding-left:.2em;
     }
 
-    /* Photo card bigger */
+    /* Photo card (slightly smaller visual) */
     .photo-card .card-content{
-      display:flex;align-items:center;justify-content:center;padding:6px;
+      display:flex;align-items:center;justify-content:center;padding:4px;
     }
     .photo-card img{
-      width:100%; height:100%;
-      max-width:100%; max-height:100%;
-      object-fit:contain; /* full image visible */
+      width:100%;height:100%;
+      max-width:100%;
+      max-height:92%;        /* leave white border fully visible */
+      object-fit:contain;
       border-radius:var(--radius-sm);
     }
 
@@ -191,8 +196,8 @@
     @media (max-width:899px){
       .grid-2{grid-template-columns:1fr;height:auto!important}
       .welcome-wrap{height:auto;display:block;padding:clamp(12px,3vh,22px) 0}
-      .card{padding:clamp(14px,4vw,20px)}
-      .card-content{overflow:visible}
+      .card{padding:clamp(14px,4vw,18px)}
+      .card-content{overflow:visible;font-size:16px;line-height:1.6} /* comfortable reading on phone */
       .photo-card .card-content{padding:0}
       .photo-card img{width:100%;height:auto;max-height:none}
     }
@@ -240,7 +245,7 @@
     <div class="welcome-wrap">
       <div class="container">
         <div class="grid grid-2">
-          <!-- LEFT: blurb (wider) -->
+          <!-- LEFT: blurb -->
           <section id="welcome">
             <div class="card welcome-card" id="welcome-card">
               <div class="card-content" aria-labelledby="welcome-title">
@@ -258,7 +263,7 @@
             </div>
           </section>
 
-          <!-- RIGHT: photo (larger) -->
+          <!-- RIGHT: photo -->
           <div class="card photo-card">
             <div class="card-content">
               <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
