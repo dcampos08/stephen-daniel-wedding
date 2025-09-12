@@ -24,270 +24,183 @@
   <link rel="preload" href="assets/fonts/SafiraMarch.woff2" as="font" type="font/woff2" crossorigin>
 
   <style>
-    /* Local display font */
-    @font-face {
-      font-family: "Safira March";
-      src: url("assets/fonts/SafiraMarch.woff2") format("woff2"),
-           url("assets/fonts/SafiraMarch.ttf") format("truetype");
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
+    @font-face{
+      font-family:"Safira March";
+      src:url("assets/fonts/SafiraMarch.woff2") format("woff2"),
+          url("assets/fonts/SafiraMarch.ttf") format("truetype");
+      font-weight:400; font-style:normal; font-display:swap;
     }
 
     :root{
       --header-height: 88px;
 
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      --font-script-1: "beloved-script", cursive;    /* accents/signature */
-      --font-script-2: "Satisfy", cursive;           /* Oʻahu / date lines */
-      --font-display: "Safira March", cursive;       /* big names */
+      --font-script-1:"beloved-script", cursive;
+      --font-script-2:"Satisfy", cursive;
+      --font-display:"Safira March", cursive;
 
-      --color-accent: #C9A64C;
-      --color-text: #1F1F1F;
-      --color-text-on-video: #fff;
+      --color-accent:#C9A64C;
+      --color-text:#1F1F1F;
+      --color-text-on-video:#fff;
 
-      --color-bg: #FFFDF8;        /* cream */
-      --color-surface: #FFFFFF;
-      --color-border: #E8E1D8;
+      --color-bg:#FFFDF8;
+      --color-surface:#FFFFFF;
+      --color-border:#E8E1D8;
 
-      --radius-lg: 20px;
-      --radius-sm: 10px;
-      --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
+      --radius-lg:20px;
+      --radius-sm:10px;
+      --shadow-sm:0 4px 16px rgba(0,0,0,0.08);
 
-      --max-w: 1100px;
-      --space-5: 24px;
+      --max-w:1100px;
+      --space-5:24px;
 
-      /* Fit-in-viewport tuning (desktop/tablet) */
-      --vpad: clamp(12px, 2vh, 20px);
-      --grid-gap: clamp(12px, 2vw, 20px);
-      --card-pad: clamp(14px, 2vw, 20px);
+      --vpad:clamp(10px,2vh,18px);
+      --grid-gap:clamp(10px,2vw,18px);
+      --card-pad:clamp(12px,2vw,18px);
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    html,body{overflow-anchor:none}
 
-    /* Disable scroll anchoring to prevent “helpful” jumps */
-    html, body { overflow-anchor: none; }
-
-    /* Global bg: botanical */
-    body {
-      font-family: var(--font-body);
-      color: var(--color-text);
-      background: var(--color-bg) url("assets/img/bg-botanical.png")
-                  top center / 800px auto repeat fixed;
-      font-synthesis-weight: none;
+    body{
+      font-family:var(--font-body);
+      color:var(--color-text);
+      background:var(--color-bg) url("assets/img/bg-botanical.png")
+                 top center/800px auto repeat fixed;
+      font-synthesis-weight:none;
     }
 
     /* States */
-    body:not(.entered) { overflow: hidden; height: 100vh; }
-    body.entered { overflow: auto; height: auto; }
+    body:not(.entering):not(.entered){overflow:hidden;height:100vh}
+    body.entering{overflow:auto;height:auto}
+    body.entered{overflow:auto;height:auto}
 
-    .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
+    .container{width:min(100%,var(--max-w));margin-inline:auto;padding:0 var(--space-5)}
 
-    /* Hero */
-    .hero {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-      background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
+    /* HERO */
+    .hero{
+      position:relative;
+      height:100vh;
+      overflow:hidden;
+      display:grid;place-items:center;
+      background:url("assets/img/bg-botanical.png") center/cover no-repeat;
     }
-    /* Hide hero on ALL devices after entering to prevent layout shifts */
-    body.entered .hero { display: none !important; }
+    /* hide hero only AFTER scroll completes */
+    body.entered .hero{display:none!important}
 
-    .hero-video {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
+    .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .overlay{
+      position:absolute;inset:0;display:grid;place-items:center;padding:24px;
+      background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.35));
+      color:var(--color-text-on-video);
     }
-    .overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
-      display: grid; place-items: center;
-      padding: 24px;
-      color: var(--color-text-on-video);
+    .title-card{
+      text-align:center;backdrop-filter:blur(6px);
+      background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.35);
+      border-radius:20px;padding:clamp(20px,4vw,36px);
     }
-    .title-card {
-      text-align: center;
-      backdrop-filter: blur(6px);
-      background: rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 20px;
-      padding: clamp(20px, 4vw, 36px);
+    h1{
+      margin:0 0 .1em 0;font-family:var(--font-display);font-weight:400;letter-spacing:.04em;
+      color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.35);
+      font-size:clamp(48px,8vw,80px);line-height:1.05;
     }
-    h1 {
-      margin: 0 0 0.1em 0;
-      font-family: var(--font-display);
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      color: #fff;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      font-size: clamp(48px, 8vw, 80px);
-      line-height: 1.05;
+    .hero-subline{
+      margin:.15em 0 .8em 0;font-family:var(--font-script-2);font-weight:400;
+      color:var(--color-accent);letter-spacing:.3px;text-shadow:0 2px 12px rgba(0,0,0,.35);
+      font-size:clamp(22px,3.6vw,32px);line-height:1.15;
     }
-    .hero-subline {
-      margin: 0.15em 0 0.8em 0;
-      font-family: var(--font-script-2);  /* Satisfy */
-      font-weight: 400;
-      color: var(--color-accent);
-      letter-spacing: 0.3px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
-      font-size: clamp(22px, 3.6vw, 32px);
-      line-height: 1.15;
+    .btn{
+      display:inline-block;padding:12px 24px;font-weight:700;
+      font-size:clamp(17px,2.2vw,20px);line-height:1.1;border-radius:999px;
+      border:2px solid var(--color-accent);text-decoration:none;-webkit-tap-highlight-color:transparent;
     }
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      font-weight: 700;
-      font-size: clamp(17px, 2.2vw, 20px);
-      line-height: 1.1;
-      border-radius: 999px;
-      border: 2px solid var(--color-accent);
-      text-decoration: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn.primary { background: var(--color-accent); color: white; }
+    .btn.primary{background:var(--color-accent);color:#fff}
 
-    /* Header (solid cream) */
-    header.site-header {
-      display: none;                      /* revealed after "Enter" */
-      position: sticky;
-      top: 0; z-index: 10;
-      background: var(--color-bg);        /* solid cream */
-      border-bottom: 1px solid var(--color-border);
-      color: var(--color-text);
+    /* HEADER */
+    header.site-header{
+      display:none;position:sticky;top:0;z-index:10;
+      background:var(--color-bg);border-bottom:1px solid var(--color-border);color:var(--color-text);
     }
-    body.entered header.site-header { display: block; }
-
-    .site-header .mast { padding: 12px 0; text-align: center; }
-    .site-header .mast .names {
-      font-family: var(--font-display);
-      color: #1B6A63;
-      font-weight: 400;
-      font-size: clamp(28px, 4.8vw, 48px);
-      letter-spacing: 0.06em;
-      line-height: 1;
+    body.entering header.site-header,
+    body.entered  header.site-header{display:block}
+    .site-header .mast{padding:12px 0;text-align:center}
+    .site-header .mast .names{
+      font-family:var(--font-display);color:#1B6A63;font-weight:400;
+      font-size:clamp(28px,4.8vw,48px);letter-spacing:.06em;line-height:1;
     }
-    .site-header .mast .dateplace {
-      font-family: var(--font-script-2);  /* Satisfy */
-      color: var(--color-accent);
-      font-weight: 400;
-      font-size: clamp(14px, 1.8vw, 18px);
-      margin-top: 4px;
+    .site-header .mast .dateplace{
+      font-family:var(--font-script-2);color:var(--color-accent);font-weight:400;
+      font-size:clamp(14px,1.8vw,18px);margin-top:4px;
     }
 
-    /* Main welcome view */
-    main#main {
-      display: none;                      /* revealed after "Enter" */
-      height: calc(100vh - var(--header-height));
-      overflow: hidden;                   /* desktop: lock after we land */
-    }
-    body.entered main#main { display: block; }
+    /* MAIN */
+    main#main{display:none}
+    body.entering main#main,
+    body.entered  main#main{display:block}
 
-    .welcome-wrap {
-      height: 100%;
-      display: grid;
-      place-items: center;
-      padding: var(--vpad) 0;
-    }
+    .welcome-wrap{height:100%;display:grid;place-items:center;padding:var(--vpad) 0}
 
-    /* Blurb LEFT, photo RIGHT. Equal-height cards (desktop/tablet). */
-    .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
-    @media (min-width: 850px) {
-      .grid-2 {
-        grid-template-columns: min(540px, 50%) 1fr;
-        height: calc(100vh - var(--header-height) - (var(--vpad) * 2));
+    .grid{display:grid;gap:var(--grid-gap);align-items:stretch}
+    @media (min-width:850px){
+      .grid-2{
+        grid-template-columns:min(520px,50%) 1fr;
+        height:calc(100dvh - var(--header-height) - (var(--vpad)*2));
       }
     }
 
-    .card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      padding: var(--card-pad);
-      height: 100%;
-      display: flex; flex-direction: column;
-      min-height: 0;
-      -webkit-tap-highlight-color: transparent;
+    .card{
+      background:var(--color-surface);border:1px solid var(--color-border);
+      border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);
+      padding:var(--card-pad);height:100%;display:flex;flex-direction:column;
+      min-height:0;overflow:hidden;-webkit-tap-highlight-color:transparent;
     }
-    /* remove blue focus ring on mobile */
-    .card:focus { outline: none; }
+    .card:focus{outline:none}
 
-    .section-title {
-      font-family: var(--font-body); /* beloved-sans */
-      font-size: clamp(26px, 3.6vw, 36px);
-      color: #1B6A63;
-      margin: 0 0 16px;
-      letter-spacing: 0.2px;
+    /* scrollable inner area so the whole layout fits */
+    .card-content{
+      flex:1 1 auto;min-height:0;overflow:auto;
+      -webkit-overflow-scrolling:touch;
     }
 
-    .welcome-card { scroll-margin-top: calc(var(--header-height) + 16px); }
-    .welcome-card p { margin: 0 0 10px; }
+    .section-title{
+      font-family:var(--font-body);font-size:clamp(24px,3.3vw,34px);
+      color:#1B6A63;margin:0 0 12px;letter-spacing:.2px;
+    }
+    .welcome-card{scroll-margin-top:calc(var(--header-height) + 12px)}
+    .welcome-card p{margin:0 0 10px}
 
-    .signature {
-      font-family: var(--font-script-1); /* beloved-script */
-      color: var(--color-accent);
-      font-weight: 400;
-      font-size: clamp(18px, 2.2vw, 24px);
-      letter-spacing: 0.3px;
-      margin-top: 10px;
-      line-height: 1.2;
+    .signature{
+      font-family:var(--font-script-1);color:var(--color-accent);font-weight:400;
+      font-size:clamp(18px,2.2vw,24px);letter-spacing:.3px;margin-top:10px;line-height:1.2;
     }
 
-    /* Photo card */
-    .photo-card { display: flex; align-items: center; justify-content: center; }
-    .photo-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;          /* show whole picture */
-      border-radius: var(--radius-sm);
+    .photo-card .card-content{
+      display:flex;align-items:center;justify-content:center;
+    }
+    .photo-card img{
+      max-width:100%;max-height:100%;
+      width:auto;height:auto;object-fit:contain;border-radius:var(--radius-sm);
     }
 
-    /* ======== Mobile (stacked, full image visible) ======== */
-    @media (max-width: 849px) {
-      main#main {
-        height: auto;
-        min-height: calc(100svh - var(--header-height));
-        overflow: visible;
-      }
-      .welcome-wrap {
-        height: auto;
-        display: block;
-        padding: clamp(12px, 3vh, 24px) 0;
-      }
-      .grid-2 {
-        grid-template-columns: 1fr; /* stack */
-        height: auto !important;
-      }
-      .card { padding: clamp(14px, 4vw, 20px); }
-      .photo-card { align-items: stretch; }
-      .photo-card img {
-        width: 100%;
-        height: auto;
-        max-height: none;
-        object-fit: contain;
-      }
+    /* Mobile: stack, no inner scrollbars */
+    @media (max-width:849px){
+      .grid-2{grid-template-columns:1fr;height:auto!important}
+      .welcome-wrap{height:auto;display:block;padding:clamp(12px,3vh,22px) 0}
+      .card{padding:clamp(14px,4vw,18px)}
+      .card-content{overflow:visible}
+      .photo-card img{width:100%;height:auto;max-height:none}
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
     }
   </style>
 </head>
 <body id="top">
   <!-- HERO -->
   <section class="hero" aria-label="Hero video welcome" id="banner">
-    <video
-      class="hero-video"
-      autoplay
-      muted
-      playsinline
-      webkit-playsinline
-      loop
-      preload="auto"
-    >
+    <video class="hero-video" autoplay muted playsinline webkit-playsinline loop preload="auto">
       <source src="assets/video/oahu-web-8s-720p.v1.mp4" type="video/mp4" />
       <source src="assets/video/oahu-web-8s-720p.v1.webm" type="video/webm" />
       Your browser does not support the video tag.
@@ -300,14 +213,14 @@
           <span class="place">Oʻahu, Hawaiʻi</span><br>
           <span class="date">July 10, 2026</span>
         </p>
-        <div style="margin-top: 12px">
+        <div style="margin-top:12px">
           <a href="#welcome-card" class="btn primary" id="enterSiteBtn">Enter Site</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- HEADER (solid cream) -->
+  <!-- HEADER -->
   <header class="site-header" role="banner" aria-label="Site header">
     <div class="container" id="siteNav">
       <div class="mast">
@@ -325,106 +238,102 @@
           <!-- LEFT: blurb -->
           <section id="welcome">
             <div class="card welcome-card" id="welcome-card">
-              <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
+              <div class="card-content" aria-labelledby="welcome-title">
+                <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
 
-              <!-- NEW BLURB START -->
-              <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends on beautiful Oahu! Hawaii holds such a special place in our hearts as it's where our love story began.</p>
-              <p>We have some exciting events planned leading up to our wedding day, starting as early as Tuesday! Oahu offers incredible diversity for those looking to turn this into a memorable vacation... from secluded retreats like Makaha Valley on the west coast (where we've rented a house to truly relax away from it all) to the vibrant city resort experience of Waikiki with its beaches, dining, and nightlife.</p>
-              <p>For those interested in staying in the Waikiki area, we're providing complimentary shuttle service to and from the wedding venue.</p>
-              <p>We're currently working on securing a room block and would love your input. Please fill out the form linked on the left to help identify your accommodation preferences.</p>
-              <p>While we're still adding the finishing touches to our website, we'll be updating regularly with additional details. Please check back after November 1st as we finalize everything!</p>
-              <p>We can't wait to share this incredible adventure with our favorite people.</p>
-              <!-- NEW BLURB END -->
+                <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends on beautiful Oahu! Hawaii holds such a special place in our hearts as it's where our love story began.</p>
+                <p>We have some exciting events planned leading up to our wedding day, starting as early as Tuesday! Oahu offers incredible diversity for those looking to turn this into a memorable vacation... from secluded retreats like Makaha Valley on the west coast (where we've rented a house to truly relax away from it all) to the vibrant city resort experience of Waikiki with its beaches, dining, and nightlife.</p>
+                <p>For those interested in staying in the Waikiki area, we're providing complimentary shuttle service to and from the wedding venue.</p>
+                <p>We're currently working on securing a room block and would love your input. Please fill out the form linked on the left to help identify your accommodation preferences.</p>
+                <p>While we're still adding the finishing touches to our website, we'll be updating regularly with additional details. Please check back after November 1st as we finalize everything!</p>
+                <p>We can't wait to share this incredible adventure with our favorite people.</p>
 
-              <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
+                <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
+              </div>
             </div>
           </section>
 
           <!-- RIGHT: photo -->
           <div class="card photo-card">
-            <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
+            <div class="card-content">
+              <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Smooth, custom-eased scroll + iOS video helpers -->
   <script>
-    // header helpers
-    function setHeaderHeightVar() {
-      const header = document.querySelector('.site-header');
-      if (header) {
-        document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
-      }
+    function setHeaderHeightVar(){
+      const header=document.querySelector('.site-header');
+      if(header){ document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px'); }
     }
-    function headerH() {
-      const header = document.querySelector('.site-header');
+    function headerH(){
+      const header=document.querySelector('.site-header');
       return header ? Math.round(header.getBoundingClientRect().height) : 0;
     }
-
-    // silky easing scroll (like WIP feel)
-    function smoothScrollToY(targetY, duration = 700) {
+    function smoothScrollToY(targetY, duration=720){
       const startY = window.pageYOffset || document.documentElement.scrollTop;
       const delta  = targetY - startY;
       const startT = performance.now();
-      const easeInOutCubic = t => (t < 0.5)
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-      function step(now) {
-        const t = Math.min(1, (now - startT) / duration);
-        const eased = easeInOutCubic(t);
-        window.scrollTo(0, Math.round(startY + delta * eased));
-        if (t < 1) requestAnimationFrame(step);
+      const easeInOutCubic = t => t<0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+      function step(now){
+        const t=Math.min(1,(now-startT)/duration);
+        const eased=easeInOutCubic(t);
+        window.scrollTo(0, Math.round(startY + delta*eased));
+        if(t<1) requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
     }
 
-    let hasEntered = false;
-
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener('DOMContentLoaded', () => {
       setHeaderHeightVar();
       window.addEventListener('resize', setHeaderHeightVar);
 
       const btn = document.getElementById('enterSiteBtn');
-      if (btn) {
-        btn.addEventListener('click', (e) => {
+      if(btn){
+        btn.addEventListener('click', (e)=>{
           e.preventDefault();
-          if (hasEntered) return;
-          hasEntered = true;
 
-          // Show header/main, hide hero via CSS
-          document.body.classList.add('entered');
+          // Show header/main for correct measurement, but keep hero visible during scroll
+          document.body.classList.add('entering');
           setHeaderHeightVar();
 
-          // After layout paints, compute target and do custom smooth scroll
-          requestAnimationFrame(() => {
-            const card = document.getElementById('welcome-card');
-            if (!card) return;
-            const y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
-            smoothScrollToY(y, 720);
-            // Set the hash without triggering native scroll
-            history.replaceState(null, '', '#welcome-card');
-          });
+          const card = document.getElementById('welcome-card');
+          if(!card) return;
+
+          // compute target with hero still present
+          const y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
+
+          smoothScrollToY(y, 720);
+
+          // hide hero AFTER scroll ends (duration + buffer)
+          setTimeout(()=>{
+            document.body.classList.remove('entering');
+            document.body.classList.add('entered');
+          }, 780);
+
+          // update hash without causing native jump
+          history.replaceState(null, '', '#welcome-card');
         });
       }
 
-      // iOS/Safari autoplay helpers for the hero video
-      const v = document.querySelector(".hero-video");
-      if (v) {
+      // iOS/Safari video nudges
+      const v = document.querySelector('.hero-video');
+      if(v){
         v.muted = true; v.autoplay = true; v.playsInline = true;
-        v.setAttribute("playsinline",""); v.setAttribute("webkit-playsinline","");
-        const tryPlay = () => v.play().catch(() => {});
-        if (!v.currentSrc) {
+        v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
+        const tryPlay = () => v.play().catch(()=>{});
+        if(!v.currentSrc){
           const mp4 = v.querySelector('source[type="video/mp4"]');
-          if (mp4 && mp4.src) { v.src = mp4.src; v.load(); }
+          if(mp4 && mp4.src){ v.src = mp4.src; v.load(); }
         }
         tryPlay();
-        v.addEventListener("loadedmetadata", tryPlay, { once: true });
-        v.addEventListener("pause", () => { if (!v.ended && !v.seeking) setTimeout(tryPlay, 50); });
-        const kickOnTouch = () => { tryPlay(); window.removeEventListener("touchstart", kickOnTouch, { passive: true }); };
-        window.addEventListener("touchstart", kickOnTouch, { passive: true });
+        v.addEventListener('loadedmetadata', tryPlay, { once:true });
+        v.addEventListener('pause', ()=>{ if(!v.ended && !v.seeking) setTimeout(tryPlay, 50); });
+        const kickOnTouch = ()=>{ tryPlay(); window.removeEventListener('touchstart', kickOnTouch, { passive:true }); };
+        window.addEventListener('touchstart', kickOnTouch, { passive:true });
       }
     });
   </script>
