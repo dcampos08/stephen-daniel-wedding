@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
   <!-- Google: Satisfy (for Oʻahu / date lines) -->
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
-  <!-- NEW: Google Antic Slab for blurb -->
+  <!-- Google: Antic Slab for blurb -->
   <link href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap" rel="stylesheet">
 
   <!-- Preloads -->
@@ -39,7 +39,6 @@
     :root{
       --header-height: 88px;
 
-      /* WIP fonts */
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       --font-script-1: "beloved-script", cursive;    /* accents/signature */
       --font-script-2: "Satisfy", cursive;           /* Oʻahu / date lines */
@@ -57,7 +56,8 @@
       --radius-sm: 10px;
       --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
 
-      --max-w: 1200px;            /* a touch wider to give more room */
+      /* Revert container/margins to earlier feel */
+      --max-w: 1100px;
       --space-5: 24px;
 
       --vpad: clamp(12px, 2vh, 20px);
@@ -189,11 +189,11 @@
       padding: var(--vpad) 0;
     }
 
-    /* Blurb LEFT (3/4), photo RIGHT (1/4). Equal-height cards (desktop/tablet). */
+    /* Desktop/tablet: widen photo column a bit (bigger photo), keep earlier box/margin feel */
     .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
     @media (min-width: 850px) {
       .grid-2 {
-        grid-template-columns: 3fr 1fr; /* 75% | 25% */
+        grid-template-columns: 2.6fr 1.4fr; /* ~65% | 35% (photo bigger than before) */
         height: calc(100vh - var(--header-height) - (var(--vpad) * 2));
       }
     }
@@ -219,7 +219,7 @@
     .welcome-card { scroll-margin-top: calc(var(--header-height) + 16px); }
     .welcome-card p { margin: 0 0 10px; }
 
-    /* NEW: Antic Slab for blurb body text (not the signature) */
+    /* Antic Slab for blurb body text (keep signature on beloved-script) */
     .welcome-card p:not(.signature),
     .welcome-card a {
       font-family: "Antic Slab", serif;
@@ -228,7 +228,7 @@
     }
 
     .signature {
-      font-family: var(--font-script-1); /* beloved-script */
+      font-family: var(--font-script-1);
       color: var(--color-accent);
       font-weight: 400;
       font-size: clamp(18px, 2.2vw, 24px);
@@ -246,7 +246,7 @@
       border-radius: var(--radius-sm);
     }
 
-    /* ======== Mobile fixes (stacked layout, full image visible) ======== */
+    /* ======== Mobile (stacked) ======== */
     @media (max-width: 849px) {
       body.entered { overflow: auto; height: auto; }
 
@@ -256,11 +256,7 @@
         overflow: visible;
       }
 
-      .welcome-wrap {
-        height: auto;
-        display: block;
-        padding: clamp(12px, 3vh, 24px) 0;
-      }
+      .welcome-wrap { height: auto; display: block; padding: clamp(12px, 3vh, 24px) 0; }
 
       .grid-2 { grid-template-columns: 1fr; height: auto !important; }
 
@@ -269,7 +265,6 @@
       .photo-card { align-items: stretch; }
       .photo-card img { width: 100%; height: auto; max-height: none; object-fit: contain; }
 
-      /* Keep Antic Slab comfortable on small screens */
       .welcome-card p:not(.signature),
       .welcome-card a { font-size: clamp(15px, 3.9vw, 18px); line-height: 1.6; }
     }
@@ -349,7 +344,7 @@
             </div>
           </section>
 
-          <!-- RIGHT: photo -->
+          <!-- RIGHT: photo (larger than before) -->
           <div class="card photo-card">
             <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
           </div>
