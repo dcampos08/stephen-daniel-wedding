@@ -58,8 +58,7 @@
       --grid-gap:clamp(10px,1.6vw,16px);
       --card-pad:clamp(12px,1.6vw,16px);
 
-      /* Slightly tighter overall height so both cards always fit */
-      --fit-adjust: 66px; /* tweak 60–78px if needed */
+      --fit-adjust: 66px;
     }
 
     *{box-sizing:border-box}
@@ -74,20 +73,17 @@
       font-synthesis-weight:none;
     }
 
-    /* State handling */
     body:not(.entering):not(.entered){overflow:hidden;height:100vh}
     body.entering{overflow:auto;height:auto}
     body.entered{overflow:auto;height:auto}
 
     .container{width:min(100%,var(--max-w));margin-inline:auto;padding:0 var(--side-pad)}
 
-    /* HERO */
     .hero{
       position:relative;height:100vh;overflow:hidden;
       display:grid;place-items:center;
       background:url("assets/img/bg-botanical.png") center/cover no-repeat;
     }
-    /* Only hide the hero after entering on DESKTOP; keep it on mobile to avoid height jump */
     @media (min-width:900px){ body.entered .hero{display:none!important} }
 
     .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -118,7 +114,6 @@
     }
     .btn.primary{background:var(--color-accent);color:#fff}
 
-    /* HEADER */
     header.site-header{
       display:none;position:sticky;top:0;z-index:10;
       background:var(--color-bg);border-bottom:1px solid var(--color-border);color:var(--color-text);
@@ -135,7 +130,6 @@
       font-size:clamp(14px,1.8vw,18px);margin-top:4px;
     }
 
-    /* MAIN */
     main#main{display:none}
     body.entering main#main,
     body.entered  main#main{display:block}
@@ -145,7 +139,7 @@
     .grid{display:grid;gap:var(--grid-gap);align-items:stretch}
     @media (min-width:900px){
       .grid-2{
-        grid-template-columns: minmax(0, 2fr) minmax(340px, 1fr); /* ~2/3 : 1/3 */
+        grid-template-columns: minmax(0, 2fr) minmax(340px, 1fr);
         height:calc(100dvh - var(--header-height) - (var(--vpad)*2) - var(--fit-adjust));
       }
     }
@@ -157,7 +151,6 @@
       min-height:0;overflow:visible;-webkit-tap-highlight-color:transparent;
     }
 
-    /* Slightly bigger blurb text than last time, still fits */
     .card-content{
       flex:1 1 auto;min-height:0;overflow:auto;
       -webkit-overflow-scrolling:touch;
@@ -179,19 +172,17 @@
       padding-left:.2em;
     }
 
-    /* Photo card — slightly bigger image */
     .photo-card .card-content{
       display:flex;align-items:center;justify-content:center;padding:4px;
     }
     .photo-card img{
       width:100%;height:100%;
       max-width:100%;
-      max-height:95%;            /* was 92% → a touch larger */
+      max-height:95%;
       object-fit:contain;
       border-radius:var(--radius-sm);
     }
 
-    /* Mobile: stack, full image visible, no inner scrollbars */
     @media (max-width:899px){
       .grid-2{grid-template-columns:1fr;height:auto!important}
       .welcome-wrap{height:auto;display:block;padding:clamp(12px,3vh,22px) 0}
@@ -253,7 +244,7 @@
                 <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends on beautiful Oahu! Hawaii holds such a special place in our hearts as it's where our love story began.</p>
                 <p>We have some exciting events planned leading up to our wedding day, starting as early as Tuesday! Oahu offers incredible diversity for those looking to turn this into a memorable vacation... from secluded retreats like Makaha Valley on the west coast (where we've rented a house to truly relax away from it all) to the vibrant city resort experience of Waikiki with its beaches, dining, and nightlife.</p>
                 <p>For those interested in staying in the Waikiki area, we're providing complimentary shuttle service to and from the wedding venue.</p>
-                <p>We're currently working on securing a room block and would love your input. Please fill out the form linked on the left to help identify your accommodation preferences.</p>
+                <p>We're currently working on securing a room block and would love your input. Please fill out <a href="https://docs.google.com/forms/d/e/1FAIpQLSedXyHmcBn_zBNSfaO9a6gIsvfqLj9VSmL-QIF-4CbLtW-dNA/viewform" target="_blank" rel="noopener">this form</a> to help identify your accommodation preferences.</p>
                 <p>While we're still adding the finishing touches to our website, we'll be updating regularly with additional details. Please check back after November 1st as we finalize everything!</p>
                 <p>We can't wait to share this incredible adventure with our favorite people.</p>
 
@@ -312,7 +303,6 @@
         btn.addEventListener('click', (e)=>{
           e.preventDefault();
 
-          // show header/main for correct measurement
           document.body.classList.add('entering');
           setHeaderHeightVar();
 
@@ -322,12 +312,10 @@
           const y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
           smoothScrollToY(y, 720);
 
-          // finalize after scroll completes
           setTimeout(()=>{
             document.body.classList.remove('entering');
             document.body.classList.add('entered');
 
-            // On desktop the hero is hidden after entering; re-align once with no animation
             if (window.matchMedia('(min-width: 900px)').matches) {
               setTimeout(()=>{ setHeaderHeightVar(); alignToCardInstant(); }, 50);
             }
@@ -337,7 +325,6 @@
         });
       }
 
-      // iOS/Safari video nudges
       const v = document.querySelector('.hero-video');
       if(v){
         v.muted = true; v.autoplay = true; v.playsInline = true;
