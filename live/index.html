@@ -283,6 +283,16 @@
       .hero-video { animation: none; }
       html { scroll-behavior: auto; }
     }
+    /* Add or merge into your existing html rule */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + 8px);
+    }
+
+    /* Only hide the hero after entering on DESKTOP; keep it on mobile */
+    @media (min-width: 850px) {
+      body.entered .hero { display: none; }
+    }
   </style>
 </head>
 <body id="top">
@@ -353,69 +363,80 @@
 
   <!-- Smooth 'Enter Site' + iOS video nudges -->
   <script>
-    function setHeaderHeightVar() {
-      const header = document.querySelector('.site-header');
-      if (header) document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+  function setHeaderHeightVar() {
+    const header = document.querySelector('.site-header');
+    if (header) {
+      document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
     }
+  }
+  function headerH() {
+    const header = document.querySelector('.site-header');
+    return header ? Math.round(header.getBoundingClientRect().height) : 0;
+  }
+  function scrollToEl(el) {
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function enter() {
+    // Show header & main, allow the smooth scroll animation
+    document.body.classList.add('entering');
+    setHeaderHeightVar();
+
+    const card = document.getElementById('welcome-card');
+    if (!card) { document.body.classList.add('entered'); return; }
+
+    // Ensure layout has updated before measuring (fonts/header sizes, etc.)
+    requestAnimationFrame(() => {
+      setHeaderHeightVar();
+      requestAnimationFrame(() => {
+        scrollToEl(card);
+      });
+    });
+
+    // Finalize state AFTER the smooth scroll, but do not trigger another scroll.
+    const finalize = () => {
+      document.body.classList.remove('entering');
+      document.body.classList.add('entered'); // desktop hides hero via media query; mobile keeps hero in DOM to avoid height jump
+    };
+
+    if ('onscrollend' in window) {
+      window.addEventListener('scrollend', finalize, { once: true });
+      setTimeout(finalize, 1200); // safety fallback
+    } else {
+      setTimeout(finalize, 700);
+    }
+  }
+
+  // iOS/Safari video nudges + button wiring
+  document.addEventListener("DOMContentLoaded", () => {
+    setHeaderHeightVar();
     window.addEventListener('resize', setHeaderHeightVar);
 
-    function enter() {
-      // Show header + main, allow one smooth scroll like WIP
-      document.body.classList.add('entering');
-      setHeaderHeightVar();
-
-      const card = document.getElementById('welcome-card');
-      if (card) {
-        // Let CSS handle sticky header via scroll-margin-top
-        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-
-      // When the smooth scroll finishes (or after a short fallback), finalize
-      const finalize = () => {
-        document.body.classList.remove('entering');
-        document.body.classList.add('entered'); // hides hero on desktop; mobile remains scrollable via CSS
-      };
-
-      if ('onscrollend' in window) {
-        window.addEventListener('scrollend', finalize, { once: true });
-        // Safety fallback in case scrollend doesn't fire
-        setTimeout(finalize, 800);
-      } else {
-        setTimeout(finalize, 800);
-      }
+    const btn  = document.getElementById('enterSiteBtn');
+    const hero = document.getElementById('banner');
+    if (btn) {
+      btn.addEventListener('click', (e) => { e.preventDefault(); enter(); });
+      btn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } });
     }
+    if (hero) hero.addEventListener('click', (e) => { if (!e.target.closest('a,button')) enter(); });
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const v = document.querySelector(".hero-video");
-      const btn = document.getElementById('enterSiteBtn');
+    // Video autoplay helpers (iOS)
+    const v = document.querySelector(".hero-video");
+    if (v) {
+      v.muted = true; v.autoplay = true; v.playsInline = true;
+      v.setAttribute("playsinline",""); v.setAttribute("webkit-playsinline","");
+      const tryPlay = () => v.play().catch(() => {});
+      if (!v.currentSrc) { const mp4 = v.querySelector('source[type="video/mp4"]'); if (mp4 && mp4.src) { v.src = mp4.src; v.load(); } }
+      tryPlay();
+      v.addEventListener("loadedmetadata", tryPlay, { once: true });
+      v.addEventListener("pause", () => { if (!v.ended && !v.seeking) setTimeout(tryPlay, 50); });
+      const kickOnTouch = () => { tryPlay(); window.removeEventListener("touchstart", kickOnTouch, { passive: true }); };
+      window.addEventListener("touchstart", kickOnTouch, { passive: true });
+    }
+  });
+</script>
 
-      if (btn) {
-        btn.addEventListener('click', (e) => { e.preventDefault(); enter(); });
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
-        });
-      }
-
-      // Clicking the hero background (not the button) also enters
-      const hero = document.getElementById('banner');
-      if (hero) hero.addEventListener('click', (e) => { if (!e.target.closest('a,button')) enter(); });
-
-      // iOS/Safari autoplay nudges
-      if (v) {
-        v.muted = true; v.autoplay = true; v.playsInline = true;
-        v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", "");
-        const tryPlay = () => v.play().catch(() => {});
-        if (!v.currentSrc) {
-          const mp4 = v.querySelector('source[type="video/mp4"]');
-          if (mp4 && mp4.src) { v.src = mp4.src; v.load(); }
-        }
-        tryPlay();
-        v.addEventListener("loadedmetadata", tryPlay, { once: true });
-        v.addEventListener("pause", () => { if (!v.ended && !v.seeking) setTimeout(tryPlay, 50); });
-        const kickOnTouch = () => { tryPlay(); window.removeEventListener("touchstart", kickOnTouch, { passive: true }); };
-        window.addEventListener("touchstart", kickOnTouch, { passive: true });
-      }
-    });
-  </script>
 </body>
 </html>
