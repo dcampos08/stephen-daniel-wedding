@@ -56,9 +56,9 @@
       --radius-sm: 10px;
       --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
 
-      /* Revert container/margins to earlier feel */
-      --max-w: 1100px;
-      --space-5: 24px;
+      /* WIDEN the content area + keep comfy gutters */
+      --max-w: 1600px;     /* was 1100 — widened */
+      --space-5: 24px;     /* side padding in container */
 
       --vpad: clamp(12px, 2vh, 20px);
       --grid-gap: clamp(12px, 2vw, 20px);
@@ -94,7 +94,7 @@
       place-items: center;
       background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
-    body.entered .hero { display: none; }
+    /* NOTE: we no longer hide hero on mobile after entering; only on desktop (see @media at bottom) */
 
     .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .overlay {
@@ -189,11 +189,14 @@
       padding: var(--vpad) 0;
     }
 
-    /* Desktop/tablet: widen photo column a bit (bigger photo), keep earlier box/margin feel */
+    /* DESKTOP/TABLET:
+       - Widen grid to 1600px container
+       - Make both boxes wider
+       - Make photo bigger (~45%) */
     .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
     @media (min-width: 850px) {
       .grid-2 {
-        grid-template-columns: 2.6fr 1.4fr; /* ~65% | 35% (photo bigger than before) */
+        grid-template-columns: 2.2fr 1.8fr; /* ~55% | 45% (wider photo + wider blurb) */
         height: calc(100vh - var(--header-height) - (var(--vpad) * 2));
       }
     }
@@ -279,6 +282,7 @@
       scroll-padding-top: calc(var(--header-height) + 8px);
     }
 
+    /* Only hide the hero after entering on DESKTOP to avoid mobile jump */
     @media (min-width: 850px) {
       body.entered .hero { display: none; }
     }
@@ -344,7 +348,7 @@
             </div>
           </section>
 
-          <!-- RIGHT: photo (larger than before) -->
+          <!-- RIGHT: larger photo -->
           <div class="card photo-card">
             <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
           </div>
