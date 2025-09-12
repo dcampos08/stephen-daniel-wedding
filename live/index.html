@@ -32,7 +32,7 @@
     }
 
     :root{
-      --header-height: 88px;
+      --header-height: 92px;
 
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       --font-script-1:"beloved-script", cursive;
@@ -51,12 +51,13 @@
       --radius-sm:10px;
       --shadow-sm:0 4px 16px rgba(0,0,0,0.08);
 
-      --max-w: 1280px;
-      --space-5:24px;
+      /* Wider canvas + slightly tighter side padding */
+      --max-w: 1440px;
+      --side-pad: 18px;
 
       --vpad:clamp(10px,2vh,18px);
-      --grid-gap:clamp(10px,2vw,18px);
-      --card-pad:clamp(12px,2vw,18px);
+      --grid-gap:clamp(12px,2vw,20px);
+      --card-pad:clamp(14px,2vw,20px);
     }
 
     *{box-sizing:border-box}
@@ -76,7 +77,7 @@
     body.entering{overflow:auto;height:auto}
     body.entered{overflow:auto;height:auto}
 
-    .container{width:min(100%,var(--max-w));margin-inline:auto;padding:0 var(--space-5)}
+    .container{width:min(100%,var(--max-w));margin-inline:auto;padding:0 var(--side-pad)}
 
     /* HERO */
     .hero{
@@ -100,7 +101,7 @@
     h1{
       margin:0 0 .1em 0;font-family:var(--font-display);font-weight:400;letter-spacing:.04em;
       color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.35);
-      font-size:clamp(48px,8vw,80px);line-height:1.05;
+      font-size:clamp(48px,8vw,80px);line-height:1.08;
     }
     .hero-subline{
       margin:.15em 0 .8em 0;font-family:var(--font-script-2);font-weight:400;
@@ -108,8 +109,8 @@
       font-size:clamp(22px,3.6vw,32px);line-height:1.15;
     }
     .btn{
-      display:inline-block;padding:12px 26px;font-weight:700;
-      font-size:clamp(17px,2.2vw,20px);line-height:1.1;border-radius:999px;
+      display:inline-block;padding:12px 28px;font-weight:700;
+      font-size:clamp(18px,2.3vw,21px);line-height:1.1;border-radius:999px;
       border:2px solid var(--color-accent);text-decoration:none;-webkit-tap-highlight-color:transparent;
     }
     .btn.primary{background:var(--color-accent);color:#fff}
@@ -121,10 +122,10 @@
     }
     body.entering header.site-header,
     body.entered  header.site-header{display:block}
-    .site-header .mast{padding:12px 0;text-align:center}
+    .site-header .mast{padding:14px 0;text-align:center;overflow:visible}
     .site-header .mast .names{
       font-family:var(--font-display);color:#1B6A63;font-weight:400;
-      font-size:clamp(28px,4.8vw,48px);letter-spacing:.06em;line-height:1;
+      font-size:clamp(30px,4.8vw,50px);letter-spacing:.06em;line-height:1.15; /* give the S more headroom */
     }
     .site-header .mast .dateplace{
       font-family:var(--font-script-2);color:var(--color-accent);font-weight:400;
@@ -141,8 +142,8 @@
     .grid{display:grid;gap:var(--grid-gap);align-items:stretch}
     @media (min-width:900px){
       .grid-2{
-        /* 3/4 : 1/4 split; keep right at least 260px */
-        grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);
+        /* Wider overall + bigger photo: 2/3 : 1/3 split, but keep right sensible */
+        grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr);
         height:calc(100dvh - var(--header-height) - (var(--vpad)*2));
       }
     }
@@ -151,11 +152,12 @@
       background:var(--color-surface);border:1px solid var(--color-border);
       border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);
       padding:var(--card-pad);height:100%;display:flex;flex-direction:column;
-      min-height:0;overflow:hidden;-webkit-tap-highlight-color:transparent;
+      min-height:0; /* allow inner scroll area to size */
+      overflow:visible; /* prevent glyph clipping like the “S” swash */
+      -webkit-tap-highlight-color:transparent;
     }
-    .card:focus{outline:none}
 
-    /* scrollable inner content so the whole layout fits */
+    /* Inner content scroll so layout fits the viewport */
     .card-content{
       flex:1 1 auto;min-height:0;overflow:auto;
       -webkit-overflow-scrolling:touch;
@@ -170,23 +172,28 @@
 
     .signature{
       font-family:var(--font-script-1);color:var(--color-accent);font-weight:400;
-      font-size:clamp(18px,2.2vw,24px);letter-spacing:.3px;margin-top:10px;line-height:1.2;
+      font-size:clamp(18px,2.2vw,24px);letter-spacing:.3px;margin-top:10px;line-height:1.25;
+      padding-left:.2em; /* avoids left-edge swash clipping */
     }
 
+    /* Photo card bigger */
     .photo-card .card-content{
-      display:flex;align-items:center;justify-content:center;
+      display:flex;align-items:center;justify-content:center;padding:6px;
     }
     .photo-card img{
-      max-width:100%;max-height:100%;
-      width:auto;height:auto;object-fit:contain;border-radius:var(--radius-sm);
+      width:100%; height:100%;
+      max-width:100%; max-height:100%;
+      object-fit:contain; /* full image visible */
+      border-radius:var(--radius-sm);
     }
 
     /* Mobile: stack, full image visible, no inner scrollbars */
     @media (max-width:899px){
       .grid-2{grid-template-columns:1fr;height:auto!important}
       .welcome-wrap{height:auto;display:block;padding:clamp(12px,3vh,22px) 0}
-      .card{padding:clamp(14px,4vw,18px)}
+      .card{padding:clamp(14px,4vw,20px)}
       .card-content{overflow:visible}
+      .photo-card .card-content{padding:0}
       .photo-card img{width:100%;height:auto;max-height:none}
     }
 
@@ -233,7 +240,7 @@
     <div class="welcome-wrap">
       <div class="container">
         <div class="grid grid-2">
-          <!-- LEFT (3/4): blurb -->
+          <!-- LEFT: blurb (wider) -->
           <section id="welcome">
             <div class="card welcome-card" id="welcome-card">
               <div class="card-content" aria-labelledby="welcome-title">
@@ -251,7 +258,7 @@
             </div>
           </section>
 
-          <!-- RIGHT (1/4): photo -->
+          <!-- RIGHT: photo (larger) -->
           <div class="card photo-card">
             <div class="card-content">
               <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
@@ -302,13 +309,12 @@
           const y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
           smoothScrollToY(y, 720);
 
-          // hide hero AFTER scroll completes (duration + small buffer)
+          // finalize state after scroll completes
           setTimeout(()=>{
             document.body.classList.remove('entering');
             document.body.classList.add('entered');
           }, 780);
 
-          // update hash without native jump
           history.replaceState(null, '', '#welcome-card');
         });
       }
