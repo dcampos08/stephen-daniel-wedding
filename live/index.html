@@ -56,9 +56,8 @@
       --radius-sm: 10px;
       --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
 
-      /* WIDEN the content area + keep comfy gutters */
-      --max-w: 1600px;     /* was 1100 — widened */
-      --space-5: 24px;     /* side padding in container */
+      --max-w: 1600px;     /* wide container */
+      --space-5: 24px;
 
       --vpad: clamp(12px, 2vh, 20px);
       --grid-gap: clamp(12px, 2vw, 20px);
@@ -94,7 +93,7 @@
       place-items: center;
       background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
-    /* NOTE: we no longer hide hero on mobile after entering; only on desktop (see @media at bottom) */
+    /* (Desktop hides hero after entering; mobile keeps it — see media query at bottom) */
 
     .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .overlay {
@@ -190,13 +189,13 @@
     }
 
     /* DESKTOP/TABLET:
-       - Widen grid to 1600px container
-       - Make both boxes wider
-       - Make photo bigger (~45%) */
+       - Widen LEFT column, slightly narrow RIGHT column
+       - Photo card shows a narrower white "frame" behind the image
+       - Image is nudged to the right but stays the same size (fills row height) */
     .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
     @media (min-width: 850px) {
       .grid-2 {
-        grid-template-columns: 2.2fr 1.8fr; /* ~55% | 45% (wider photo + wider blurb) */
+        grid-template-columns: 2.6fr 1.4fr; /* wider blurb | slightly narrower photo column */
         height: calc(100vh - var(--header-height) - (var(--vpad) * 2));
       }
     }
@@ -240,12 +239,36 @@
       line-height: 1.2;
     }
 
-    /* Photo card */
-    .photo-card { display: flex; align-items: center; justify-content: center; }
+    /* Photo card: make the white box narrower without shrinking the image */
+    .photo-card {
+      position: relative;
+      background: transparent;  /* remove card bg/border; use a narrower frame instead */
+      border: none;
+      box-shadow: none;
+      padding: var(--card-pad);
+    }
+    /* Narrow white frame behind the photo */
+    .photo-card::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: var(--card-pad);
+      transform: translate(-50%, 0);
+      width: 84%;                                   /* <-- narrower white box */
+      height: calc(100% - (var(--card-pad) * 2));
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      z-index: 0;
+    }
     .photo-card img {
+      position: relative;
+      z-index: 1;
       width: 100%;
       height: 100%;
-      object-fit: contain;          /* show whole picture */
+      object-fit: contain;                          /* show entire photo */
+      transform: translateX(4%);                    /* <-- nudge photo slightly right */
       border-radius: var(--radius-sm);
     }
 
@@ -265,11 +288,9 @@
 
       .card { padding: clamp(14px, 4vw, 20px); }
 
-      .photo-card { align-items: stretch; }
-      .photo-card img { width: 100%; height: auto; max-height: none; object-fit: contain; }
-
-      .welcome-card p:not(.signature),
-      .welcome-card a { font-size: clamp(15px, 3.9vw, 18px); line-height: 1.6; }
+      /* Slightly wider frame on mobile and no right nudge */
+      .photo-card::before { width: 94%; }
+      .photo-card img { transform: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -338,9 +359,9 @@
           <section id="welcome">
             <div class="card welcome-card" id="welcome-card" tabindex="-1">
               <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
-              <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends on beautiful Oahu! Hawaii holds such a special place in our hearts as it's where our love story began.</p>
-              <p>We have some exciting events planned leading up to our wedding day, starting as early as Tuesday! Oahu offers incredible diversity for those looking to turn this into a memorable vacation... from secluded retreats like Makaha Valley on the west coast (where we've rented a house to truly relax away from it all) to the vibrant city resort experience of Waikiki with its beaches, dining, and nightlife.</p>
-              <p>For those interested in staying in the Waikiki area, we're providing complimentary shuttle service to and from the wedding venue.</p>
+              <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends on beautiful Oʻahu! Hawaiʻi holds such a special place in our hearts as it's where our love story began.</p>
+              <p>We have some exciting events planned leading up to our wedding day, starting as early as Tuesday! Oʻahu offers incredible diversity for those looking to turn this into a memorable vacation... from secluded retreats like Makaha Valley on the west coast (where we've rented a house to truly relax away from it all) to the vibrant city resort experience of Waikīkī with its beaches, dining, and nightlife.</p>
+              <p>For those interested in staying in the Waikīkī area, we're providing complimentary shuttle service to and from the wedding venue.</p>
               <p>We're currently working on securing a room block and would love your input. Please fill out <a href="https://docs.google.com/forms/d/e/1FAIpQLSedXyHmcBn_zBNSfaO9a6gIsvfqLj9VSmL-QIF-4CbLtW-dNA/viewform" target="_blank" rel="noopener">this form</a> to help identify your accommodation preferences.</p>
               <p>While we're still adding the finishing touches to our website, we'll be updating regularly with additional details. Please check back after November 1st as we finalize everything!</p>
               <p>We can't wait to share this incredible adventure with our favorite people.</p>
@@ -348,7 +369,7 @@
             </div>
           </section>
 
-          <!-- RIGHT: larger photo -->
+          <!-- RIGHT: photo with narrower white frame behind it -->
           <div class="card photo-card">
             <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
           </div>
