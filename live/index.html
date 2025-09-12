@@ -37,7 +37,6 @@
     :root{
       --header-height: 88px;
 
-      /* WIP fonts */
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       --font-script-1: "beloved-script", cursive;    /* accents/signature */
       --font-script-2: "Satisfy", cursive;           /* Oʻahu / date lines */
@@ -67,6 +66,9 @@
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
 
+    /* Disable scroll anchoring so the browser doesn't "helpfully" jump */
+    html, body { overflow-anchor: none; }
+
     /* Native smooth scroll; stop under sticky header */
     html {
       scroll-behavior: smooth;
@@ -82,10 +84,9 @@
       font-synthesis-weight: none;
     }
 
-    /* States */
-    body:not(.entering):not(.entered) { overflow: hidden; height: 100vh; } /* before click */
-    body.entering { overflow: auto; }   /* allow the smooth scroll animation */
-    body.entered  { overflow: hidden; height: 100vh; } /* lock after we land (desktop) */
+    /* States: keep hero full-bleed before entering; allow scroll after */
+    body:not(.entered) { overflow: hidden; height: 100vh; }
+    body.entered { overflow: auto; height: auto; }
 
     .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
 
@@ -98,6 +99,8 @@
       place-items: center;
       background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
+    /* Hide hero on ALL devices after entering to prevent layout shifts */
+    body.entered .hero { display: none !important; }
 
     .hero-video {
       position: absolute; inset: 0;
@@ -141,9 +144,9 @@
     }
     .btn {
       display: inline-block;
-      padding: 12px 24px;                 /* slightly bigger */
+      padding: 12px 24px;
       font-weight: 700;
-      font-size: clamp(17px, 2.2vw, 20px);/* slightly bigger */
+      font-size: clamp(17px, 2.2vw, 20px);
       line-height: 1.1;
       border-radius: 999px;
       border: 2px solid var(--color-accent);
@@ -153,15 +156,14 @@
 
     /* Header (solid cream) */
     header.site-header {
-      display: none;
+      display: none;                      /* revealed after "Enter" */
       position: sticky;
       top: 0; z-index: 10;
-      background: var(--color-bg);              /* solid cream */
+      background: var(--color-bg);        /* solid cream */
       border-bottom: 1px solid var(--color-border);
       color: var(--color-text);
     }
-    body.entering header.site-header,
-    body.entered  header.site-header { display: block; }
+    body.entered header.site-header { display: block; }
 
     .site-header .mast { padding: 12px 0; text-align: center; }
     .site-header .mast .names {
@@ -182,12 +184,11 @@
 
     /* Main welcome view */
     main#main {
-      display: none;
+      display: none;                      /* revealed after "Enter" */
       height: calc(100vh - var(--header-height));
-      overflow: hidden; /* lock after we land on desktop/tablet */
+      overflow: hidden;                   /* desktop: lock after we land */
     }
-    body.entering main#main,
-    body.entered  main#main { display: block; }
+    body.entered main#main { display: block; }
 
     .welcome-wrap {
       height: 100%;
@@ -224,7 +225,7 @@
       letter-spacing: 0.2px;
     }
 
-    /* Make the scroll target stop under sticky header */
+    /* Scroll target stops under sticky header */
     .welcome-card { scroll-margin-top: calc(var(--header-height) + 16px); }
     .welcome-card p { margin: 0 0 10px; }
 
@@ -247,36 +248,25 @@
       border-radius: var(--radius-sm);
     }
 
-    /* ======== Mobile fixes (stacked layout, full image visible) ======== */
+    /* ======== Mobile (stacked, full image visible) ======== */
     @media (max-width: 849px) {
-      /* Allow page to scroll after entering on small screens */
-      body.entered { overflow: auto; height: auto; }
-
-      /* Let the main content grow naturally and scroll */
+      /* main can grow naturally and scroll */
       main#main {
-        height: auto;                         /* remove fixed vh */
-        min-height: calc(100svh - var(--header-height)); /* at least screen height */
+        height: auto;
+        min-height: calc(100svh - var(--header-height));
         overflow: visible;
       }
-
       .welcome-wrap {
         height: auto;
         display: block;
         padding: clamp(12px, 3vh, 24px) 0;
       }
-
       .grid-2 {
-        grid-template-columns: 1fr;           /* stack */
+        grid-template-columns: 1fr; /* stack */
         height: auto !important;
       }
-
-      .card {
-        padding: clamp(14px, 4vw, 20px);
-      }
-
-      .photo-card {
-        align-items: stretch;
-      }
+      .card { padding: clamp(14px, 4vw, 20px); }
+      .photo-card { align-items: stretch; }
       .photo-card img {
         width: 100%;
         height: auto;
@@ -288,11 +278,6 @@
     @media (prefers-reduced-motion: reduce) {
       .hero-video { animation: none; }
       html { scroll-behavior: auto; }
-    }
-
-    /* Only hide the hero after entering on DESKTOP; keep it on mobile */
-    @media (min-width: 850px) {
-      body.entered .hero { display: none; }
     }
   </style>
 </head>
@@ -321,6 +306,7 @@
           <span class="date">July 10, 2026</span>
         </p>
         <div style="margin-top: 12px">
+          <!-- IMPORTANT: anchor goes straight to the card -->
           <a href="#welcome-card" class="btn primary" id="enterSiteBtn">Enter Site</a>
         </div>
       </div>
@@ -334,7 +320,6 @@
         <div class="names">Stephen &amp; Daniel</div>
         <div class="dateplace">Oʻahu, Hawaiʻi — July 10, 2026</div>
       </div>
-      <!-- no nav buttons (coming soon) -->
     </div>
   </header>
 
@@ -362,9 +347,9 @@
     </div>
   </main>
 
-  <!-- Smooth 'Enter Site' + iOS video nudges -->
+  <!-- Enter flow (anchor-based), plus iOS video nudges -->
   <script>
-    // Keep sticky header height in a CSS var
+    // Keep sticky header height in a CSS var so scroll-padding-top works
     function setHeaderHeightVar() {
       const header = document.querySelector('.site-header');
       if (header) {
@@ -372,53 +357,32 @@
       }
     }
 
-    // Single entry point when user clicks "Enter Site"
-    function enter() {
-      // Reveal header + main
-      document.body.classList.add('entering');
-      setHeaderHeightVar();
-
-      const card = document.getElementById('welcome-card');
-      if (card) {
-        // Let layout/fonts settle, then do one smooth, native scroll
-        requestAnimationFrame(() => {
-          setHeaderHeightVar();
-          card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-      }
-
-      // Finalize AFTER scroll.
-      // Desktop: add 'entered' (hides hero via media query). Phone: keep hero in DOM to avoid height jump.
-      const finalize = () => {
-        const isDesktop = window.matchMedia('(min-width: 850px)').matches;
-        if (isDesktop) {
-          document.body.classList.remove('entering');
-          document.body.classList.add('entered');
-        } else {
-          // On phones, keep 'entering' only; don't add 'entered'
-        }
-      };
-      setTimeout(finalize, 700); // safe, cross-browser
-    }
+    let hasEntered = false;
 
     document.addEventListener("DOMContentLoaded", () => {
       setHeaderHeightVar();
       window.addEventListener('resize', setHeaderHeightVar);
 
-      const btn  = document.getElementById('enterSiteBtn');
-      const hero = document.getElementById('banner');
-
+      const btn = document.getElementById('enterSiteBtn');
       if (btn) {
-        btn.addEventListener('click', (e) => { e.preventDefault(); enter(); });
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
-        });
-      }
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();                 // we'll set the hash ourselves (once)
+          if (hasEntered) return;
+          hasEntered = true;
 
-      // Optional: clicking the hero background also enters
-      if (hero) {
-        hero.addEventListener('click', (e) => {
-          if (!e.target.closest('a,button')) enter();
+          // Show header/main and hide hero (CSS handles this when .entered is present)
+          document.body.classList.add('entered');
+          setHeaderHeightVar();
+
+          // Let layout settle one frame, then set the hash once (native smooth scroll)
+          requestAnimationFrame(() => {
+            if (location.hash !== '#welcome-card') {
+              location.hash = '#welcome-card';
+            }
+            // Focus the card for accessibility
+            const card = document.getElementById('welcome-card');
+            if (card) card.focus({ preventScroll: true });
+          });
         });
       }
 
