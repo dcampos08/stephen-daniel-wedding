@@ -56,11 +56,14 @@
       --radius-sm: 10px;
       --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
 
-      --max-w: 1600px;     /* wide container */
+      --max-w: 1600px;
       --space-5: 24px;
 
       --vpad: clamp(12px, 2vh, 20px);
-      --grid-gap: clamp(12px, 2vw, 20px);
+
+      /* ↓ tighter inter-box gap, and we'll match side margins to this */
+      --grid-gap: clamp(10px, 1.5vw, 16px);
+
       --card-pad: clamp(14px, 2vw, 20px);
     }
 
@@ -84,6 +87,9 @@
 
     .container { width: min(100%, var(--max-w)); margin-inline: auto; padding: 0 var(--space-5); }
 
+    /* Make side margins in the welcome section equal to the gap between boxes */
+    .welcome-wrap > .container { padding-left: var(--grid-gap); padding-right: var(--grid-gap); }
+
     /* Hero */
     .hero {
       position: relative;
@@ -93,7 +99,6 @@
       place-items: center;
       background: url("assets/img/bg-botanical.png") center center / cover no-repeat;
     }
-    /* (Desktop hides hero after entering; mobile keeps it — see media query at bottom) */
 
     .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .overlay {
@@ -189,10 +194,11 @@
     }
 
     /* DESKTOP/TABLET layout */
-    .grid { display: grid; gap: var(--grid-gap); align-items: stretch; }
+    .grid { display: grid; align-items: stretch; }
     @media (min-width: 850px) {
       .grid-2 {
-        grid-template-columns: 2.6fr 1.4fr; /* wider blurb | slightly narrower photo column */
+        grid-template-columns: 2.6fr 1.4fr; /* wider blurb | narrower photo col */
+        column-gap: var(--grid-gap);        /* ← gap between boxes */
         height: calc(100vh - var(--header-height) - (var(--vpad) * 2));
       }
     }
@@ -236,36 +242,37 @@
       line-height: 1.2;
     }
 
-    /* Photo card:
-       - Keep the card the same height as the blurb
-       - Use an INNER "photo-frame" that is narrower, has the same padding/border as a card,
-         and is right-aligned. This guarantees the frame's height exactly matches the blurb card. */
+    /* Photo card & inner frame:
+       - match blurb height
+       - pull frame LEFT so it's closer to the blurb (narrower internal offset)
+       - same padding/border as card
+    */
     .photo-card {
       background: transparent;
       border: none;
       box-shadow: none;
-      padding: 0;                     /* no padding so inner frame can be 100% height */
+      padding: 0;
       display: flex;
       align-items: stretch;
-      justify-content: stretch;
+      justify-content: flex-start;     /* ← move frame left */
     }
     .photo-frame {
-      margin-left: auto;              /* push to the right */
-      width: 84%;                     /* narrower white box */
-      height: 100%;                   /* EXACTLY match blurb card height */
+      width: 92%;                      /* ← a bit wider than before */
+      height: 100%;
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm);
-      padding: var(--card-pad);       /* same inner padding as blurb card */
+      padding: var(--card-pad);
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0;                        /* ← no extra inner gap */
     }
     .photo-frame img {
       width: 100%;
       height: 100%;
-      object-fit: contain;            /* show entire photo */
+      object-fit: contain;
       border-radius: var(--radius-sm);
     }
 
@@ -285,8 +292,8 @@
 
       .card { padding: clamp(14px, 4vw, 20px); }
 
-      .photo-card { padding: 0; }
-      .photo-frame { width: 94%; height: auto; }  /* allow natural height on mobile */
+      .photo-card { padding: 0; justify-content: center; }
+      .photo-frame { width: 94%; height: auto; }
       .photo-frame img { height: auto; }
     }
 
@@ -366,7 +373,7 @@
             </div>
           </section>
 
-          <!-- RIGHT: photo with right-aligned, equal-height white frame -->
+          <!-- RIGHT: photo (equal height, left-aligned frame for tighter center gap) -->
           <div class="card photo-card">
             <div class="photo-frame">
               <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
