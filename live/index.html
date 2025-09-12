@@ -66,14 +66,8 @@
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
 
-    /* Disable scroll anchoring so the browser doesn't "helpfully" jump */
+    /* Disable scroll anchoring to prevent “helpful” jumps */
     html, body { overflow-anchor: none; }
-
-    /* Native smooth scroll; stop under sticky header */
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: calc(var(--header-height) + 8px);
-    }
 
     /* Global bg: botanical */
     body {
@@ -84,7 +78,7 @@
       font-synthesis-weight: none;
     }
 
-    /* States: keep hero full-bleed before entering; allow scroll after */
+    /* States */
     body:not(.entered) { overflow: hidden; height: 100vh; }
     body.entered { overflow: auto; height: auto; }
 
@@ -151,6 +145,7 @@
       border-radius: 999px;
       border: 2px solid var(--color-accent);
       text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn.primary { background: var(--color-accent); color: white; }
 
@@ -215,7 +210,10 @@
       height: 100%;
       display: flex; flex-direction: column;
       min-height: 0;
+      -webkit-tap-highlight-color: transparent;
     }
+    /* remove blue focus ring on mobile */
+    .card:focus { outline: none; }
 
     .section-title {
       font-family: var(--font-body); /* beloved-sans */
@@ -225,7 +223,6 @@
       letter-spacing: 0.2px;
     }
 
-    /* Scroll target stops under sticky header */
     .welcome-card { scroll-margin-top: calc(var(--header-height) + 16px); }
     .welcome-card p { margin: 0 0 10px; }
 
@@ -250,7 +247,6 @@
 
     /* ======== Mobile (stacked, full image visible) ======== */
     @media (max-width: 849px) {
-      /* main can grow naturally and scroll */
       main#main {
         height: auto;
         min-height: calc(100svh - var(--header-height));
@@ -276,7 +272,6 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-video { animation: none; }
       html { scroll-behavior: auto; }
     }
   </style>
@@ -306,7 +301,6 @@
           <span class="date">July 10, 2026</span>
         </p>
         <div style="margin-top: 12px">
-          <!-- IMPORTANT: anchor goes straight to the card -->
           <a href="#welcome-card" class="btn primary" id="enterSiteBtn">Enter Site</a>
         </div>
       </div>
@@ -330,7 +324,7 @@
         <div class="grid grid-2">
           <!-- LEFT: blurb -->
           <section id="welcome">
-            <div class="card welcome-card" id="welcome-card" tabindex="-1">
+            <div class="card welcome-card" id="welcome-card">
               <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
               <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends in beautiful Oʻahu!</p>
               <p>While we're still adding the finishing touches to our website, we’ll share all the details soon. We can’t wait to celebrate with you!</p>
@@ -347,14 +341,36 @@
     </div>
   </main>
 
-  <!-- Enter flow (anchor-based), plus iOS video nudges -->
+  <!-- Smooth, custom-eased scroll + iOS video helpers -->
   <script>
-    // Keep sticky header height in a CSS var so scroll-padding-top works
+    // header helpers
     function setHeaderHeightVar() {
       const header = document.querySelector('.site-header');
       if (header) {
         document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
       }
+    }
+    function headerH() {
+      const header = document.querySelector('.site-header');
+      return header ? Math.round(header.getBoundingClientRect().height) : 0;
+    }
+
+    // silky easing scroll (like WIP feel)
+    function smoothScrollToY(targetY, duration = 700) {
+      const startY = window.pageYOffset || document.documentElement.scrollTop;
+      const delta  = targetY - startY;
+      const startT = performance.now();
+      const easeInOutCubic = t => (t < 0.5)
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+      function step(now) {
+        const t = Math.min(1, (now - startT) / duration);
+        const eased = easeInOutCubic(t);
+        window.scrollTo(0, Math.round(startY + delta * eased));
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
     }
 
     let hasEntered = false;
@@ -366,22 +382,22 @@
       const btn = document.getElementById('enterSiteBtn');
       if (btn) {
         btn.addEventListener('click', (e) => {
-          e.preventDefault();                 // we'll set the hash ourselves (once)
+          e.preventDefault();
           if (hasEntered) return;
           hasEntered = true;
 
-          // Show header/main and hide hero (CSS handles this when .entered is present)
+          // Show header/main, hide hero via CSS
           document.body.classList.add('entered');
           setHeaderHeightVar();
 
-          // Let layout settle one frame, then set the hash once (native smooth scroll)
+          // After layout paints, compute target and do custom smooth scroll
           requestAnimationFrame(() => {
-            if (location.hash !== '#welcome-card') {
-              location.hash = '#welcome-card';
-            }
-            // Focus the card for accessibility
             const card = document.getElementById('welcome-card');
-            if (card) card.focus({ preventScroll: true });
+            if (!card) return;
+            const y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
+            smoothScrollToY(y, 720);
+            // Set the hash without triggering native scroll
+            history.replaceState(null, '', '#welcome-card');
           });
         });
       }
