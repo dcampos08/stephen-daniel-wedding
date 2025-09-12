@@ -14,7 +14,7 @@
   <!-- Typekit (beloved-sans / beloved-script) -->
   <link rel="preconnect" href="https://use.typekit.net">
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
-  <!-- Google: Satisfy (for Oʻahu / date lines) -->
+  <!-- Google: Satisfy (for Oʻahu/date lines) -->
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
 
   <!-- Preloads -->
@@ -51,7 +51,7 @@
       --radius-sm:10px;
       --shadow-sm:0 4px 16px rgba(0,0,0,0.08);
 
-      --max-w:1100px;
+      --max-w: 1280px;
       --space-5:24px;
 
       --vpad:clamp(10px,2vh,18px);
@@ -80,13 +80,10 @@
 
     /* HERO */
     .hero{
-      position:relative;
-      height:100vh;
-      overflow:hidden;
+      position:relative;height:100vh;overflow:hidden;
       display:grid;place-items:center;
       background:url("assets/img/bg-botanical.png") center/cover no-repeat;
     }
-    /* hide hero only AFTER scroll completes */
     body.entered .hero{display:none!important}
 
     .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -111,7 +108,7 @@
       font-size:clamp(22px,3.6vw,32px);line-height:1.15;
     }
     .btn{
-      display:inline-block;padding:12px 24px;font-weight:700;
+      display:inline-block;padding:12px 26px;font-weight:700;
       font-size:clamp(17px,2.2vw,20px);line-height:1.1;border-radius:999px;
       border:2px solid var(--color-accent);text-decoration:none;-webkit-tap-highlight-color:transparent;
     }
@@ -142,9 +139,10 @@
     .welcome-wrap{height:100%;display:grid;place-items:center;padding:var(--vpad) 0}
 
     .grid{display:grid;gap:var(--grid-gap);align-items:stretch}
-    @media (min-width:850px){
+    @media (min-width:900px){
       .grid-2{
-        grid-template-columns:min(520px,50%) 1fr;
+        /* 3/4 : 1/4 split; keep right at least 260px */
+        grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);
         height:calc(100dvh - var(--header-height) - (var(--vpad)*2));
       }
     }
@@ -157,14 +155,14 @@
     }
     .card:focus{outline:none}
 
-    /* scrollable inner area so the whole layout fits */
+    /* scrollable inner content so the whole layout fits */
     .card-content{
       flex:1 1 auto;min-height:0;overflow:auto;
       -webkit-overflow-scrolling:touch;
     }
 
     .section-title{
-      font-family:var(--font-body);font-size:clamp(24px,3.3vw,34px);
+      font-family:var(--font-body);font-size:clamp(24px,3.1vw,32px);
       color:#1B6A63;margin:0 0 12px;letter-spacing:.2px;
     }
     .welcome-card{scroll-margin-top:calc(var(--header-height) + 12px)}
@@ -183,8 +181,8 @@
       width:auto;height:auto;object-fit:contain;border-radius:var(--radius-sm);
     }
 
-    /* Mobile: stack, no inner scrollbars */
-    @media (max-width:849px){
+    /* Mobile: stack, full image visible, no inner scrollbars */
+    @media (max-width:899px){
       .grid-2{grid-template-columns:1fr;height:auto!important}
       .welcome-wrap{height:auto;display:block;padding:clamp(12px,3vh,22px) 0}
       .card{padding:clamp(14px,4vw,18px)}
@@ -235,7 +233,7 @@
     <div class="welcome-wrap">
       <div class="container">
         <div class="grid grid-2">
-          <!-- LEFT: blurb -->
+          <!-- LEFT (3/4): blurb -->
           <section id="welcome">
             <div class="card welcome-card" id="welcome-card">
               <div class="card-content" aria-labelledby="welcome-title">
@@ -253,7 +251,7 @@
             </div>
           </section>
 
-          <!-- RIGHT: photo -->
+          <!-- RIGHT (1/4): photo -->
           <div class="card photo-card">
             <div class="card-content">
               <img src="assets/img/couple-1.jpg" alt="Stephen and Daniel — photo" />
@@ -295,26 +293,22 @@
       if(btn){
         btn.addEventListener('click', (e)=>{
           e.preventDefault();
-
-          // Show header/main for correct measurement, but keep hero visible during scroll
-          document.body.classList.add('entering');
+          document.body.classList.add('entering'); // show header/main for correct measurement
           setHeaderHeightVar();
 
           const card = document.getElementById('welcome-card');
           if(!card) return;
 
-          // compute target with hero still present
           const y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - headerH() - 8;
-
           smoothScrollToY(y, 720);
 
-          // hide hero AFTER scroll ends (duration + buffer)
+          // hide hero AFTER scroll completes (duration + small buffer)
           setTimeout(()=>{
             document.body.classList.remove('entering');
             document.body.classList.add('entered');
           }, 780);
 
-          // update hash without causing native jump
+          // update hash without native jump
           history.replaceState(null, '', '#welcome-card');
         });
       }
