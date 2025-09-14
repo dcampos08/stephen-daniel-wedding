@@ -292,10 +292,12 @@
 
       .card { padding: clamp(14px, 4vw, 20px); }
 
-      .photo-card { padding: 0; justify-content: center; }
-      .photo-frame { width: 94%; height: auto; }
+      /* Make the photo box the SAME width as the blurb box on mobile */
+      .photo-card { padding: 0; justify-content: flex-start; }
+      .photo-frame { width: 100%; height: auto; }   /* <- was 94% */
       .photo-frame img { height: auto; }
     }
+
 
     @media (prefers-reduced-motion: reduce) {
       .hero-video { animation: none; }
