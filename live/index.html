@@ -65,6 +65,8 @@
       --grid-gap: clamp(10px, 1.5vw, 16px);
 
       --card-pad: clamp(14px, 2vw, 20px);
+
+      --nudge-x: 12px;
     }
 
     * { box-sizing: border-box; }
@@ -89,6 +91,14 @@
 
     /* Make side margins in the welcome section equal to the gap between boxes */
     .welcome-wrap > .container { padding-left: var(--grid-gap); padding-right: var(--grid-gap); }
+
+    /* Nudge both boxes a touch to the right on laptop/desktop */
+    @media (min-width: 850px) {
+      .welcome-wrap > .container {
+        padding-left: calc(var(--grid-gap) + var(--nudge-x));
+        padding-right: var(--grid-gap);
+      }
+    }
 
     /* Hero */
     .hero {
