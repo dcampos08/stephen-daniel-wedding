@@ -3,18 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Our Wedding — July 10, 2026</title>
-  <meta name="description" content="You're invited to celebrate with us. Find the schedule, venue details, travel tips, registry, and RSVP here." />
-  <meta property="og:title" content="Our Wedding — July 10, 2026" />
-  <meta property="og:description" content="You're invited to celebrate with us in Honolulu. All the details and RSVP inside." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/img/og-cover.jpg" />
-  <meta name="theme-color" content="#7a6a56">
+  <title>Stephen & Daniel — July 10, 2026</title>
+  <meta name="description" content="Stephen & Daniel — Oʻahu, Hawaiʻi — July 10, 2026. Full website will be live on November 1st!" />
+  <meta property="og:title" content="Stephen & Daniel — July 10, 2026" />
+  <meta property="og:description" content="Stephen & Daniel — Oʻahu, Hawaiʻi — July 10, 2026. Full website will be live on November 1st!" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://use.typekit.net">
   <link rel="stylesheet" href="https://use.typekit.net/yoj5rjq.css">
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap" rel="stylesheet">
 
   <style>
     /* Local font: Safira March */
@@ -31,7 +28,7 @@
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       --font-serif-alt: "Cormorant Garamond", serif;
       --font-script-1: "beloved-script", cursive;
-      --font-script-2: "Safira March", cursive;
+      --font-script-2: "Satisfy", cursive; 
       --font-display: "Safira March", cursive;
 
       --color-bg: #FFFDF8;
@@ -129,12 +126,9 @@
       border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.35);
     }
     .hero h1 {
-      font-family: var(--font-script-2);
+      font-family: var(--font-display);
       font-weight: 400;
-      font-size: clamp(48px, 8vw, 80px);
-      margin: 0 0 0.1em;
-      line-height: 1.05;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      letter-spacing: 0.04em;
     }
     .hero p:not(.hero-subline) {
       margin: 0;
@@ -145,7 +139,7 @@
       letter-spacing: 0.2px;
     }
     .hero .hero-subline {
-      font-family: var(--font-script-1);
+      font-family: var(--font-script-2); /* switched to Satisfy like Live */
       color: var(--color-accent);
       font-weight: 700;
       font-size: clamp(24px, 3.75vw, 36px);
@@ -186,11 +180,7 @@
     .signature {
       font-family: var(--font-script-1);
       color: var(--color-accent);
-      font-weight: 700;
-      font-size: clamp(18px, 2.2vw, 24px);
-      letter-spacing: 0.3px;
-      margin-top: var(--space-4);
-      line-height: 1.2;
+      font-weight: 400; /* not 700 */
     }
 
     .card img {
@@ -310,18 +300,53 @@
     /* Date/time lines */
     .event-date, .event-time { display: block; }
 
+    #welcome-card p:not(.signature),
+    #welcome-card a {
+      font-family: "Antic Slab", serif;
+      font-size: clamp(15px, 1.55vw, 18px);
+      line-height: 1.55;
+    }
+
+    /* Match Live’s desktop proportions for the welcome grid only */
+@media (min-width: 850px) {
+  #welcome .grid.grid-2 {
+    grid-template-columns: 2.6fr 1.4fr; /* wider blurb | narrower photo */
+    column-gap: clamp(10px, 1.5vw, 16px);
+  }
+  /* match side paddings to the gap & nudge slightly right to center visually */
+  :root { --nudge-x: 12px; --grid-gap: clamp(10px, 1.5vw, 16px); }
+  #welcome .container { padding-left: calc(var(--grid-gap) + var(--nudge-x)); padding-right: var(--grid-gap); }
+}
+
+/* Photo “frame” look like Live (optional but nice) */
+#welcome .card.photo-card { background: transparent; border: 0; box-shadow: none; padding: 0; }
+#welcome .photo-frame {
+  width: 92%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+}
+#welcome .photo-frame img { border-radius: var(--radius-sm); }
+
+/* Mobile: make photo same width as blurb */
+@media (max-width: 849px) {
+  #welcome .photo-frame { width: 100%; }
+}
+
   </style>
-<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.mp4" as="video" type="video/mp4" fetchpriority="high">
-<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.webm" as="video" type="video/webm" fetchpriority="high">
-<link rel="preload" href="/assets/img/hero-poster.jpg" as="image" fetchpriority="high">
-<link rel="prefetch" href="/assets/img/bg-botanical.png?v=2" as="image">
+<!-- Optional: swap WIP preloads to this style -->
+<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
+<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.webm" as="fetch" type="video/webm" crossorigin="anonymous" fetchpriority="high">
+<link rel="preload" href="/assets/img/bg-botanical.png?v=2" as="image" fetchpriority="high">
 </head>
 <body id="top">
   <header class="site-header">
     <div class="container" id="siteNav">
       <div class="mast">
         <div class="names">Stephen &amp; Daniel</div>
-        <div class="dateplace">Honolulu, HI — July 10, 2026</div>
+        <div class="dateplace">Oʻahu, Hawaiʻi — July 10, 2026</div>
       </div>
       <nav class="topnav" aria-label="Primary">
         <ul>
@@ -347,7 +372,10 @@
     <div class="overlay">
       <div class="title-card">
         <h1>Stephen &amp; Daniel</h1>
-        <p class="hero-subline">Honolulu, HI — July 10, 2026</p>
+          <p class="hero-subline">
+            <span class="place">Oʻahu, Hawaiʻi</span><br>
+            <span class="date">July 10, 2026</span>
+          </p>
         <div style="margin-top: var(--space-4)">
           <a href="#main" class="btn primary" id="enterSiteBtn">Enter Site</a>
         </div>
@@ -361,14 +389,19 @@
       <div class="container grid grid-2">
         <div class="card" id="welcome-card">
           <h2 class="section-title" id="welcome-title">Aloha &amp; Welcome!</h2>
-          <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends in beautiful Oahu!</p>
-          <p>While we're still adding the finishing touches to our website, we've included information about expected events, lodging, and expected events for the week to help you start planning your trip. We'll be updating the site regularly with additional details, so please check back soon!</p>
+          <p>We are absolutely thrilled to be celebrating our special day with our closest family and friends on beautiful Oʻahu! Hawaiʻi holds such a special place in our hearts as it's where our love story began.</p>
+          <p>We have some exciting events planned leading up to our wedding day, starting as early as Tuesday! Oʻahu offers incredible diversity for those looking to turn this into a memorable vacation... from secluded retreats like Makaha Valley on the west coast (where we've rented a house to truly relax away from it all) to the vibrant city resort experience of Waikīkī with its beaches, dining, and nightlife.</p>
+          <p>For those interested in staying in the Waikīkī area, we're providing complimentary shuttle service to and from the wedding venue.</p>
+          <p>We're currently working on securing a room block and would love your input. Please fill out <a href="https://docs.google.com/forms/d/e/1FAIpQLSedXyHmcBn_zBNSfaO9a6gIsvfqLj9VSmL-QIF-4CbLtW-dNA/viewform" target="_blank" rel="noopener">this form</a> to help identify your accommodation preferences.</p>
+          <p>While we're still adding the finishing touches to our website, we'll be updating regularly with additional details. Please check back after November 1st as we finalize everything!</p>
           <p>We can't wait to share this incredible adventure with our favorite people.</p>
           <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
         </div>
-        <div class="card">
-          <img src=/assets/img/couple-1.jpg" alt="Stephen and Daniel — photo">
+      <div class="card photo-card">
+        <div class="photo-frame">
+          <img src="/assets/img/couple-1.jpg" alt="Stephen and Daniel — photo">
         </div>
+      </div>
       </div>
     </section>
 
@@ -507,8 +540,8 @@
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -541,13 +574,13 @@
                     <div class="btn-row"><a class="btn ghost" href="#rsvp-title">RSVP</a></div>
                     <div class="cal-links">
                       <a href="#" class="cal-trigger" aria-haspopup="true" aria-expanded="false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>
                         Add to Calendar
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -580,13 +613,13 @@
                     <div class="btn-row"><a class="btn ghost" href="#rsvp-title">RSVP</a></div>
                     <div class="cal-links">
                       <a href="#" class="cal-trigger" aria-haspopup="true" aria-expanded="false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>
                         Add to Calendar
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -619,13 +652,13 @@
                     <div class="btn-row"><a class="btn ghost" href="#rsvp-title">RSVP</a></div>
                     <div class="cal-links">
                       <a href="#" class="cal-trigger" aria-haspopup="true" aria-expanded="false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>
                         Add to Calendar
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -658,13 +691,13 @@
                     <div class="btn-row"><a class="btn ghost" href="#rsvp-title">RSVP</a></div>
                     <div class="cal-links">
                       <a href="#" class="cal-trigger" aria-haspopup="true" aria-expanded="false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>
                         Add to Calendar
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
