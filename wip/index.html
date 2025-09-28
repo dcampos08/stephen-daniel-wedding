@@ -28,7 +28,7 @@
       --font-body: "beloved-sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       --font-serif-alt: "Cormorant Garamond", serif;
       --font-script-1: "beloved-script", cursive;
-      --font-script-2: "Satisfy", cursive; 
+      --font-script-2: "Satisfy", cursive;
       --font-display: "Safira March", cursive;
 
       --color-bg: #FFFDF8;
@@ -57,10 +57,8 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      /* cream + botanical image in one line */
       background: var(--color-bg) url("/assets/img/bg-botanical.png?v=2")
                   top center / 800px auto repeat fixed;
-
       color: var(--color-text);
       font-family: var(--font-body);
       line-height: 1.65;
@@ -76,22 +74,22 @@
     header.site-header { position: sticky; top: 0; z-index: 8; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border); }
     .site-header .mast { padding: var(--space-4) 0 var(--space-3); text-align: center; }
     .site-header .mast .names {
-      font-family: var(--font-script-2);
+      font-family: var(--font-display);      /* Safira March — same as hero h1 */
       font-weight: 400;
       color: var(--color-primary);
-      font-size: clamp(32px, 5vw, 56px);
+      font-size: clamp(28px, 4.8vw, 48px);   /* slightly smaller than current */
       line-height: 1;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
     }
+
     .site-header .mast .dateplace {
-      font-family: var(--font-script-1);
+      font-family: var(--font-script-2);     /* Satisfy — same as hero subline */
       color: var(--color-accent);
-      font-weight: 700;
-      font-size: clamp(14px, 1.8vw, 18px);
+      font-weight: 400;                      /* was 700; match live */
+      font-size: clamp(14px, 1.8vw, 18px);   /* consistent with live */
       letter-spacing: 0.3px;
       margin-top: 4px;
     }
-
     .topnav ul {
       display: flex; flex-wrap: wrap; gap: var(--space-5);
       list-style: none; margin: 0; padding: var(--space-3) 0 var(--space-4);
@@ -108,6 +106,7 @@
 
     body:not(.entered) { overflow: hidden; height: 100vh; }
 
+    /* Hero */
     .hero {
       position: relative;
       height: 100vh;
@@ -121,14 +120,22 @@
       background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
     }
     .hero .title-card {
-      text-align: center; color: white; padding: var(--space-6);
-      backdrop-filter: blur(6px); background: rgba(0,0,0,0.2);
-      border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.35);
+      text-align: center;
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: clamp(20px, 4vw, 36px);
     }
     .hero h1 {
+      margin: 0 0 0.1em 0;
       font-family: var(--font-display);
       font-weight: 400;
       letter-spacing: 0.04em;
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      font-size: clamp(48px, 8vw, 80px);
+      line-height: 1.05;
     }
     .hero p:not(.hero-subline) {
       margin: 0;
@@ -139,14 +146,14 @@
       letter-spacing: 0.2px;
     }
     .hero .hero-subline {
-      font-family: var(--font-script-2); /* switched to Satisfy like Live */
+      margin: 0.15em 0 0.8em 0;
+      font-family: var(--font-script-2);
+      font-weight: 400;
       color: var(--color-accent);
-      font-weight: 700;
-      font-size: clamp(24px, 3.75vw, 36px);
       letter-spacing: 0.3px;
-      margin: 0.05em 0 0;
-      line-height: 1.1;
       text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      font-size: clamp(22px, 3.6vw, 32px);
+      line-height: 1.15;
     }
 
     section { padding: var(--space-10) 0; }
@@ -180,7 +187,7 @@
     .signature {
       font-family: var(--font-script-1);
       color: var(--color-accent);
-      font-weight: 400; /* not 700 */
+      font-weight: 400;
     }
 
     .card img {
@@ -189,11 +196,12 @@
       height: auto;
       border-radius: var(--radius-sm);
     }
-    .site-header, .hero, #main { 
-      position: relative; 
-      z-index: 1; 
+    .site-header, .hero, #main {
+      position: relative;
+      z-index: 1;
     }
-    /* Events layout: left list (sticky), right content */
+
+    /* Events layout */
     .events-layout {
       display: grid;
       gap: var(--space-6);
@@ -201,7 +209,6 @@
     @media (min-width: 820px) {
       .events-layout { grid-template-columns: 300px 1fr; }
     }
-
     .events-nav {
       display: flex;
       gap: 8px;
@@ -212,7 +219,7 @@
       .events-nav {
         flex-direction: column;
         position: sticky;
-        top: calc(var(--header-height) + 16px); /* stays visible while you scroll the details */
+        top: calc(var(--header-height) + 16px);
       }
     }
     .events-nav .event-link {
@@ -227,10 +234,9 @@
       background: #f7f3eb;
       border-color: var(--color-accent);
     }
-
     .events-panels .event-panel { display: none; }
-    .events-panels .event-panel.is-active { display: block; }  
-    
+    .events-panels .event-panel.is-active { display: block; }
+
     /* Two-column details/photo inside each event panel */
     .panel-grid {
       display: grid;
@@ -254,11 +260,9 @@
       gap: 10px;
       margin-top: var(--space-4);
     }
-
-    /* Optional: make event headings tighter */
     .event-panel h3 { margin-top: 0; }
-    
-    /* Calendar links: gold, italic, compact */
+
+    /* Calendar links */
     .cal-links {
       display: flex;
       flex-wrap: wrap;
@@ -273,12 +277,11 @@
       background: none;
       border: 0;
       padding: 0;
-      cursor: pointer;          /* works for <a> and <button> if you ever switch */
+      cursor: pointer;
     }
     .cal-link:hover { text-decoration: underline; }
     .cal-sep { color: var(--color-accent); opacity: 0.9; }
 
-    /* Calendar UI */
     .cal-links { margin-top: var(--space-4); position: relative; }
     .cal-trigger, .cal-item {
       display: inline-flex; align-items: center; gap: 6px;
@@ -287,7 +290,6 @@
     }
     .cal-trigger:hover, .cal-item:hover { text-decoration: underline; }
 
-    /* Tiny dropdown */
     .cal-menu {
       position: absolute; margin-top: 8px; padding: 8px 10px;
       background: #fff; border: 1px solid var(--color-border); border-radius: 8px;
@@ -297,9 +299,9 @@
     .cal-menu ul { list-style: none; margin: 0; padding: 0; }
     .cal-menu li + li { margin-top: 6px; }
 
-    /* Date/time lines */
     .event-date, .event-time { display: block; }
 
+    /* Welcome body font to match Live */
     #welcome-card p:not(.signature),
     #welcome-card a {
       font-family: "Antic Slab", serif;
@@ -307,39 +309,73 @@
       line-height: 1.55;
     }
 
-    /* Match Live’s desktop proportions for the welcome grid only */
-@media (min-width: 850px) {
-  #welcome .grid.grid-2 {
-    grid-template-columns: 2.6fr 1.4fr; /* wider blurb | narrower photo */
-    column-gap: clamp(10px, 1.5vw, 16px);
-  }
-  /* match side paddings to the gap & nudge slightly right to center visually */
-  :root { --nudge-x: 12px; --grid-gap: clamp(10px, 1.5vw, 16px); }
-  #welcome .container { padding-left: calc(var(--grid-gap) + var(--nudge-x)); padding-right: var(--grid-gap); }
-}
+    /* ==== WELCOME: match Live proportions/look ==== */
 
-/* Photo “frame” look like Live (optional but nice) */
-#welcome .card.photo-card { background: transparent; border: 0; box-shadow: none; padding: 0; }
-#welcome .photo-frame {
-  width: 92%;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-6);
-}
-#welcome .photo-frame img { border-radius: var(--radius-sm); }
+    /* Wider container like Live (max ~1600px) */
+    #welcome .container {
+      width: min(100%, 1600px);
+    }
 
-/* Mobile: make photo same width as blurb */
-@media (max-width: 849px) {
-  #welcome .photo-frame { width: 100%; }
-}
+    /* Equal-height columns */
+    #welcome .grid { align-items: stretch; }
 
+    @media (min-width: 850px) {
+      #welcome .grid.grid-2 {
+        grid-template-columns: 2.6fr 1.4fr;      /* wider blurb | narrower photo */
+        column-gap: clamp(10px, 1.5vw, 16px);
+      }
+      :root { --nudge-x: 12px; --grid-gap: clamp(10px, 1.5vw, 16px); }
+      #welcome .container {
+        padding-left: calc(var(--grid-gap) + var(--nudge-x));
+        padding-right: var(--grid-gap);
+      }
+    }
+
+    /* Photo card/frame like Live */
+    #welcome .card { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+
+    #welcome .card.photo-card {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      padding: 0;
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start; /* pull frame slightly left */
+    }
+
+    #welcome .photo-frame {
+      width: 92%;
+      height: 100%;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+
+    #welcome .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Mobile: photo same width as blurb */
+    @media (max-width: 849px) {
+      #welcome .photo-frame { width: 100%; height: auto; }
+      #welcome .photo-frame img { height: auto; }
+    }
   </style>
-<!-- Optional: swap WIP preloads to this style -->
-<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
-<link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.webm" as="fetch" type="video/webm" crossorigin="anonymous" fetchpriority="high">
-<link rel="preload" href="/assets/img/bg-botanical.png?v=2" as="image" fetchpriority="high">
+
+  <!-- Preloads (fetch style to mirror Live) -->
+  <link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.mp4" as="fetch" type="video/mp4" crossorigin="anonymous" fetchpriority="high">
+  <link rel="preload" href="/assets/video/oahu-web-8s-720p.v1.webm" as="fetch" type="video/webm" crossorigin="anonymous" fetchpriority="high">
+  <link rel="preload" href="/assets/img/bg-botanical.png?v=2" as="image" fetchpriority="high">
 </head>
 <body id="top">
   <header class="site-header">
@@ -372,10 +408,10 @@
     <div class="overlay">
       <div class="title-card">
         <h1>Stephen &amp; Daniel</h1>
-          <p class="hero-subline">
-            <span class="place">Oʻahu, Hawaiʻi</span><br>
-            <span class="date">July 10, 2026</span>
-          </p>
+        <p class="hero-subline">
+          <span class="place">Oʻahu, Hawaiʻi</span><br>
+          <span class="date">July 10, 2026</span>
+        </p>
         <div style="margin-top: var(--space-4)">
           <a href="#main" class="btn primary" id="enterSiteBtn">Enter Site</a>
         </div>
@@ -397,11 +433,11 @@
           <p>We can't wait to share this incredible adventure with our favorite people.</p>
           <p class="signature">With love and excitement,<br>Stephen &amp; Daniel</p>
         </div>
-      <div class="card photo-card">
-        <div class="photo-frame">
-          <img src="/assets/img/couple-1.jpg" alt="Stephen and Daniel — photo">
+        <div class="card photo-card">
+          <div class="photo-frame">
+            <img src="/assets/img/couple-1.jpg" alt="Stephen and Daniel — photo">
+          </div>
         </div>
-      </div>
       </div>
     </section>
 
@@ -423,19 +459,19 @@
               <a href="#event-recovery" class="event-link" data-event="recovery">Recovery</a>
             </nav>
 
-            <!-- Right: details panels (each has a details column + photo column) -->
+            <!-- Right: details panels -->
             <div class="events-panels">
               <!-- Welcome Drinks -->
               <article id="event-welcome-drinks" class="event-panel is-active" role="tabpanel">
                 <div class="panel-grid">
                   <div class="panel-details"
-                      data-title="Welcome Drinks"
-                      data-description="Kick off the week with a casual toast."
-                      data-location-name="(Venue / Bar name)"
-                      data-location-link="https://maps.google.com/?q=Your+Place"
-                      data-start="2026-07-07T18:00:00"
-                      data-end="2026-07-07T20:00:00"
-                      data-timezone="Pacific/Honolulu">
+                    data-title="Welcome Drinks"
+                    data-description="Kick off the week with a casual toast."
+                    data-location-name="(Venue / Bar name)"
+                    data-location-link="https://maps.google.com/?q=Your+Place"
+                    data-start="2026-07-07T18:00:00"
+                    data-end="2026-07-07T20:00:00"
+                    data-timezone="Pacific/Honolulu">
                     <h3>Welcome Drinks</h3>
                     <p class="muted">
                       <span class="event-date">Tue • Jul 7, 2026</span>
@@ -478,13 +514,13 @@
               <article id="event-beach-party" class="event-panel" role="tabpanel">
                 <div class="panel-grid">
                   <div class="panel-details"
-                      data-title="Beach Party"
-                      data-description="Sun, sand, and swims!"
-                      data-location-name="(Beach name)"
-                      data-location-link="https://maps.google.com/?q=Beach"
-                      data-start="2026-07-08T11:00:00"
-                      data-end="2026-07-08T15:00:00"
-                      data-timezone="Pacific/Honolulu">
+                    data-title="Beach Party"
+                    data-description="Sun, sand, and swims!"
+                    data-location-name="(Beach name)"
+                    data-location-link="https://maps.google.com/?q=Beach"
+                    data-start="2026-07-08T11:00:00"
+                    data-end="2026-07-08T15:00:00"
+                    data-timezone="Pacific/Honolulu">
                     <h3>Beach Party</h3>
                     <p class="muted">
                       <span class="event-date">Wed • Jul 8, 2026</span>
@@ -501,8 +537,10 @@
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem">
+                            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem">
+                            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -517,13 +555,13 @@
               <article id="event-sandbar" class="event-panel" role="tabpanel">
                 <div class="panel-grid">
                   <div class="panel-details"
-                      data-title="Sandbar Outing"
-                      data-description="Boat to the sandbar for a swim."
-                      data-location-name="Kaneohe Sandbar (dock)"
-                      data-location-link="https://maps.google.com/?q=Kaneohe+Sandbar"
-                      data-start="2026-07-09T09:00:00"
-                      data-end="2026-07-09T12:00:00"
-                      data-timezone="Pacific/Honolulu">
+                    data-title="Sandbar Outing"
+                    data-description="Boat to the sandbar for a swim."
+                    data-location-name="Kaneohe Sandbar (dock)"
+                    data-location-link="https://maps.google.com/?q=Kaneohe+Sandbar"
+                    data-start="2026-07-09T09:00:00"
+                    data-end="2026-07-09T12:00:00"
+                    data-timezone="Pacific/Honolulu">
                     <h3>Sandbar Outing</h3>
                     <p class="muted">
                       <span class="event-date">Thu • Jul 9, 2026</span>
@@ -540,8 +578,8 @@
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -556,13 +594,13 @@
               <article id="event-rehearsal-dinner" class="event-panel" role="tabpanel">
                 <div class="panel-grid">
                   <div class="panel-details"
-                      data-title="Rehearsal Dinner"
-                      data-description="An intimate evening before the big day."
-                      data-location-name="(Restaurant / Venue)"
-                      data-location-link="https://maps.google.com/?q=Venue"
-                      data-start="2026-07-09T18:30:00"
-                      data-end="2026-07-09T21:00:00"
-                      data-timezone="Pacific/Honolulu">
+                    data-title="Rehearsal Dinner"
+                    data-description="An intimate evening before the big day."
+                    data-location-name="(Restaurant / Venue)"
+                    data-location-link="https://maps.google.com/?q=Venue"
+                    data-start="2026-07-09T18:30:00"
+                    data-end="2026-07-09T21:00:00"
+                    data-timezone="Pacific/Honolulu">
                     <h3>Rehearsal Dinner</h3>
                     <p class="muted">
                       <span class="event-date">Thu • Jul 9, 2026</span>
@@ -574,13 +612,13 @@
                     <div class="btn-row"><a class="btn ghost" href="#rsvp-title">RSVP</a></div>
                     <div class="cal-links">
                       <a href="#" class="cal-trigger" aria-haspopup="true" aria-expanded="false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>
                         Add to Calendar
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -595,13 +633,13 @@
               <article id="event-ceremony-reception" class="event-panel" role="tabpanel">
                 <div class="panel-grid">
                   <div class="panel-details"
-                      data-title="Ceremony & Reception"
-                      data-description="The main event—ceremony followed by dinner & dancing."
-                      data-location-name="Lanikūhonua Cultural Institute"
-                      data-location-link="https://goo.gl/maps/H3b49Eq1kLoQnSFL8"
-                      data-start="2026-07-10T15:00:00"
-                      data-end="2026-07-10T22:00:00"
-                      data-timezone="Pacific/Honolulu">
+                    data-title="Ceremony & Reception"
+                    data-description="The main event—ceremony followed by dinner & dancing."
+                    data-location-name="Lanikūhonua Cultural Institute"
+                    data-location-link="https://goo.gl/maps/H3b49Eq1kLoQnSFL8"
+                    data-start="2026-07-10T15:00:00"
+                    data-end="2026-07-10T22:00:00"
+                    data-timezone="Pacific/Honolulu">
                     <h3>Ceremony &amp; Reception</h3>
                     <p class="muted">
                       <span class="event-date">Fri • Jul 10, 2026</span>
@@ -613,13 +651,13 @@
                     <div class="btn-row"><a class="btn ghost" href="#rsvp-title">RSVP</a></div>
                     <div class="cal-links">
                       <a href="#" class="cal-trigger" aria-haspopup="true" aria-expanded="false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>
                         Add to Calendar
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -634,13 +672,13 @@
               <article id="event-after-party" class="event-panel" role="tabpanel">
                 <div class="panel-grid">
                   <div class="panel-details"
-                      data-title="After Party"
-                      data-description="Keep the celebration going."
-                      data-location-name="(Bar / Lounge)"
-                      data-location-link="https://maps.google.com/?q=Bar"
-                      data-start="2026-07-10T22:30:00"
-                      data-end="2026-07-11T01:00:00"
-                      data-timezone="Pacific/Honolulu">
+                    data-title="After Party"
+                    data-description="Keep the celebration going."
+                    data-location-name="(Bar / Lounge)"
+                    data-location-link="https://maps.google.com/?q=Bar"
+                    data-start="2026-07-10T22:30:00"
+                    data-end="2026-07-11T01:00:00"
+                    data-timezone="Pacific/Honolulu">
                     <h3>After Party</h3>
                     <p class="muted">
                       <span class="event-date">Fri • Jul 10, 2026</span>
@@ -652,13 +690,13 @@
                     <div class="btn-row"><a class="btn ghost" href="#rsvp-title">RSVP</a></div>
                     <div class="cal-links">
                       <a href="#" class="cal-trigger" aria-haspopup="true" aria-expanded="false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>
                         Add to Calendar
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -673,13 +711,13 @@
               <article id="event-recovery" class="event-panel" role="tabpanel">
                 <div class="panel-grid">
                   <div class="panel-details"
-                      data-title="Recovery"
-                      data-description="Casual coffee and goodbyes."
-                      data-location-name="(Cafe / Hotel Lobby)"
-                      data-location-link="https://maps.google.com/?q=Cafe"
-                      data-start="2026-07-11T10:00:00"
-                      data-end="2026-07-11T12:00:00"
-                      data-timezone="Pacific/Honolulu">
+                    data-title="Recovery"
+                    data-description="Casual coffee and goodbyes."
+                    data-location-name="(Cafe / Hotel Lobby)"
+                    data-location-link="https://maps.google.com/?q=Cafe"
+                    data-start="2026-07-11T10:00:00"
+                    data-end="2026-07-11T12:00:00"
+                    data-timezone="Pacific/Honolulu">
                     <h3>Recovery</h3>
                     <p class="muted">
                       <span class="event-date">Sat • Jul 11, 2026</span>
@@ -691,13 +729,13 @@
                     <div class="btn-row"><a class="btn ghost" href="#rsvp-title">RSVP</a></div>
                     <div class="cal-links">
                       <a href="#" class="cal-trigger" aria-haspopup="true" aria-expanded="false">
-                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>
                         Add to Calendar
                       </a>
                       <div class="cal-menu" role="menu">
                         <ul>
-                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>.ics file</a></li>
-                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2a1 1 0 0 1 1 1v3H4V5a1 1 0 0 1 1-1h2V2Zm14 8v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9h18ZM7 14h4v4H7v-4Z"/></svg>Google Calendar</a></li>
+                          <li><a href="#" class="cal-item add-ics" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>.ics file</a></li>
+                          <li><a href="#" class="cal-item add-gcal" role="menuitem"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"/></svg>Google Calendar</a></li>
                         </ul>
                       </div>
                     </div>
@@ -829,7 +867,6 @@
     const hero = document.getElementById('banner');
     const root = document.documentElement;
 
-    // keep a live CSS var of the header height (helps when it wraps on smaller screens)
     function setHeaderHeightVar() {
       const header = document.querySelector('.site-header');
       if (header) root.style.setProperty('--header-height', header.offsetHeight + 'px');
@@ -837,17 +874,15 @@
     window.addEventListener('load', setHeaderHeightVar);
     window.addEventListener('resize', setHeaderHeightVar);
 
-    // shared smooth-scroll function (accounts for sticky header)
     function smoothScrollTo(el) {
       if (!el) return;
       const header = document.querySelector('.site-header');
       const headerH = header ? header.offsetHeight : 0;
-      const gap = 16; // comfy space below the header
+      const gap = 16;
       const top = el.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
       window.scrollTo({ top, behavior: 'smooth' });
     }
 
-    // "Enter Site" behavior -> scroll to the card itself
     function enter() {
       document.body.classList.add('entered');
       smoothScrollTo(document.getElementById('welcome-card'));
@@ -860,94 +895,83 @@
       });
     }
 
-    // Clicking the hero (except actual links) also enters
     if (hero) hero.addEventListener('click', (e) => { if (!e.target.closest('a')) enter(); });
 
-    // ALL top-nav links: target the header's containing .card (falls back to the header itself)
     document.querySelectorAll('nav.topnav a[href^="#"]').forEach((a) => {
       a.addEventListener('click', (e) => {
         const hash = a.getAttribute('href');
         if (!hash || hash.length < 2) return;
         const rawTarget = document.getElementById(hash.slice(1));
-        if (!rawTarget) return; // let browser handle if not found
+        if (!rawTarget) return;
         e.preventDefault();
-
-        // ensure site is "entered" before scrolling (just in case)
         document.body.classList.add('entered');
-
-        // prefer the closest card wrapper; otherwise use the header element itself
         const cardTarget = rawTarget.closest('.card') || rawTarget;
         smoothScrollTo(cardTarget);
       });
     });
   })();
-    // --- Events: tabbed panels with deep-linking (#event-ceremony, etc.)
-      const eventLinks  = Array.from(document.querySelectorAll('.events-nav .event-link'));
-      const eventPanels = Array.from(document.querySelectorAll('.events-panels .event-panel'));
 
-      function activateEvent(key) {
-        const id = `event-${key}`;
-        eventLinks.forEach(a => a.classList.toggle('is-active', a.dataset.event === key));
-        eventPanels.forEach(p => p.classList.toggle('is-active', p.id === id));
-      }
+  // --- Events: tabbed panels with deep-linking
+  const eventLinks  = Array.from(document.querySelectorAll('.events-nav .event-link'));
+  const eventPanels = Array.from(document.querySelectorAll('.events-panels .event-panel'));
 
-      function eventKeyFromHash() {
-        const m = location.hash.match(/^#event-(.+)$/);
-        return m ? m[1] : null;
-      }
+  function activateEvent(key) {
+    const id = `event-${key}`;
+    eventLinks.forEach(a => a.classList.toggle('is-active', a.dataset.event === key));
+    eventPanels.forEach(p => p.classList.toggle('is-active', p.id === id));
+  }
 
-      // click handling (no page scroll)
-      function scrollToEventsCard() {
-        const card = document.getElementById('events-card');
-        if (!card) return;
-        const header = document.querySelector('.site-header');
-        const headerH = header ? header.offsetHeight : 0;
-        const gap = 16;
-        const top = card.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
+  function eventKeyFromHash() {
+    const m = location.hash.match(/^#event-(.+)$/);
+    return m ? m[1] : null;
+  }
 
-      eventLinks.forEach(a => {
-        a.addEventListener('click', (e) => {
-          e.preventDefault();                    // stop the browser from jumping to #event-…
-          const key = a.dataset.event;
-          activateEvent(key);                    // swap the right-hand panel
-          history.replaceState(null, '', `#event-${key}`); // update URL without triggering hashchange
-          scrollToEventsCard();                  // keep view parked on the Events card
-        });
-      });
+  function scrollToEventsCard() {
+    const card = document.getElementById('events-card');
+    if (!card) return;
+    const header = document.querySelector('.site-header');
+    const headerH = header ? header.offsetHeight : 0;
+    const gap = 16;
+    const top = card.getBoundingClientRect().top + window.pageYOffset - headerH - gap;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
 
-      // respond to direct links or manual hash changes (keep viewport steady)
-      window.addEventListener('hashchange', () => {
-        const key = eventKeyFromHash();
-        if (key) {
-          activateEvent(key);
-          scrollToEventsCard();   // if the browser jumped, pull it back to the Events card
-        }
-      });
+  eventLinks.forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const key = a.dataset.event;
+      activateEvent(key);
+      history.replaceState(null, '', `#event-${key}`);
+      scrollToEventsCard();
+    });
+  });
 
-      // initial state: use hash if present, else first link
-      const initialKey = eventKeyFromHash() || (eventLinks[0] && eventLinks[0].dataset.event);
-      
-      if (initialKey) {
-        activateEvent(initialKey);
-        // If the page opened on a deep link, ensure we’re parked on the Events card, not the panel anchor
-        if (eventKeyFromHash()) setTimeout(scrollToEventsCard, 0);
-      }
+  window.addEventListener('hashchange', () => {
+    const key = eventKeyFromHash();
+    if (key) {
+      activateEvent(key);
+      scrollToEventsCard();
+    }
+  });
 
-      // --- Add to Calendar utilities (ICS + Google Calendar)
-      function pad(n){ return String(n).padStart(2,'0'); }
-      function toICSDate(dt){ // UTC Z format yyyymmddThhmmssZ
-        const z = new Date(dt);
-        return `${z.getUTCFullYear()}${pad(z.getUTCMonth()+1)}${pad(z.getUTCDate())}T${pad(z.getUTCHours())}${pad(z.getUTCMinutes())}${pad(z.getUTCSeconds())}Z`;
-      }
+  const initialKey = eventKeyFromHash() || (eventLinks[0] && eventLinks[0].dataset.event);
+  if (initialKey) {
+    activateEvent(initialKey);
+    if (eventKeyFromHash()) setTimeout(scrollToEventsCard, 0);
+  }
+
+  // --- Add to Calendar utilities (ICS + Google Calendar)
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function toICSDate(dt){
+    const z = new Date(dt);
+    return `${z.getUTCFullYear()}${pad(z.getUTCMonth()+1)}${pad(z.getUTCDate())}T${pad(z.getUTCHours())}${pad(z.getUTCMinutes())}${pad(z.getUTCSeconds())}Z`;
+  }
 
   function buildICS({title, description, start, end, location}) {
     const dtStamp = toICSDate(new Date());
     const dtStart = toICSDate(start);
     const dtEnd   = toICSDate(end);
     const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@wedding-site`;
-    // Outlook, Apple, Google all read .ics
     return [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
@@ -968,7 +992,6 @@
   }
 
   function openGoogleCalendar({title, description, start, end, location}) {
-    // Google expects RFC3339 local or UTC; simplest: use UTC with Z
     const fmt = (d)=>encodeURIComponent(new Date(d).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z'));
     const base = 'https://calendar.google.com/calendar/render?action=TEMPLATE';
     const params = [
@@ -980,72 +1003,64 @@
     window.open(`${base}&${params}`, '_blank', 'noopener');
   }
 
-  // Toggle tiny "Add to Calendar" menu
-    document.querySelectorAll('.event-panel .cal-links').forEach(wrapper => {
-      const trigger = wrapper.querySelector('.cal-trigger');
-      const menu = wrapper.querySelector('.cal-menu');
-      if (!trigger || !menu) return;
+  document.querySelectorAll('.event-panel .cal-links').forEach(wrapper => {
+    const trigger = wrapper.querySelector('.cal-trigger');
+    const menu = wrapper.querySelector('.cal-menu');
+    if (!trigger || !menu) return;
 
-      function closeMenu() {
-        menu.classList.remove('is-open');
-        trigger.setAttribute('aria-expanded', 'false');
-      }
-      function openMenu() {
-        menu.classList.add('is-open');
-        trigger.setAttribute('aria-expanded', 'true');
-      }
+    function closeMenu() {
+      menu.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+    function openMenu() {
+      menu.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
 
-      trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        menu.classList.contains('is-open') ? closeMenu() : openMenu();
-      });
-
-      // click-away to close
-      document.addEventListener('click', (e) => {
-        if (!wrapper.contains(e.target)) closeMenu();
-      });
-
-      // Esc closes
-      wrapper.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeMenu();
-      });
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      menu.classList.contains('is-open') ? closeMenu() : openMenu();
     });
 
-
-    // Wire up links in each panel
-    document.querySelectorAll('.event-panel .panel-details').forEach(details => {
-      const title = details.dataset.title || 'Event';
-      const desc  = details.dataset.description || '';
-      const locNm = details.dataset.locationName || '';
-      const start = details.dataset.start;
-      const end   = details.dataset.end;
-
-      // .ics
-      const icsLink = details.parentElement.querySelector('.add-ics');
-      if (icsLink) icsLink.addEventListener('click', (e) => {
-        e.preventDefault(); // don't jump to top
-        if (!start || !end) { alert('Calendar times coming soon.'); return; }
-        const ics = buildICS({ title, description: desc, start, end, location: locNm });
-        const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${title.replace(/\s+/g,'_')}.ics`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-      });
-
-      // Google Calendar
-      const gcalLink = details.parentElement.querySelector('.add-gcal');
-      if (gcalLink) gcalLink.addEventListener('click', (e) => {
-        e.preventDefault(); // don't jump to top
-        if (!start || !end) { alert('Calendar times coming soon.'); return; }
-        openGoogleCalendar({ title, description: desc, start, end, location: locNm });
-      });
+    document.addEventListener('click', (e) => {
+      if (!wrapper.contains(e.target)) closeMenu();
     });
 
+    wrapper.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    });
+  });
+
+  document.querySelectorAll('.event-panel .panel-details').forEach(details => {
+    const title = details.dataset.title || 'Event';
+    const desc  = details.dataset.description || '';
+    const locNm = details.dataset.locationName || '';
+    const start = details.dataset.start;
+    const end   = details.dataset.end;
+
+    const icsLink = details.parentElement.querySelector('.add-ics');
+    if (icsLink) icsLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!start || !end) { alert('Calendar times coming soon.'); return; }
+      const ics = buildICS({ title, description: desc, start, end, location: locNm });
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${title.replace(/\s+/g,'_')}.ics`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    const gcalLink = details.parentElement.querySelector('.add-gcal');
+    if (gcalLink) gcalLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!start || !end) { alert('Calendar times coming soon.'); return; }
+      openGoogleCalendar({ title, description: desc, start, end, location: locNm });
+    });
+  });
 </script>
 
 </body>
