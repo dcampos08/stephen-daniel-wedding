@@ -42,7 +42,7 @@
       --radius-lg: 20px;
       --radius-sm: 10px;
       --shadow-sm: 0 4px 16px rgba(0,0,0,0.08);
-      --max-w: 1100px;
+      --max-w: 1600px;
 
       --space-1: 4px;
       --space-2: 8px;
@@ -188,6 +188,10 @@
       font-family: var(--font-script-1);
       color: var(--color-accent);
       font-weight: 400;
+      font-size: clamp(18px, 2.2vw, 24px);
+      letter-spacing: 0.3px;
+      margin-top: 10px;
+      line-height: 1.2;
     }
 
     .card img {
@@ -308,6 +312,8 @@
       font-size: clamp(15px, 1.55vw, 18px);
       line-height: 1.55;
     }
+    #welcome-card p:not(.signature) { margin: 0 0 10px; }
+    #welcome-title { margin: 0 0 16px; }
 
     /* ==== WELCOME: match Live proportions/look ==== */
 
