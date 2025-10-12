@@ -256,6 +256,39 @@
       height: auto;
       border-radius: var(--radius-sm);
     }
+    /* --- Event photo normalization & vertical centering --- */
+:root {
+  --event-photo-h: 280px;   /* tweak this to the height you like */
+}
+
+/* Center the two columns (details | photo) on the row's cross-axis */
+.panel-grid {
+  align-items: center;
+}
+
+/* Make the photo column center its image box */
+.panel-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Uniform image box: same height for all, crop as needed */
+.panel-photo img {
+  width: 100%;
+  height: var(--event-photo-h);
+  object-fit: cover;        /* fills the box, gently crops edges */
+  border-radius: var(--radius-sm);
+}
+
+/* Mobile: let images go natural height so nothing feels cramped */
+@media (max-width: 899px) {
+  .panel-grid { align-items: stretch; }    /* default stacking behavior */
+  .panel-photo img {
+    height: auto;
+    object-fit: contain;
+  }
+}
 
     /* Buttons row under the blurb */
     .btn-row {
